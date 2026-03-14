@@ -48,6 +48,7 @@ builder.Services.AddDbContext<KarnelTravelsDbContext>(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSignalR();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Add Authentication
 builder.Services.AddAuthentication(options =>

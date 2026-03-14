@@ -41,12 +41,6 @@ const ProfilePage = () => (
   </div>
 );
 
-const BookingsPage = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Đơn đặt tour</h1>
-  </div>
-);
-
 const WishlistPage = () => (
   <div className="min-h-screen flex items-center justify-center">
     <h1 className="text-4xl font-bold text-gray-800">Danh sách yêu thích</h1>
@@ -92,6 +86,7 @@ const TransportsPage = () => (
 // Admin Pages
 import AdminHotelsPage from '@/pages/admin/hotels/HotelsPage';
 import RoomDetailsPage from '@/pages/admin/hotels/RoomDetailsPage';
+import BookingsPage from '@/pages/admin/bookings/BookingsPage';
 
 const AdminDashboard = () => <DashboardPage />;
 
@@ -182,6 +177,7 @@ const AppRoutes = () => {
         <Route path="tours" element={<AdminTours />} />
         <Route path="hotels" element={<AdminHotels />} />
         <Route path="hotels/:hotelId/rooms" element={<RoomDetailsPage />} />
+        <Route path="bookings" element={<BookingsPage />} />
         <Route path="restaurants" element={<AdminRestaurants />} />
         <Route path="resorts" element={<AdminResorts />} />
         <Route path="transports" element={<AdminTransports />} />
