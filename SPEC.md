@@ -534,20 +534,7 @@ Trang quản trị (Admin Panel) là nơi để quản lý toàn bộ nội dung
 | F169 | F-DASH-009 | Hiển thị danh sách liên hệ chưa đọc | Cao |
 | F170 | F-DASH-010 | Thông báo khi có đơn đặt mới | Trung bình |
 
-#### 2.8.4. Trang Quản lý Điểm du lịch (Admin Tourist Spots)
 
-| STT | Mã yêu cầu | Mô tả yêu cầu | Độ ưu tiên |
-|-----|------------|---------------|-------------|
-| F161 | F-DASH-001 | Hiển thị tổng số điểm du lịch | Cao |
-| F162 | F-DASH-002 | Hiển thị tổng số khách sạn | Cao |
-| F163 | F-DASH-003 | Hiển thị tổng số nhà hàng | Cao |
-| F164 | F-DASH-004 | Hiển thị tổng số resort | Cao |
-| F165 | F-DASH-005 | Hiển thị tổng số đơn đặt trong ngày | Cao |
-| F166 | F-DASH-006 | Hiển thị tổng doanh thu trong tháng | Cao |
-| F167 | F-DASH-007 | Hiển thị danh sách đơn đặt gần đây | Cao |
-| F168 | F-DASH-008 | Hiển thị biểu đồ thống kê doanh thu theo tháng | Cao |
-| F169 | F-DASH-009 | Hiển thị danh sách liên hệ chưa đọc | Cao |
-| F170 | F-DASH-010 | Thông báo khi có đơn đặt mới | Trung bình |
 
 #### 2.8.4. Trang Quản lý Điểm du lịch (Admin Tourist Spots)
 
