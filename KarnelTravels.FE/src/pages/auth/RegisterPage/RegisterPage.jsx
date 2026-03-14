@@ -4,12 +4,15 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useAuth } from '@/context/AuthContext/AuthContext';
-import { Plane, Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, User, Phone } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Plane, Loader2, Eye, EyeOff } from 'lucide-react';
 
 const schema = yup.object().shape({
   fullName: yup.string().required('Họ tên là bắt buộc').min(2, 'Họ tên phải có ít nhất 2 ký tự'),
   email: yup.string().required('Email là bắt buộc').email('Email không hợp lệ'),
-  phoneNumber: yup.string().optional(),
   password: yup.string().required('Mật khẩu là bắt buộc').min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
   confirmPassword: yup.string().required('Xác nhận mật khẩu là bắt buộc').oneOf([yup.ref('password')], 'Mật khẩu không khớp'),
 });
@@ -38,7 +41,6 @@ const RegisterPage = () => {
       fullName: data.fullName,
       email: data.email,
       password: data.password,
-      phoneNumber: data.phoneNumber || null,
     };
 
     const result = await registerUser(userData);
@@ -53,12 +55,12 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-600">
-      {/* Animated Background Shapes */}
-      <div className="absolute inset-0 overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-700">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -left-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse delay-700"></div>
-        <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-pink-300/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-cyan-300/20 rounded-full blur-3xl"></div>
       </div>
 
       {/* Floating Shapes */}
@@ -66,187 +68,162 @@ const RegisterPage = () => {
       <div className="absolute bottom-32 left-20 w-6 h-6 bg-white/20 rounded-full animate-bounce delay-400"></div>
       <div className="absolute top-1/2 right-1/3 w-3 h-3 bg-white/40 rounded-full animate-bounce delay-600"></div>
 
+      {/* Back to Home */}
+      <Link
+        to="/"
+        className="absolute top-6 left-6 z-10 flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white/90 hover:text-white hover:bg-white/20 rounded-full transition-all"
+      >
+        <Plane className="w-4 h-4" />
+        <span className="font-medium">Về trang chủ</span>
+      </Link>
+
       {/* Register Card */}
-      <div className="relative w-full max-w-md mx-4">
-        <div className="backdrop-blur-xl bg-white/20 border border-white/30 rounded-3xl shadow-2xl p-8">
-          {/* Logo */}
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl shadow-lg mb-4">
-              <Plane className="w-8 h-8 text-white" />
+      <div className="relative z-10 w-full max-w-md mx-4">
+        <Card className="backdrop-blur-xl bg-white/95 dark:bg-gray-900/95 border-0 shadow-2xl">
+          <CardHeader className="space-y-1 text-center pb-2">
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <Plane className="w-8 h-8 text-white" />
+              </div>
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">Đăng ký</h1>
-            <p className="text-white/80">Tạo tài khoản để bắt đầu hành trình</p>
-          </div>
+            <CardTitle className="text-2xl font-bold">Tạo tài khoản</CardTitle>
+            <CardDescription className="text-muted-foreground">
+              Đăng ký để bắt đầu hành trình của bạn
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              {/* Error Message */}
+              {error && (
+                <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-destructive text-sm">
+                  {error}
+                </div>
+              )}
 
-          {/* Error Message */}
-          {error && (
-            <div className="mb-5 p-4 bg-red-500/20 border border-red-500/30 rounded-xl text-white text-sm">
-              {error}
-            </div>
-          )}
-
-          {/* Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Full Name Field */}
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">Họ và tên</label>
-              <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
-                <input
+              {/* Full Name Field */}
+              <div className="space-y-2">
+                <Label htmlFor="fullName">Họ và tên</Label>
+                <Input
+                  id="fullName"
                   type="text"
-                  {...register('fullName')}
                   placeholder="Nhập họ và tên"
-                  className="w-full pl-12 pr-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all backdrop-blur-sm"
+                  {...register('fullName')}
+                  className={errors.fullName ? 'border-destructive focus-visible:ring-destructive' : ''}
                 />
+                {errors.fullName && (
+                  <p className="text-sm text-destructive">{errors.fullName.message}</p>
+                )}
               </div>
-              {errors.fullName && (
-                <p className="mt-1.5 text-sm text-red-200">{errors.fullName.message}</p>
-              )}
-            </div>
 
-            {/* Email Field */}
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
-                <input
+              {/* Email Field */}
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
                   type="email"
-                  {...register('email')}
                   placeholder="Nhập email của bạn"
-                  className="w-full pl-12 pr-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all backdrop-blur-sm"
+                  {...register('email')}
+                  className={errors.email ? 'border-destructive focus-visible:ring-destructive' : ''}
                 />
+                {errors.email && (
+                  <p className="text-sm text-destructive">{errors.email.message}</p>
+                )}
               </div>
-              {errors.email && (
-                <p className="mt-1.5 text-sm text-red-200">{errors.email.message}</p>
-              )}
-            </div>
 
-            {/* Phone Number Field */}
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">Số điện thoại (tùy chọn)</label>
-              <div className="relative">
-                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
+              {/* Password Field */}
+              <div className="space-y-2">
+                <Label htmlFor="password">Mật khẩu</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Tạo mật khẩu"
+                    {...register('password')}
+                    className={errors.password ? 'border-destructive focus-visible:ring-destructive pr-10' : 'pr-10'}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+                {errors.password && (
+                  <p className="text-sm text-destructive">{errors.password.message}</p>
+                )}
+              </div>
+
+              {/* Confirm Password Field */}
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    placeholder="Nhập lại mật khẩu"
+                    {...register('confirmPassword')}
+                    className={errors.confirmPassword ? 'border-destructive focus-visible:ring-destructive pr-10' : 'pr-10'}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+                {errors.confirmPassword && (
+                  <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
+                )}
+              </div>
+
+              {/* Terms */}
+              <div className="flex items-start gap-2">
                 <input
-                  type="tel"
-                  {...register('phoneNumber')}
-                  placeholder="Nhập số điện thoại"
-                  className="w-full pl-12 pr-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all backdrop-blur-sm"
+                  type="checkbox"
+                  id="terms"
+                  required
+                  className="mt-1 w-4 h-4 rounded border-input text-primary focus:ring-primary"
                 />
+                <Label htmlFor="terms" className="text-sm font-normal cursor-pointer">
+                  Tôi đồng ý với{' '}
+                  <Link to="/terms" className="text-primary hover:underline">Điều khoản</Link>
+                  {' '}và{' '}
+                  <Link to="/privacy" className="text-primary hover:underline">Chính sách bảo mật</Link>
+                </Label>
               </div>
-              {errors.phoneNumber && (
-                <p className="mt-1.5 text-sm text-red-200">{errors.phoneNumber.message}</p>
-              )}
-            </div>
 
-            {/* Password Field */}
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">Mật khẩu</label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  {...register('password')}
-                  placeholder="Tạo mật khẩu"
-                  className="w-full pl-12 pr-12 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all backdrop-blur-sm"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
+              {/* Submit Button */}
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Đang đăng ký...
+                  </>
+                ) : (
+                  'Tạo tài khoản'
+                )}
+              </Button>
+            </form>
+          </CardContent>
+          <CardFooter className="flex flex-col gap-4">
+            <div className="relative w-full">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t"></div>
               </div>
-              {errors.password && (
-                <p className="mt-1.5 text-sm text-red-200">{errors.password.message}</p>
-              )}
-            </div>
-
-            {/* Confirm Password Field */}
-            <div>
-              <label className="block text-sm font-medium text-white/90 mb-2">Xác nhận mật khẩu</label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  {...register('confirmPassword')}
-                  placeholder="Nhập lại mật khẩu"
-                  className="w-full pl-12 pr-12 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all backdrop-blur-sm"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors"
-                >
-                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card text-muted-foreground px-2">hoặc</span>
               </div>
-              {errors.confirmPassword && (
-                <p className="mt-1.5 text-sm text-red-200">{errors.confirmPassword.message}</p>
-              )}
             </div>
-
-            {/* Terms */}
-            <div className="flex items-start gap-2">
-              <input
-                type="checkbox"
-                required
-                className="mt-1 w-4 h-4 rounded border-white/40 bg-white/20 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-0"
-              />
-              <span className="text-sm text-white/80">
-                Tôi đồng ý với{' '}
-                <Link to="/terms" className="text-white font-medium hover:underline">Điều khoản</Link>
-                {' '}và{' '}
-                <Link to="/privacy" className="text-white font-medium hover:underline">Chính sách bảo mật</Link>
-              </span>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3.5 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Đang đăng ký...
-                </>
-              ) : (
-                <>
-                  Tạo tài khoản
-                  <ArrowRight className="w-5 h-5" />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Divider */}
-          <div className="relative my-5">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/30"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-transparent text-white/60">hoặc</span>
-            </div>
-          </div>
-
-          {/* Login Link */}
-          <p className="text-center text-white/80">
-            Đã có tài khoản?{' '}
-            <Link to="/login" className="text-white font-semibold hover:underline">
-              Đăng nhập ngay
-            </Link>
-          </p>
-        </div>
-
-        {/* Back to Home */}
-        <div className="text-center mt-6">
-          <Link to="/" className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors">
-            <ArrowRight className="w-4 h-4 rotate-180" />
-            Quay về trang chủ
-          </Link>
-        </div>
+            <p className="text-center text-sm text-muted-foreground">
+              Đã có tài khoản?{' '}
+              <Link to="/login" className="text-primary font-semibold hover:underline">
+                Đăng nhập ngay
+              </Link>
+            </p>
+          </CardFooter>
+        </Card>
       </div>
     </div>
   );

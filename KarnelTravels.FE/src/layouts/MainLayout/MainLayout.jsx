@@ -1,6 +1,15 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext/AuthContext';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Plane,
   Search,
@@ -51,7 +60,7 @@ const MainLayout = () => {
       dropdownItems: [
         { name: 'Điểm du lịch', path: '/info/destinations', icon: MapPin },
         { name: 'Tour Du lịch', path: '/info/tours', icon: Palmtree },
-        { name: 'Phương tiện', path: '/info/transport', icon: Bus },
+        { name: 'Phương tiện', path: '/info/transports', icon: Bus },
         { name: 'Khách sạn', path: '/info/hotels', icon: Building2 },
         { name: 'Nhà hàng', path: '/info/restaurants', icon: Utensils },
         { name: 'Resort', path: '/info/resorts', icon: Palmtree },
@@ -78,7 +87,7 @@ const MainLayout = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                 <Plane className="w-5 h-5 text-white" />
               </div>
               <span className={`font-bold text-xl transition-colors ${
@@ -97,9 +106,9 @@ const MainLayout = () => {
                       onClick={() => handleDropdownToggle(index)}
                       className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg font-medium transition-all ${
                         isScrolled
-                          ? 'text-gray-700 hover:bg-indigo-50 hover:text-indigo-600'
+                          ? 'text-gray-700 hover:bg-teal-50 hover:text-teal-600'
                           : 'text-white/90 hover:text-white hover:bg-white/10'
-                      } ${location.pathname === item.path ? 'bg-indigo-500/20 text-indigo-600' : ''}`}
+                      } ${location.pathname === item.path ? 'bg-teal-500/20 text-teal-600' : ''}`}
                     >
                       {item.name}
                       <ChevronDown className={`w-4 h-4 transition-transform ${
@@ -111,9 +120,9 @@ const MainLayout = () => {
                       to={item.path}
                       className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg font-medium transition-all ${
                         isScrolled
-                          ? 'text-gray-700 hover:bg-indigo-50 hover:text-indigo-600'
+                          ? 'text-gray-700 hover:bg-teal-50 hover:text-teal-600'
                           : 'text-white/90 hover:text-white hover:bg-white/10'
-                      } ${location.pathname === item.path ? 'bg-indigo-500/20 text-indigo-600' : ''}`}
+                      } ${location.pathname === item.path ? 'bg-teal-500/20 text-teal-600' : ''}`}
                     >
                       {item.name}
                     </Link>
@@ -127,10 +136,10 @@ const MainLayout = () => {
                           <Link
                             key={dropdownItem.path}
                             to={dropdownItem.path}
-                            className="flex items-center gap-3 p-4 rounded-xl hover:bg-indigo-50 transition-colors group"
+                            className="flex items-center gap-3 p-4 rounded-xl hover:bg-teal-50 transition-colors group"
                           >
-                            <div className="w-10 h-10 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                              <dropdownItem.icon className="w-5 h-5 text-indigo-600" />
+                            <div className="w-10 h-10 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                              <dropdownItem.icon className="w-5 h-5 text-teal-600" />
                             </div>
                             <div>
                               <p className="font-semibold text-gray-800">{dropdownItem.name}</p>
@@ -152,7 +161,7 @@ const MainLayout = () => {
                 to="/search"
                 className={`p-2.5 rounded-full transition-all ${
                   isScrolled
-                    ? 'bg-gray-100 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600'
+                    ? 'bg-gray-100 text-gray-700 hover:bg-teal-50 hover:text-teal-600'
                     : 'bg-white/10 text-white hover:bg-white/20'
                 }`}
               >
@@ -166,7 +175,7 @@ const MainLayout = () => {
                     to="/wishlist"
                     className={`p-2.5 rounded-full transition-all ${
                       isScrolled
-                        ? 'bg-gray-100 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600'
+                        ? 'bg-gray-100 text-gray-700 hover:bg-teal-50 hover:text-teal-600'
                         : 'bg-white/10 text-white hover:bg-white/20'
                     }`}
                   >
@@ -178,7 +187,7 @@ const MainLayout = () => {
                     to="/bookings"
                     className={`p-2.5 rounded-full transition-all ${
                       isScrolled
-                        ? 'bg-gray-100 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600'
+                        ? 'bg-gray-100 text-gray-700 hover:bg-teal-50 hover:text-teal-600'
                         : 'bg-white/10 text-white hover:bg-white/20'
                     }`}
                   >
@@ -186,45 +195,42 @@ const MainLayout = () => {
                   </Link>
 
                   {/* User Menu */}
-                  <div className="relative group">
-                    <button className="flex items-center gap-2 pl-2 pr-1 py-1.5 rounded-full bg-indigo-500 hover:bg-indigo-600 transition-colors">
-                      <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                        <User className="w-4 h-4 text-white" />
-                      </div>
-                      <span className="text-white font-medium text-sm pr-1">{user?.fullName?.split(' ')[0]}</span>
-                    </button>
-
-                    {/* User Dropdown */}
-                    <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                      <div className="p-3 border-b border-gray-100">
-                        <p className="font-semibold text-gray-800">{user?.fullName}</p>
-                        <p className="text-sm text-gray-500">{user?.email}</p>
-                      </div>
-                      <div className="p-2">
-                        <Link
-                          to="/profile"
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 text-gray-700 transition-colors"
-                        >
-                          <User className="w-5 h-5" />
-                          <span>Hồ sơ</span>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="flex items-center gap-2 pl-2 pr-1 py-1.5 rounded-full bg-teal-500 hover:bg-teal-600 text-white">
+                        <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                          <User className="w-4 h-4" />
+                        </div>
+                        <span className="font-medium text-sm">{user?.fullName?.split(' ')[0]}</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56">
+                      <DropdownMenuLabel>
+                        <div className="flex flex-col">
+                          <span className="font-semibold">{user?.fullName}</span>
+                          <span className="text-xs text-muted-foreground font-normal">{user?.email}</span>
+                        </div>
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link to="/profile" className="flex items-center">
+                          <User className="mr-2 h-4 w-4" />
+                          Hồ sơ
                         </Link>
-                        <Link
-                          to="/bookings"
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 text-gray-700 transition-colors"
-                        >
-                          <Calendar className="w-5 h-5" />
-                          <span>Đơn đặt</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/bookings" className="flex items-center">
+                          <Calendar className="mr-2 h-4 w-4" />
+                          Đơn đặt
                         </Link>
-                        <button
-                          onClick={logout}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-50 text-red-600 transition-colors"
-                        >
-                          <LogOut className="w-5 h-5" />
-                          <span>Đăng xuất</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={logout} className="text-red-600 cursor-pointer">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Đăng xuất
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
@@ -240,7 +246,7 @@ const MainLayout = () => {
                   </Link>
                   <Link
                     to="/register"
-                    className="px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white font-medium rounded-full transition-all hover:shadow-lg hover:shadow-indigo-500/30"
+                    className="px-5 py-2.5 bg-teal-500 hover:bg-teal-600 text-white font-medium rounded-full transition-all hover:shadow-lg hover:shadow-teal-500/30"
                   >
                     Đăng ký
                   </Link>
@@ -275,7 +281,7 @@ const MainLayout = () => {
                   <>
                     <button
                       onClick={() => handleDropdownToggle(navItems.indexOf(item))}
-                      className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 hover:bg-indigo-50"
+                      className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 hover:bg-teal-50"
                     >
                       <span className="flex items-center gap-3 font-medium">
                         <item.icon className="w-5 h-5" />
@@ -291,7 +297,7 @@ const MainLayout = () => {
                           <Link
                             key={dropdownItem.path}
                             to={dropdownItem.path}
-                            className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-indigo-50"
+                            className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-teal-50"
                           >
                             <dropdownItem.icon className="w-5 h-5" />
                             {dropdownItem.name}
@@ -305,8 +311,8 @@ const MainLayout = () => {
                     to={item.path}
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium ${
                       location.pathname === item.path
-                        ? 'bg-indigo-50 text-indigo-600'
-                        : 'text-gray-700 hover:bg-indigo-50'
+                        ? 'bg-teal-50 text-teal-600'
+                        : 'text-gray-700 hover:bg-teal-50'
                     }`}
                   >
                     <item.icon className="w-5 h-5" />
@@ -331,7 +337,7 @@ const MainLayout = () => {
             {/* Brand */}
             <div>
               <div className="flex items-center gap-2 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center">
                   <Plane className="w-5 h-5 text-white" />
                 </div>
                 <span className="font-bold text-xl">KarnelTravels</span>
@@ -339,9 +345,6 @@ const MainLayout = () => {
               <p className="text-gray-400 mb-6">
                 Đồng hành cùng bạn trên mọi hành trình khám phá Việt Nam và thế giới.
               </p>
-              <div className="flex gap-4">
-                {/* Social icons */}
-              </div>
             </div>
 
             {/* Quick Links */}

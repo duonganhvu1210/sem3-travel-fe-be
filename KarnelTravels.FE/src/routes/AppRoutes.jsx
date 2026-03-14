@@ -10,15 +10,8 @@ import LoginPage from '@/pages/auth/LoginPage/LoginPage';
 import RegisterPage from '@/pages/auth/RegisterPage/RegisterPage';
 import ForbiddenPage from '@/pages/error/ForbiddenPage/ForbiddenPage';
 
-// Placeholder Pages
-const HomePage = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <div className="text-center">
-      <h1 className="text-5xl font-bold text-gray-800 mb-4">Chào mừng đến với KarnelTravels</h1>
-      <p className="text-xl text-gray-600">Hành trình của bạn bắt đầu tại đây</p>
-    </div>
-  </div>
-);
+// Pages
+import HomePage from '@/pages/home/HomePage/HomePage';
 
 const AboutPage = () => (
   <div className="min-h-screen flex items-center justify-center">
