@@ -2,10 +2,10 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext/AuthContext';
 import { Loader2 } from 'lucide-react';
 
-// ============ PROTECTED ROUTE ============
-// Bảo vệ route cho user đã đăng nhập
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+// ============ ADMIN ROUTE ============
+// Bảo vệ route chỉ cho phép Admin truy cập
+const AdminRoute = ({ children }) => {
+  const { isAuthenticated, isAdmin, isLoading } = useAuth();
   const location = useLocation();
 
   if (isLoading) {
@@ -19,12 +19,18 @@ const ProtectedRoute = ({ children }) => {
     );
   }
 
+  // Chưa đăng nhập -> Chuyển về login
   if (!isAuthenticated) {
-    // Lưu lại vị trí hiện tại để sau khi login sẽ quay lại
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
+  // Đăng nhập nhưng không phải Admin -> Chuyển về trang 403
+  if (!isAdmin) {
+    return <Navigate to="/403" replace />;
+  }
+
+  // Là Admin -> Cho phép truy cập
   return children;
 };
 
-export default ProtectedRoute;
+export default AdminRoute;

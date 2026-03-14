@@ -15,12 +15,8 @@ public interface IAuthService
     Task<ApiResponse<AuthResponse>> LoginAsync(LoginRequest request);
     Task<ApiResponse<AuthResponse>> RegisterAsync(RegisterRequest request);
     Task<ApiResponse<AuthResponse>> RefreshTokenAsync(string refreshToken);
-    Task<ApiResponse<string>> ForgotPasswordAsync(string email);
-    Task<ApiResponse<string>> ResetPasswordAsync(ResetPasswordRequest request);
-    Task<ApiResponse<AuthResponse>> AdminLoginAsync(LoginRequest request);
-    Task<ApiResponse<string>> LogoutAsync(string userId);
-    Task<ApiResponse<UserProfileDto>> GetCurrentUserAsync(string userId);
-    Task<ApiResponse<string>> ChangePasswordAsync(string userId, ChangePasswordRequest request);
+    Task<ApiResponse<string>> ChangePasswordAsync(Guid userId, ChangePasswordRequest request);
+    Task<ApiResponse<AuthResponse>> GetCurrentUserAsync(Guid userId);
 }
 
 public class AuthService : IAuthService
@@ -36,37 +32,52 @@ public class AuthService : IAuthService
 
     public async Task<ApiResponse<AuthResponse>> LoginAsync(LoginRequest request)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == request.Email && !u.IsDeleted);
 
-        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+        if (user == null)
         {
             return new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Invalid email or password"
+                Message = "Email hoặc mật khẩu không đúng"
             };
         }
 
+        // Verify password using BCrypt
+        if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+        {
+            return new ApiResponse<AuthResponse>
+            {
+                Success = false,
+                Message = "Email hoặc mật khẩu không đúng"
+            };
+        }
+
+        // Check if account is locked
         if (user.IsLocked)
         {
             return new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Account is locked"
+                Message = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên"
             };
         }
 
+        // Generate tokens
         var token = GenerateJwtToken(user);
         var refreshToken = GenerateRefreshToken();
 
+        // Save refresh token
         user.RefreshToken = refreshToken;
         user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+        user.UpdatedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
 
         return new ApiResponse<AuthResponse>
         {
             Success = true,
-            Message = "Login successful",
+            Message = "Đăng nhập thành công",
             Data = new AuthResponse
             {
                 UserId = user.Id,
@@ -76,35 +87,42 @@ public class AuthService : IAuthService
                 Avatar = user.Avatar,
                 Token = token,
                 RefreshToken = refreshToken,
-                ExpiresIn = 3600
+                ExpiresIn = 3600 // 1 hour
             }
         };
     }
 
     public async Task<ApiResponse<AuthResponse>> RegisterAsync(RegisterRequest request)
     {
-        if (await _context.Users.AnyAsync(u => u.Email == request.Email))
+        // Check if email already exists
+        var existingUser = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == request.Email && !u.IsDeleted);
+
+        if (existingUser != null)
         {
             return new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Email already exists"
+                Message = "Email đã được sử dụng"
             };
         }
 
+        // Create new user
         var user = new User
         {
-            FullName = request.FullName,
             Email = request.Email,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+            FullName = request.FullName,
             PhoneNumber = request.PhoneNumber,
-            Role = UserRole.User,
-            IsEmailVerified = false
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+            Role = UserRole.User, // Default role
+            IsEmailVerified = false,
+            CreatedAt = DateTime.UtcNow
         };
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
+        // Generate tokens
         var token = GenerateJwtToken(user);
         var refreshToken = GenerateRefreshToken();
 
@@ -115,40 +133,7 @@ public class AuthService : IAuthService
         return new ApiResponse<AuthResponse>
         {
             Success = true,
-            Message = "Registration successful",
-            Data = new AuthResponse
-            {
-                UserId = user.Id,
-                Email = user.Email,
-                FullName = user.FullName,
-                Role = user.Role.ToString(),
-                Token = token,
-                RefreshToken = refreshToken,
-                ExpiresIn = 3600
-            }
-        };
-    }
-
-    public async Task<ApiResponse<AuthResponse>> AdminLoginAsync(LoginRequest request)
-    {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email && u.Role == UserRole.Admin);
-
-        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-        {
-            return new ApiResponse<AuthResponse>
-            {
-                Success = false,
-                Message = "Invalid admin credentials"
-            };
-        }
-
-        var token = GenerateJwtToken(user);
-        var permissions = GetPermissions(user.Role);
-
-        return new ApiResponse<AuthResponse>
-        {
-            Success = true,
-            Message = "Admin login successful",
+            Message = "Đăng ký thành công",
             Data = new AuthResponse
             {
                 UserId = user.Id,
@@ -157,41 +142,55 @@ public class AuthService : IAuthService
                 Role = user.Role.ToString(),
                 Avatar = user.Avatar,
                 Token = token,
-                ExpiresIn = 3600,
-                Permissions = permissions
+                RefreshToken = refreshToken,
+                ExpiresIn = 3600
             }
         };
     }
 
     public async Task<ApiResponse<AuthResponse>> RefreshTokenAsync(string refreshToken)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.RefreshToken == refreshToken && !u.IsDeleted);
 
-        if (user == null || user.RefreshTokenExpiryTime < DateTime.UtcNow)
+        if (user == null)
         {
             return new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Invalid refresh token"
+                Message = "Refresh token không hợp lệ"
             };
         }
 
+        if (user.RefreshTokenExpiryTime < DateTime.UtcNow)
+        {
+            return new ApiResponse<AuthResponse>
+            {
+                Success = false,
+                Message = "Refresh token đã hết hạn"
+            };
+        }
+
+        // Generate new tokens
         var newToken = GenerateJwtToken(user);
         var newRefreshToken = GenerateRefreshToken();
 
         user.RefreshToken = newRefreshToken;
         user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+        user.UpdatedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
 
         return new ApiResponse<AuthResponse>
         {
             Success = true,
+            Message = "Token đã được làm mới",
             Data = new AuthResponse
             {
                 UserId = user.Id,
                 Email = user.Email,
                 FullName = user.FullName,
                 Role = user.Role.ToString(),
+                Avatar = user.Avatar,
                 Token = newToken,
                 RefreshToken = newRefreshToken,
                 ExpiresIn = 3600
@@ -199,40 +198,75 @@ public class AuthService : IAuthService
         };
     }
 
-    public async Task<ApiResponse<string>> ForgotPasswordAsync(string email)
+    public async Task<ApiResponse<string>> ChangePasswordAsync(Guid userId, ChangePasswordRequest request)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        var user = await _context.Users.FindAsync(userId);
 
-        if (user == null)
+        if (user == null || user.IsDeleted)
         {
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Email not found"
+                Message = "Không tìm thấy người dùng"
             };
         }
 
-        // In production, send email with reset link
+        // Verify current password
+        if (!BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.PasswordHash))
+        {
+            return new ApiResponse<string>
+            {
+                Success = false,
+                Message = "Mật khẩu hiện tại không đúng"
+            };
+        }
+
+        // Update password
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+        user.UpdatedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+
         return new ApiResponse<string>
         {
             Success = true,
-            Message = "Password reset link has been sent to your email"
+            Message = "Đổi mật khẩu thành công"
         };
     }
 
-    public async Task<ApiResponse<string>> ResetPasswordAsync(ResetPasswordRequest request)
+    public async Task<ApiResponse<AuthResponse>> GetCurrentUserAsync(Guid userId)
     {
-        // In production, validate token from email
-        return new ApiResponse<string>
+        var user = await _context.Users.FindAsync(userId);
+
+        if (user == null || user.IsDeleted)
+        {
+            return new ApiResponse<AuthResponse>
+            {
+                Success = false,
+                Message = "Không tìm thấy người dùng"
+            };
+        }
+
+        return new ApiResponse<AuthResponse>
         {
             Success = true,
-            Message = "Password has been reset successfully"
+            Data = new AuthResponse
+            {
+                UserId = user.Id,
+                Email = user.Email,
+                FullName = user.FullName,
+                Role = user.Role.ToString(),
+                Avatar = user.Avatar
+            }
         };
     }
+
+    #region Private Methods
 
     private string GenerateJwtToken(User user)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? "KarnelTravelsSecretKey2026!@#$%^&*()"));
+        var key = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? "KarnelTravelsSecretKey2026VeryLong!@#$%^&*()"));
+
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
@@ -240,7 +274,8 @@ public class AuthService : IAuthService
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Name, user.FullName),
-            new Claim(ClaimTypes.Role, user.Role.ToString())
+            new Claim(ClaimTypes.Role, user.Role.ToString()),
+            new Claim("role", user.Role.ToString())
         };
 
         var token = new JwtSecurityToken(
@@ -256,138 +291,8 @@ public class AuthService : IAuthService
 
     private string GenerateRefreshToken()
     {
-        return Guid.NewGuid().ToString();
+        return Guid.NewGuid().ToString("N") + Guid.NewGuid().ToString("N");
     }
 
-    private List<string> GetPermissions(UserRole role)
-    {
-        return role switch
-        {
-            UserRole.Admin => new List<string> { "ManageUsers", "ManageBookings", "ManageContent", "ViewReports" },
-            UserRole.Moderator => new List<string> { "ManageContent", "ViewReports" },
-            UserRole.Staff => new List<string> { "ManageBookings" },
-            _ => new List<string>()
-        };
-    }
-
-    public async Task<ApiResponse<string>> LogoutAsync(string userId)
-    {
-        if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var id))
-        {
-            return new ApiResponse<string>
-            {
-                Success = false,
-                Message = "Invalid user"
-            };
-        }
-
-        var user = await _context.Users.FindAsync(id);
-        if (user == null)
-        {
-            return new ApiResponse<string>
-            {
-                Success = false,
-                Message = "User not found"
-            };
-        }
-
-        user.RefreshToken = null;
-        user.RefreshTokenExpiryTime = null;
-        await _context.SaveChangesAsync();
-
-        return new ApiResponse<string>
-        {
-            Success = true,
-            Message = "Logout successful"
-        };
-    }
-
-    public async Task<ApiResponse<UserProfileDto>> GetCurrentUserAsync(string userId)
-    {
-        if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var id))
-        {
-            return new ApiResponse<UserProfileDto>
-            {
-                Success = false,
-                Message = "Invalid user"
-            };
-        }
-
-        var user = await _context.Users.FindAsync(id);
-        if (user == null)
-        {
-            return new ApiResponse<UserProfileDto>
-            {
-                Success = false,
-                Message = "User not found"
-            };
-        }
-
-        return new ApiResponse<UserProfileDto>
-        {
-            Success = true,
-            Message = "Success",
-            Data = new UserProfileDto
-            {
-                UserId = user.Id,
-                FullName = user.FullName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                Avatar = user.Avatar,
-                DateOfBirth = user.DateOfBirth,
-                Gender = user.Gender,
-                IsEmailVerified = user.IsEmailVerified,
-                CreatedAt = user.CreatedAt
-            }
-        };
-    }
-
-    public async Task<ApiResponse<string>> ChangePasswordAsync(string userId, ChangePasswordRequest request)
-    {
-        if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var id))
-        {
-            return new ApiResponse<string>
-            {
-                Success = false,
-                Message = "Invalid user"
-            };
-        }
-
-        var user = await _context.Users.FindAsync(id);
-        if (user == null)
-        {
-            return new ApiResponse<string>
-            {
-                Success = false,
-                Message = "User not found"
-            };
-        }
-
-        if (!BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.PasswordHash))
-        {
-            return new ApiResponse<string>
-            {
-                Success = false,
-                Message = "Current password is incorrect"
-            };
-        }
-
-        if (request.NewPassword != request.ConfirmNewPassword)
-        {
-            return new ApiResponse<string>
-            {
-                Success = false,
-                Message = "New passwords do not match"
-            };
-        }
-
-        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
-        await _context.SaveChangesAsync();
-
-        return new ApiResponse<string>
-        {
-            Success = true,
-            Message = "Password changed successfully"
-        };
-    }
+    #endregion
 }

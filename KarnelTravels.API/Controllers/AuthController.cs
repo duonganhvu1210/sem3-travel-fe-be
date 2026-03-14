@@ -1,8 +1,8 @@
+using System.Security.Claims;
 using KarnelTravels.API.DTOs;
 using KarnelTravels.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace KarnelTravels.API.Controllers;
 
@@ -17,71 +17,153 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
+    /// <summary>
+    /// Đăng nhập - Login
+    /// </summary>
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<AuthResponse>>> Login([FromBody] LoginRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new ApiResponse<AuthResponse>
+            {
+                Success = false,
+                Message = "Dữ liệu không hợp lệ"
+            });
+        }
+
         var result = await _authService.LoginAsync(request);
+        
+        if (!result.Success)
+        {
+            return Unauthorized(result);
+        }
+
         return Ok(result);
     }
 
+    /// <summary>
+    /// Đăng ký - Register
+    /// </summary>
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<AuthResponse>>> Register([FromBody] RegisterRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new ApiResponse<AuthResponse>
+            {
+                Success = false,
+                Message = "Dữ liệu không hợp lệ"
+            });
+        }
+
         var result = await _authService.RegisterAsync(request);
+
+        if (!result.Success)
+        {
+            return BadRequest(result);
+        }
+
         return Ok(result);
     }
 
-    [HttpPost("admin/login")]
-    public async Task<ActionResult<ApiResponse<AuthResponse>>> AdminLogin([FromBody] LoginRequest request)
-    {
-        var result = await _authService.AdminLoginAsync(request);
-        return Ok(result);
-    }
-
+    /// <summary>
+    /// Làm mới token - Refresh Token
+    /// </summary>
     [HttpPost("refresh-token")]
+    [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<AuthResponse>>> RefreshToken([FromBody] RefreshTokenRequest request)
     {
+        if (string.IsNullOrEmpty(request.RefreshToken))
+        {
+            return BadRequest(new ApiResponse<AuthResponse>
+            {
+                Success = false,
+                Message = "Refresh token là bắt buộc"
+            });
+        }
+
         var result = await _authService.RefreshTokenAsync(request.RefreshToken);
+
+        if (!result.Success)
+        {
+            return Unauthorized(result);
+        }
+
         return Ok(result);
     }
 
-    [HttpPost("forgot-password")]
-    public async Task<ActionResult<ApiResponse<string>>> ForgotPassword([FromBody] ForgotPasswordRequest request)
-    {
-        var result = await _authService.ForgotPasswordAsync(request.Email);
-        return Ok(result);
-    }
-
-    [HttpPost("reset-password")]
-    public async Task<ActionResult<ApiResponse<string>>> ResetPassword([FromBody] ResetPasswordRequest request)
-    {
-        var result = await _authService.ResetPasswordAsync(request);
-        return Ok(result);
-    }
-
-    [HttpPost("logout")]
-    [Authorize]
-    public async Task<ActionResult<ApiResponse<string>>> Logout()
-    {
-        var result = await _authService.LogoutAsync(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        return Ok(result);
-    }
-
+    /// <summary>
+    /// Lấy thông tin user hiện tại - Get Current User
+    /// </summary>
     [HttpGet("me")]
     [Authorize]
-    public async Task<ActionResult<ApiResponse<UserProfileDto>>> GetCurrentUser()
+    public async Task<ActionResult<ApiResponse<AuthResponse>>> GetCurrentUser()
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized(new ApiResponse<AuthResponse>
+            {
+                Success = false,
+                Message = "Token không hợp lệ"
+            });
+        }
+
         var result = await _authService.GetCurrentUserAsync(userId);
+
+        if (!result.Success)
+        {
+            return NotFound(result);
+        }
+
         return Ok(result);
     }
 
+    /// <summary>
+    /// Đổi mật khẩu - Change Password
+    /// </summary>
     [HttpPut("change-password")]
     [Authorize]
     public async Task<ActionResult<ApiResponse<string>>> ChangePassword([FromBody] ChangePasswordRequest request)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized(new ApiResponse<string>
+            {
+                Success = false,
+                Message = "Token không hợp lệ"
+            });
+        }
+
         var result = await _authService.ChangePasswordAsync(userId, request);
+
+        if (!result.Success)
+        {
+            return BadRequest(result);
+        }
+
         return Ok(result);
+    }
+
+    /// <summary>
+    /// Đăng xuất - Logout
+    /// </summary>
+    [HttpPost("logout")]
+    [Authorize]
+    public IActionResult Logout()
+    {
+        // Với JWT, logout được xử lý ở client (xóa token khỏi localStorage)
+        // Backend chỉ cần trả về success
+        return Ok(new ApiResponse<string>
+        {
+            Success = true,
+            Message = "Đăng xuất thành công"
+        });
     }
 }
