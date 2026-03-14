@@ -267,24 +267,24 @@ export default function UsersManagement() {
                 />
               </div>
             </div>
-            <Select value={roleFilter} onValueChange={(value) => { setRoleFilter(value); setPagination({ ...pagination, pageNumber: 1 }); }}>
+            <Select value={roleFilter} onValueChange={(value) => { setRoleFilter(value === 'all' ? '' : value); setPagination({ ...pagination, pageNumber: 1 }); }}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Lọc theo vai trò" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tất cả vai trò</SelectItem>
+                <SelectItem value="all">Tất cả vai trò</SelectItem>
                 <SelectItem value="Admin">Quản trị viên</SelectItem>
                 <SelectItem value="Moderator">Điều hành</SelectItem>
                 <SelectItem value="Staff">Nhân viên</SelectItem>
                 <SelectItem value="User">Người dùng</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={statusFilter} onValueChange={(value) => { setStatusFilter(value); setPagination({ ...pagination, pageNumber: 1 }); }}>
+            <Select value={statusFilter} onValueChange={(value) => { setStatusFilter(value === 'all' ? '' : value); setPagination({ ...pagination, pageNumber: 1 }); }}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Lọc theo trạng thái" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tất cả trạng thái</SelectItem>
+                <SelectItem value="all">Tất cả trạng thái</SelectItem>
                 <SelectItem value="active">Hoạt động</SelectItem>
                 <SelectItem value="locked">Bị khóa</SelectItem>
               </SelectContent>

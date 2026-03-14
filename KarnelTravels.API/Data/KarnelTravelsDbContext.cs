@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using KarnelTravels.API.Entities;
+using Route = KarnelTravels.API.Entities.Route;
 
 namespace KarnelTravels.API.Data;
 
@@ -26,6 +27,11 @@ public class KarnelTravelsDbContext : DbContext
     public DbSet<Contact> Contacts => Set<Contact>();
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<Favorite> Favorites => Set<Favorite>();
+    public DbSet<VehicleType> VehicleTypes => Set<VehicleType>();
+    public DbSet<TransportProvider> TransportProviders => Set<TransportProvider>();
+    public DbSet<Vehicle> Vehicles => Set<Vehicle>();
+    public DbSet<Route> Routes => Set<Route>();
+    public DbSet<Schedule> Schedules => Set<Schedule>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -210,6 +216,63 @@ public class KarnelTravelsDbContext : DbContext
                 .HasForeignKey(f => f.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
             entity.Property(e => e.ItemType).HasConversion<int>();
+        });
+
+        // VehicleType
+        modelBuilder.Entity<VehicleType>(entity =>
+        {
+            entity.HasKey(e => e.VehicleTypeId);
+            entity.HasIndex(e => e.Name);
+        });
+
+        // TransportProvider
+        modelBuilder.Entity<TransportProvider>(entity =>
+        {
+            entity.HasKey(e => e.ProviderId);
+            entity.HasIndex(e => e.Name);
+            entity.HasMany(p => p.Vehicles)
+                .WithOne(v => v.Provider)
+                .HasForeignKey(v => v.ProviderId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // Vehicle
+        modelBuilder.Entity<Vehicle>(entity =>
+        {
+            entity.HasKey(e => e.VehicleId);
+            entity.HasIndex(e => e.Name);
+            entity.HasIndex(e => e.LicensePlate).IsUnique();
+            entity.HasIndex(e => e.Status);
+            entity.HasOne(v => v.VehicleType)
+                .WithMany(vt => vt.Vehicles)
+                .HasForeignKey(v => v.VehicleTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+            entity.Property(e => e.Status).HasConversion<int>();
+        });
+
+        // Route
+        modelBuilder.Entity<Route>(entity =>
+        {
+            entity.HasKey(e => e.RouteId);
+            entity.HasIndex(e => e.DepartureLocation);
+            entity.HasIndex(e => e.ArrivalLocation);
+            entity.HasMany(r => r.Schedules)
+                .WithOne(s => s.Route)
+                .HasForeignKey(s => s.RouteId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // Schedule
+        modelBuilder.Entity<Schedule>(entity =>
+        {
+            entity.HasKey(e => e.ScheduleId);
+            entity.HasIndex(e => e.DepartureTime);
+            entity.HasIndex(e => e.Status);
+            entity.HasOne(s => s.Vehicle)
+                .WithMany(v => v.Schedules)
+                .HasForeignKey(s => s.VehicleId)
+                .OnDelete(DeleteBehavior.Restrict);
+            entity.Property(e => e.Status).HasConversion<int>();
         });
     }
 }

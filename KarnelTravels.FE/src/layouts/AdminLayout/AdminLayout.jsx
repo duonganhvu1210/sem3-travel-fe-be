@@ -40,7 +40,6 @@ const AdminLayout = () => {
   const { user, logout } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null);
 
   const adminNavItems = [
     {
@@ -53,10 +52,6 @@ const AdminLayout = () => {
       title: 'Quản lý người dùng',
       path: '/admin/users',
       icon: Users,
-      children: [
-        { title: 'Danh sách users', path: '/admin/users' },
-        { title: 'Thêm mới user', path: '/admin/users/create' },
-      ]
     },
     {
       title: 'Quản lý đặt tour',
@@ -74,16 +69,34 @@ const AdminLayout = () => {
       icon: MessageSquare,
     },
     {
-      title: 'Quản lý nội dung',
+      title: 'Điểm du lịch',
+      path: '/admin/destinations',
       icon: MapPin,
-      children: [
-        { title: 'Điểm du lịch', path: '/admin/destinations', icon: MapPin },
-        { title: 'Tour du lịch', path: '/admin/tours', icon: Palmtree },
-        { title: 'Khách sạn', path: '/admin/hotels', icon: Building2 },
-        { title: 'Nhà hàng', path: '/admin/restaurants', icon: Utensils },
-        { title: 'Resort', path: '/admin/resorts', icon: Palmtree },
-        { title: 'Phương tiện', path: '/admin/transports', icon: Bus },
-      ]
+    },
+    {
+      title: 'Tour du lịch',
+      path: '/admin/tours',
+      icon: Palmtree,
+    },
+    {
+      title: 'Khách sạn',
+      path: '/admin/hotels',
+      icon: Building2,
+    },
+    {
+      title: 'Nhà hàng',
+      path: '/admin/restaurants',
+      icon: Utensils,
+    },
+    {
+      title: 'Resort',
+      path: '/admin/resorts',
+      icon: Palmtree,
+    },
+    {
+      title: 'Phương tiện',
+      path: '/admin/transports',
+      icon: Bus,
     },
     {
       title: 'Báo cáo & Thống kê',
@@ -132,62 +145,21 @@ const AdminLayout = () => {
       {/* Navigation */}
       <nav className="flex-1 py-4 px-3 overflow-y-auto">
         <ul className="space-y-1">
-          {adminNavItems.map((item, index) => (
+          {adminNavItems.map((item) => (
             <li key={item.path || item.title}>
-              {item.children ? (
-                <div>
-                  <button
-                    onClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
-                      isActive(item)
-                        ? 'bg-teal-500/20 text-teal-400'
-                        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                    }`}
-                  >
-                    <item.icon className="w-5 h-5 flex-shrink-0" />
-                    {!isCollapsed && (
-                      <>
-                        <span className="flex-1 text-left font-medium">{item.title}</span>
-                        <ChevronDown className={`w-4 h-4 transition-transform ${
-                          activeDropdown === index ? 'rotate-180' : ''
-                        }`} />
-                      </>
-                    )}
-                  </button>
-                  {!isCollapsed && activeDropdown === index && (
-                    <ul className="mt-1 ml-4 space-y-1">
-                      {item.children.map((child) => (
-                        <li key={child.path}>
-                          <Link
-                            to={child.path}
-                            className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                              location.pathname === child.path
-                                ? 'bg-teal-500/10 text-teal-400'
-                                : 'text-gray-500 hover:text-white'
-                            }`}
-                          >
-                            {child.title}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ) : (
-                <Link
-                  to={item.path}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
-                    isActive(item)
-                      ? 'bg-teal-500/20 text-teal-400'
-                      : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                  }`}
-                >
-                  <item.icon className="w-5 h-5 flex-shrink-0" />
-                  {!isCollapsed && (
-                    <span className="font-medium">{item.title}</span>
-                  )}
-                </Link>
-              )}
+              <Link
+                to={item.path}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
+                  isActive(item)
+                    ? 'bg-teal-500/20 text-teal-400'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                }`}
+              >
+                <item.icon className="w-5 h-5 flex-shrink-0" />
+                {!isCollapsed && (
+                  <span className="font-medium text-sm">{item.title}</span>
+                )}
+              </Link>
             </li>
           ))}
         </ul>

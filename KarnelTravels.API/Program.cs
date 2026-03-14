@@ -47,6 +47,11 @@ builder.Services.AddDbContext<KarnelTravelsDbContext>(options =>
 // Add Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IVehicleTypeService, VehicleTypeService>();
+builder.Services.AddScoped<ITransportProviderService, TransportProviderService>();
+builder.Services.AddScoped<IRouteService, RouteService>();
+builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<IScheduleService, ScheduleService>();
 builder.Services.AddSignalR();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IEmailService, EmailService>();

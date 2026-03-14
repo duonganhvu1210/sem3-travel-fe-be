@@ -459,3 +459,156 @@ public class CreateFavoriteRequest
     public string ItemType { get; set; } = string.Empty;
     public Guid ItemId { get; set; }
 }
+
+// ==================== Vehicle Management DTOs ====================
+
+// VehicleType DTOs
+public class VehicleTypeDto
+{
+    public Guid VehicleTypeId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? Icon { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class CreateVehicleTypeRequest
+{
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? Icon { get; set; }
+}
+
+// TransportProvider DTOs
+public class TransportProviderDto
+{
+    public Guid ProviderId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? ContactPhone { get; set; }
+    public string? ContactEmail { get; set; }
+    public string? ContactAddress { get; set; }
+    public string? Website { get; set; }
+    public string? LogoUrl { get; set; }
+    public int VehicleCount { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class CreateTransportProviderRequest
+{
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? ContactPhone { get; set; }
+    public string? ContactEmail { get; set; }
+    public string? ContactAddress { get; set; }
+    public string? Website { get; set; }
+    public string? LogoUrl { get; set; }
+}
+
+// Route DTOs
+public class RouteDto
+{
+    public Guid RouteId { get; set; }
+    public string DepartureLocation { get; set; } = string.Empty;
+    public string ArrivalLocation { get; set; } = string.Empty;
+    public string? RouteName { get; set; }
+    public double? Distance { get; set; }
+    public string? Description { get; set; }
+    public string? EstimatedDuration { get; set; }
+    public int ScheduleCount { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class CreateRouteRequest
+{
+    public string DepartureLocation { get; set; } = string.Empty;
+    public string ArrivalLocation { get; set; } = string.Empty;
+    public string? RouteName { get; set; }
+    public double? Distance { get; set; }
+    public string? Description { get; set; }
+    public string? EstimatedDuration { get; set; }
+}
+
+// Vehicle DTOs
+public class VehicleDto
+{
+    public Guid VehicleId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string LicensePlate { get; set; } = string.Empty;
+    public int Capacity { get; set; }
+    public Guid VehicleTypeId { get; set; }
+    public string VehicleTypeName { get; set; } = string.Empty;
+    public Guid ProviderId { get; set; }
+    public string ProviderName { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? ImageUrl { get; set; }
+    public List<string>? Amenities { get; set; }
+    public string Status { get; set; } = string.Empty;
+    public int ScheduleCount { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class CreateVehicleRequest
+{
+    public string Name { get; set; } = string.Empty;
+    public string LicensePlate { get; set; } = string.Empty;
+    public int Capacity { get; set; }
+    public Guid VehicleTypeId { get; set; }
+    public Guid ProviderId { get; set; }
+    public string? Description { get; set; }
+    public string? ImageUrl { get; set; }
+    public List<string>? Amenities { get; set; }
+    public string Status { get; set; } = "Available";
+}
+
+// Schedule DTOs
+public class ScheduleDto
+{
+    public Guid ScheduleId { get; set; }
+    public Guid VehicleId { get; set; }
+    public string VehicleName { get; set; } = string.Empty;
+    public string VehicleLicensePlate { get; set; } = string.Empty;
+    public Guid RouteId { get; set; }
+    public string RouteName { get; set; } = string.Empty;
+    public string DepartureLocation { get; set; } = string.Empty;
+    public string ArrivalLocation { get; set; } = string.Empty;
+    public TimeSpan DepartureTime { get; set; }
+    public TimeSpan? ArrivalTime { get; set; }
+    public decimal Price { get; set; }
+    public int AvailableSeats { get; set; }
+    public int TotalSeats { get; set; }
+    public List<DayOfWeek>? OperatingDays { get; set; }
+    public string? Notes { get; set; }
+    public string Status { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+}
+
+public class CreateScheduleRequest
+{
+    public Guid VehicleId { get; set; }
+    public Guid RouteId { get; set; }
+    public TimeSpan DepartureTime { get; set; }
+    public TimeSpan? ArrivalTime { get; set; }
+    public decimal Price { get; set; }
+    public int TotalSeats { get; set; }
+    public List<DayOfWeek>? OperatingDays { get; set; }
+    public string? Notes { get; set; }
+    public ScheduleStatus Status { get; set; } = ScheduleStatus.Active;
+}
+
+public class UpdateScheduleRequest
+{
+    public TimeSpan? DepartureTime { get; set; }
+    public TimeSpan? ArrivalTime { get; set; }
+    public decimal? Price { get; set; }
+    public int? AvailableSeats { get; set; }
+    public int? TotalSeats { get; set; }
+    public List<DayOfWeek>? OperatingDays { get; set; }
+    public string? Notes { get; set; }
+    public ScheduleStatus? Status { get; set; }
+}
+
+public class UpdateVehicleStatusRequest
+{
+    public VehicleStatus Status { get; set; }
+}

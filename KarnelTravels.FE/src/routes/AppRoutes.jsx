@@ -77,12 +77,6 @@ const ResortsPage = () => (
   </div>
 );
 
-const TransportsPage = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Phương tiện</h1>
-  </div>
-);
-
 // Admin Pages
 import AdminHotelsPage from '@/pages/admin/hotels/HotelsPage';
 import RoomDetailsPage from '@/pages/admin/hotels/RoomDetailsPage';
@@ -90,6 +84,7 @@ import BookingsPage from '@/pages/admin/bookings/BookingsPage';
 import PromotionsPage from '@/pages/admin/promotions/PromotionsPage';
 import ContactsPage from '@/pages/admin/contacts/ContactsPage';
 import UsersManagement from '@/pages/admin/users/UsersManagement';
+import TransportsPage from '@/pages/admin/transports/TransportsPage';
 
 const AdminDashboard = () => <DashboardPage />;
 
@@ -123,11 +118,7 @@ const AdminResorts = () => (
   </div>
 );
 
-const AdminTransports = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Quản lý phương tiện</h1>
-  </div>
-);
+const AdminTransports = () => <TransportsPage />;
 
 const AdminReports = () => (
   <div className="min-h-screen flex items-center justify-center">
