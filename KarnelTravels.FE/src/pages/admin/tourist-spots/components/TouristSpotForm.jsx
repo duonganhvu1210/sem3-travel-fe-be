@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { getImageUrl } from '@/utils/imageUtils';
 import { 
   X, 
   ImagePlus, 
@@ -111,8 +112,9 @@ const TouristSpotForm = ({
       const uploadPromises = files.map(file => touristSpotService.uploadImage(file));
       const results = await Promise.all(uploadPromises);
       
+      // Lọc và chỉ lấy các upload thành công (HTTP 2xx và success=true)
       const uploadedUrls = results
-        .filter(r => r.success)
+        .filter(r => r && r.success === true && r.data?.url)
         .map(r => r.data.url);
       
       if (uploadedUrls.length > 0) {
@@ -120,10 +122,18 @@ const TouristSpotForm = ({
         setImages(newImages);
         setValue('images', newImages);
         toast.success(`Đã tải lên ${uploadedUrls.length} ảnh`);
+      } else {
+        // Tất cả đều thất bại
+        toast.error('Không thể tải ảnh lên. Vui lòng đăng nhập với tài khoản Admin.');
       }
     } catch (error) {
       console.error('Upload error:', error);
-      toast.error('Lỗi khi tải ảnh lên');
+      // Kiểm tra lỗi cụ thể
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        toast.error('Bạn không có quyền tải ảnh lên. Vui lòng đăng nhập với tài khoản Admin.');
+      } else {
+        toast.error('Lỗi khi tải ảnh lên');
+      }
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) {
@@ -431,7 +441,7 @@ const TouristSpotForm = ({
                   {images.map((img, index) => (
                     <div key={index} className="relative group aspect-square rounded-lg overflow-hidden bg-gray-100">
                       <img 
-                        src={img} 
+                        src={getImageUrl(img)} 
                         alt={`Image ${index + 1}`}
                         className="w-full h-full object-cover"
                         onError={(e) => {

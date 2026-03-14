@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Plus, Eye, X, MapPin, Star, Calendar, DollarSign, Globe } from 'lucide-react';
 import toast from 'react-hot-toast';
 import touristSpotService from '@/services/touristSpotService';
+import { getImageUrl } from '@/utils/imageUtils';
 import TouristSpotList from './components/TouristSpotList';
 import TouristSpotForm from './components/TouristSpotForm';
 import SearchAndFilter from './components/SearchAndFilter';
@@ -251,7 +252,7 @@ const TouristSpotsPage = () => {
                     {selectedSpot.images.slice(0, 4).map((img, index) => (
                       <div key={index} className="aspect-video rounded-lg overflow-hidden bg-gray-100">
                         <img 
-                          src={img} 
+                          src={getImageUrl(img)} 
                           alt={`${selectedSpot.name} ${index + 1}`}
                           className="w-full h-full object-cover"
                           onError={(e) => {

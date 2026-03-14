@@ -8,6 +8,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
+import { getImageUrl } from '@/utils/imageUtils';
 
 const TouristSpotList = ({ 
   spots, 
@@ -118,7 +119,7 @@ const TouristSpotList = ({
                   <div className="w-16 h-12 rounded-lg overflow-hidden bg-gray-100">
                     {spot.images && spot.images.length > 0 ? (
                       <img 
-                        src={spot.images[0]} 
+                        src={getImageUrl(spot.images[0])} 
                         alt={spot.name}
                         className="w-full h-full object-cover"
                         onError={(e) => {
