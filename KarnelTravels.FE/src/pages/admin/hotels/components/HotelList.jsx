@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   useReactTable, 
   getCoreRowModel, 
@@ -10,7 +11,7 @@ import {
 import { 
   Eye, Edit, Trash2, Star, MapPin, 
   ChevronLeft, ChevronRight, MoreVertical,
-  ToggleLeft, ToggleRight
+  ToggleLeft, ToggleRight, Bed
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -24,6 +25,7 @@ const HotelList = ({
   onToggleStatus,
   onViewDetails 
 }) => {
+  const navigate = useNavigate();
   const [sorting, setSorting] = useState([]);
 
   const columns = [
@@ -144,6 +146,13 @@ const HotelList = ({
       header: 'Thao tác',
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate(`/admin/hotels/${row.original.hotelId}/rooms`)}
+            className="p-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+            title="Quản lý phòng"
+          >
+            <Bed size={18} />
+          </button>
           <button
             onClick={() => onViewDetails?.(row.original)}
             className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"

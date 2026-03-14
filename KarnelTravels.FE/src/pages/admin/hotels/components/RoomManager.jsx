@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { X, Plus, Trash2, DollarSign, Users, Bed, CheckCircle, Edit } from 'lucide-react';
+import { 
+  X, Plus, Trash2, DollarSign, Users, Bed, CheckCircle, Edit, 
+  Loader2, Calendar, AlertCircle, Check
+} from 'lucide-react';
 import toast from 'react-hot-toast';
+import hotelService from '../../../../services/hotelService';
+import PriceCalendar from './PriceCalendar';
 
 const ROOM_AMENITIES = [
   'Wifi', 'TV', 'Air Conditioning', 'Mini Bar', 'Safe', 
@@ -20,6 +25,9 @@ const RoomManager = ({
   const [localRooms, setLocalRooms] = useState(rooms);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingRoom, setEditingRoom] = useState(null);
+  const [loadingRooms, setLoadingRooms] = useState(false);
+  const [priceCalendarOpen, setPriceCalendarOpen] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm({
     defaultValues: {
@@ -37,31 +45,61 @@ const RoomManager = ({
     setLocalRooms(rooms);
   }, [rooms]);
 
-  const handleAddRoom = (data) => {
-    const newRoom = {
-      roomId: editingRoom?.roomId || crypto.randomUUID(),
-      ...data,
-      pricePerNight: parseFloat(data.pricePerNight),
-      maxOccupancy: parseInt(data.maxOccupancy),
-      totalRooms: parseInt(data.totalRooms),
-      availableRooms: editingRoom?.availableRooms || parseInt(data.totalRooms),
-      createdAt: editingRoom?.createdAt || new Date().toISOString()
-    };
-
-    let updatedRooms;
-    if (editingRoom) {
-      updatedRooms = localRooms.map(r => r.roomId === editingRoom.roomId ? newRoom : r);
-      toast.success('Cập nhật loại phòng thành công');
-    } else {
-      updatedRooms = [...localRooms, newRoom];
-      toast.success('Thêm loại phòng thành công');
+  // Fetch rooms from API
+  const fetchRooms = async () => {
+    if (!hotelId) return;
+    setLoadingRooms(true);
+    try {
+      const response = await hotelService.getRooms(hotelId);
+      const roomsData = response.data?.data || response.data || [];
+      setLocalRooms(roomsData);
+      onRoomsChange?.(roomsData);
+    } catch (error) {
+      console.error('Error fetching rooms:', error);
+      toast.error('Không thể tải danh sách phòng');
+    } finally {
+      setLoadingRooms(false);
     }
+  };
 
-    setLocalRooms(updatedRooms);
-    onRoomsChange?.(updatedRooms);
-    setIsAddModalOpen(false);
-    setEditingRoom(null);
-    reset();
+  // Load rooms when hotelId changes
+  useEffect(() => {
+    if (hotelId) {
+      fetchRooms();
+    }
+  }, [hotelId]);
+
+  const handleAddRoom = async (data) => {
+    try {
+      const roomData = {
+        roomType: data.roomType,
+        description: data.description,
+        maxOccupancy: parseInt(data.maxOccupancy),
+        pricePerNight: parseFloat(data.pricePerNight),
+        bedType: data.bedType,
+        totalRooms: parseInt(data.totalRooms),
+        availableRooms: parseInt(data.totalRooms),
+        roomAmenities: data.roomAmenities || []
+      };
+
+      if (editingRoom?.roomId) {
+        // Update existing room
+        await hotelService.updateRoom(hotelId, editingRoom.roomId, roomData);
+        toast.success('Cập nhật loại phòng thành công');
+      } else {
+        // Create new room
+        await hotelService.createRoom(hotelId, roomData);
+        toast.success('Thêm loại phòng thành công');
+      }
+
+      await fetchRooms();
+      setIsAddModalOpen(false);
+      setEditingRoom(null);
+      reset();
+    } catch (error) {
+      console.error('Error saving room:', error);
+      toast.error(error.response?.data?.message || 'Lỗi khi lưu phòng');
+    }
   };
 
   const handleEditRoom = (room) => {
@@ -76,12 +114,37 @@ const RoomManager = ({
     setIsAddModalOpen(true);
   };
 
-  const handleDeleteRoom = (roomId) => {
-    if (confirm('Bạn có chắc chắn muốn xóa loại phòng này?')) {
-      const updatedRooms = localRooms.filter(r => r.roomId !== roomId);
-      setLocalRooms(updatedRooms);
-      onRoomsChange?.(updatedRooms);
+  const handleDeleteRoom = async (roomId) => {
+    if (!confirm('Bạn có chắc chắn muốn xóa loại phòng này?')) return;
+    
+    try {
+      await hotelService.deleteRoom(hotelId, roomId);
+      await fetchRooms();
       toast.success('Xóa loại phòng thành công');
+    } catch (error) {
+      console.error('Error deleting room:', error);
+      toast.error(error.response?.data?.message || 'Lỗi khi xóa phòng');
+    }
+  };
+
+  const handleOpenPriceCalendar = (room) => {
+    setSelectedRoom(room);
+    setPriceCalendarOpen(true);
+  };
+
+  const handleSaveAvailability = async (availability) => {
+    if (!selectedRoom || !availability) return;
+    
+    try {
+      await hotelService.updateRoomAvailability(
+        hotelId, 
+        selectedRoom.roomId, 
+        availability
+      );
+      toast.success('Cập nhật availability thành công');
+    } catch (error) {
+      console.error('Error saving availability:', error);
+      toast.error('Lỗi khi lưu availability');
     }
   };
 
@@ -172,6 +235,13 @@ const RoomManager = ({
                     <p className="text-xs text-gray-500">/đêm</p>
                   </div>
                   <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleOpenPriceCalendar(room)}
+                      className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                      title="Quản lý giá & availability"
+                    >
+                      <Calendar size={18} />
+                    </button>
                     <button
                       onClick={() => handleEditRoom(room)}
                       className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
@@ -318,6 +388,19 @@ const RoomManager = ({
           </div>
         </div>
       )}
+
+      {/* Price Calendar Modal */}
+      <PriceCalendar
+        isOpen={priceCalendarOpen}
+        onClose={() => {
+          setPriceCalendarOpen(false);
+          setSelectedRoom(null);
+        }}
+        hotelId={hotelId}
+        room={selectedRoom}
+        onSave={handleSaveAvailability}
+        isLoading={loadingRooms}
+      />
     </div>
   );
 };

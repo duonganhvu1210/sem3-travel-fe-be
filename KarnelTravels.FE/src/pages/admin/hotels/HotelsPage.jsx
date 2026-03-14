@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Plus, Eye, X, MapPin, Star, Calendar, DollarSign, Globe, Bed, MessageSquare } from 'lucide-react';
 import toast from 'react-hot-toast';
 import hotelService from '@/services/hotelService';
@@ -10,6 +11,8 @@ import PriceCalendar from './components/PriceCalendar';
 import HotelReviews from './components/HotelReviews';
 
 const HotelsPage = () => {
+  const navigate = useNavigate();
+  
   // State
   const [hotels, setHotels] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -181,18 +184,9 @@ const HotelsPage = () => {
     }
   };
 
-  // Open room manager
-  const handleManageRooms = async (hotel) => {
-    try {
-      const response = await hotelService.getById(hotel.hotelId);
-      if (response.success) {
-        setSelectedHotel(response.data);
-        setIsRoomManagerOpen(true);
-      }
-    } catch (error) {
-      console.error('Error fetching hotel rooms:', error);
-      toast.error('Không thể tải thông tin phòng');
-    }
+  // Open room manager - navigate to page
+  const handleManageRooms = (hotel) => {
+    navigate(`/admin/hotels/${hotel.hotelId}/rooms`);
   };
 
   // Open price calendar

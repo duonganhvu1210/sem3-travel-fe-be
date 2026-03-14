@@ -91,6 +91,7 @@ const TransportsPage = () => (
 
 // Admin Pages
 import AdminHotelsPage from '@/pages/admin/hotels/HotelsPage';
+import RoomDetailsPage from '@/pages/admin/hotels/RoomDetailsPage';
 
 const AdminDashboard = () => <DashboardPage />;
 
@@ -180,6 +181,7 @@ const AppRoutes = () => {
         <Route path="destinations" element={<AdminDestinations />} />
         <Route path="tours" element={<AdminTours />} />
         <Route path="hotels" element={<AdminHotels />} />
+        <Route path="hotels/:hotelId/rooms" element={<RoomDetailsPage />} />
         <Route path="restaurants" element={<AdminRestaurants />} />
         <Route path="resorts" element={<AdminResorts />} />
         <Route path="transports" element={<AdminTransports />} />

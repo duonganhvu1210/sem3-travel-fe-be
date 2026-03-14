@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState, useRef } from 'react';
+import { useForm } from 'react-hook-form'; 
 import { 
   X, Upload, Image as ImageIcon, Star, Plus, Trash2, 
-  MapPin, Phone, Mail, Clock, DollarSign, CheckCircle, XCircle
+  MapPin, Phone, Mail, Clock, DollarSign, CheckCircle, XCircle,
+  GripVertical, FileImage, Loader2
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -25,7 +26,7 @@ const HotelEditor = ({
   const [selectedAmenities, setSelectedAmenities] = useState(hotel?.amenities || []);
   const [isDragging, setIsDragging] = useState(false);
 
-  const { register, handleSubmit, formState: { errors }, reset, watch, setValue } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset, watch, setValue, setError } = useForm({
     defaultValues: {
       name: hotel?.name || '',
       description: hotel?.description || '',
@@ -60,22 +61,92 @@ const HotelEditor = ({
     setImages(images.filter((_, i) => i !== index));
   };
 
+  const [uploadingImages, setUploadingImages] = useState([]);
+  const fileInputRef = useRef(null);
+
+  // Handle file selection
+  const handleFileSelect = async (files) => {
+    const validFiles = Array.from(files).filter(file => {
+      if (!file.type.startsWith('image/')) {
+        toast.error(`${file.name} không phải là hình ảnh`);
+        return false;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error(`${file.name} vượt quá 10MB`);
+        return false;
+      }
+      return true;
+    });
+
+    if (validFiles.length === 0) return;
+
+    // Add placeholder images while uploading
+    const newUploads = validFiles.map(file => ({
+      id: crypto.randomUUID(),
+      file,
+      preview: URL.createObjectURL(file),
+      status: 'uploading',
+      name: file.name
+    }));
+
+    setUploadingImages(prev => [...prev, ...newUploads]);
+
+    // Simulate upload - In production, replace with actual API call
+    for (const upload of newUploads) {
+      try {
+        // Simulate upload delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // For demo, use the preview URL as the image URL
+        // In production, replace with uploaded URL from server
+        const uploadedUrl = upload.preview;
+        
+        setImages(prev => [...prev, uploadedUrl]);
+        setUploadingImages(prev => 
+          prev.map(u => u.id === upload.id ? { ...u, status: 'success' } : u)
+        );
+        toast.success(`Tải lên ${upload.name} thành công`);
+      } catch (error) {
+        setUploadingImages(prev => 
+          prev.map(u => u.id === upload.id ? { ...u, status: 'error' } : u)
+        );
+        toast.error(`Tải lên ${upload.name} thất bại`);
+      }
+    }
+
+    // Clean up uploading states after a delay
+    setTimeout(() => {
+      setUploadingImages(prev => prev.filter(u => u.status === 'uploading'));
+    }, 2000);
+  };
+
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
   };
 
-  const handleDragLeave = () => {
+  const handleDragLeave = (e) => {
+    e.preventDefault();
     setIsDragging(false);
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
-    // Handle file drops - would need file upload logic
-    // For now, just show toast
-    toast.success('Tính năng upload file sẽ được phát triển sau');
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileSelect(files);
+    }
   };
+
+  const handleFileInputChange = (e) => {
+    if (e.target.files.length > 0) {
+      handleFileSelect(e.target.files);
+      e.target.value = ''; // Reset input
+    }
+  };
+
+  const [priceError, setPriceError] = useState('');
 
   const toggleAmenity = (amenity) => {
     if (selectedAmenities.includes(amenity)) {
@@ -86,13 +157,25 @@ const HotelEditor = ({
   };
 
   const onFormSubmit = (data) => {
+    // Validate price range
+    const minPrice = data.minPrice ? parseFloat(data.minPrice) : null;
+    const maxPrice = data.maxPrice ? parseFloat(data.maxPrice) : null;
+    
+    if (minPrice !== null && maxPrice !== null && minPrice > maxPrice) {
+      setPriceError('Giá từ không thể lớn hơn giá đến');
+      toast.error('Giá từ không thể lớn hơn giá đến');
+      return;
+    }
+    
+    setPriceError('');
+    
     const submitData = {
       ...data,
       images,
       amenities: selectedAmenities,
       starRating: parseInt(data.starRating),
-      minPrice: data.minPrice ? parseFloat(data.minPrice) : null,
-      maxPrice: data.maxPrice ? parseFloat(data.maxPrice) : null
+      minPrice,
+      maxPrice
     };
     onSubmit(submitData);
   };
@@ -259,7 +342,13 @@ const HotelEditor = ({
                     <input
                       {...register('minPrice')}
                       type="number"
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      onChange={(e) => {
+                        register('minPrice').onChange(e);
+                        if (priceError) setPriceError('');
+                      }}
+                      className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                        priceError ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                      }`}
                       placeholder="Giá tối thiểu"
                     />
                   </div>
@@ -271,9 +360,18 @@ const HotelEditor = ({
                     <input
                       {...register('maxPrice')}
                       type="number"
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      onChange={(e) => {
+                        register('maxPrice').onChange(e);
+                        if (priceError) setPriceError('');
+                      }}
+                      className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                        priceError ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                      }`}
                       placeholder="Giá tối đa"
                     />
+                    {priceError && (
+                      <p className="mt-1 text-sm text-red-600">{priceError}</p>
+                    )}
                   </div>
 
                   <div>
@@ -339,20 +437,46 @@ const HotelEditor = ({
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
-                  className={`border-2 border-dashed rounded-xl p-6 text-center transition-colors ${
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`border-2 border-dashed rounded-xl p-6 text-center transition-colors cursor-pointer ${
                     isDragging 
                       ? 'border-blue-500 bg-blue-50' 
-                      : 'border-gray-300 hover:border-gray-400'
+                      : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                   }`}
                 >
-                  <ImageIcon size={40} className="mx-auto text-gray-400 mb-2" />
-                  <p className="text-gray-600">Kéo thả hình ảnh vào đây hoặc</p>
-                  <label className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700 transition-colors">
-                    <Upload size={18} />
-                    <span>Tải lên</span>
-                    <input type="file" multiple accept="image/*" className="hidden" />
-                  </label>
+                  <input 
+                    type="file" 
+                    ref={fileInputRef}
+                    multiple 
+                    accept="image/*"
+                    onChange={handleFileInputChange}
+                    className="hidden" 
+                  />
+                  <Upload size={40} className="mx-auto text-gray-400 mb-2" />
+                  <p className="text-gray-600">Kéo thả hình ảnh vào đây hoặc click để chọn</p>
+                  <p className="text-sm text-gray-400 mt-1">Hỗ trợ JPG, PNG, GIF (tối đa 10MB mỗi file)</p>
                 </div>
+
+                {/* Uploading status */}
+                {uploadingImages.length > 0 && (
+                  <div className="mt-4">
+                    <p className="text-sm font-medium text-gray-700 mb-2">Đang tải lên...</p>
+                    <div className="flex flex-wrap gap-2">
+                      {uploadingImages.map(upload => (
+                        <div key={upload.id} className="flex items-center gap-2 px-3 py-2 bg-blue-50 rounded-lg">
+                          {upload.status === 'uploading' ? (
+                            <Loader2 size={16} className="text-blue-600 animate-spin" />
+                          ) : upload.status === 'success' ? (
+                            <CheckCircle size={16} className="text-green-600" />
+                          ) : (
+                            <XCircle size={16} className="text-red-600" />
+                          )}
+                          <span className="text-sm text-gray-600 truncate max-w-[100px]">{upload.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* URL input */}
                 <div className="mt-4 flex gap-2">
