@@ -89,14 +89,11 @@ import RoomDetailsPage from '@/pages/admin/hotels/RoomDetailsPage';
 import BookingsPage from '@/pages/admin/bookings/BookingsPage';
 import PromotionsPage from '@/pages/admin/promotions/PromotionsPage';
 import ContactsPage from '@/pages/admin/contacts/ContactsPage';
+import UsersManagement from '@/pages/admin/users/UsersManagement';
 
 const AdminDashboard = () => <DashboardPage />;
 
-const AdminUsers = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Quản lý người dùng</h1>
-  </div>
-);
+const AdminUsers = () => <UsersManagement />;
 
 const AdminBookings = () => (
   <div className="min-h-screen flex items-center justify-center">
