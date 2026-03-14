@@ -1,6 +1,7 @@
 using System.Text;
 using KarnelTravels.API.Data;
 using KarnelTravels.API.Services;
+using KarnelTravels.API.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -45,6 +46,8 @@ builder.Services.AddDbContext<KarnelTravelsDbContext>(options =>
 
 // Add Services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSignalR();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 // Add Authentication
 builder.Services.AddAuthentication(options =>
@@ -97,6 +100,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<NotificationHub>("/notification-hub");
 
 // Seed Data
 await SeedDataAsync(app);

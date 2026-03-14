@@ -13,6 +13,9 @@ import ForbiddenPage from '@/pages/error/ForbiddenPage/ForbiddenPage';
 // Pages
 import HomePage from '@/pages/home/HomePage/HomePage';
 
+// Admin Dashboard
+import DashboardPage from '@/pages/admin/dashboard/DashboardPage';
+
 const AboutPage = () => (
   <div className="min-h-screen flex items-center justify-center">
     <h1 className="text-4xl font-bold text-gray-800">Giới thiệu</h1>
@@ -86,57 +89,7 @@ const TransportsPage = () => (
 );
 
 // Admin Pages
-const AdminDashboard = () => (
-  <div>
-    <h1 className="text-3xl font-bold text-gray-800 mb-6">Dashboard</h1>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div className="bg-white rounded-2xl p-6 shadow-sm">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-gray-500">Tổng users</p>
-            <p className="text-3xl font-bold text-gray-800">1,234</p>
-          </div>
-          <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
-            <span className="text-2xl">👥</span>
-          </div>
-        </div>
-      </div>
-      <div className="bg-white rounded-2xl p-6 shadow-sm">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-gray-500">Tổng bookings</p>
-            <p className="text-3xl font-bold text-gray-800">567</p>
-          </div>
-          <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-            <span className="text-2xl">📅</span>
-          </div>
-        </div>
-      </div>
-      <div className="bg-white rounded-2xl p-6 shadow-sm">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-gray-500">Doanh thu</p>
-            <p className="text-3xl font-bold text-gray-800">$12,345</p>
-          </div>
-          <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
-            <span className="text-2xl">💰</span>
-          </div>
-        </div>
-      </div>
-      <div className="bg-white rounded-2xl p-6 shadow-sm">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-gray-500">Tours</p>
-            <p className="text-3xl font-bold text-gray-800">89</p>
-          </div>
-          <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-            <span className="text-2xl">✈️</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
+const AdminDashboard = () => <DashboardPage />;
 
 const AdminUsers = () => (
   <div className="min-h-screen flex items-center justify-center">
