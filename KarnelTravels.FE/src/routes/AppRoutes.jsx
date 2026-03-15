@@ -15,6 +15,13 @@ import HomePage from '@/pages/home/HomePage/HomePage';
 import InformationPage from '@/pages/info/InformationPage/InformationPage';
 import TouristSpotsPage from '@/pages/info/TouristSpotsPage/TouristSpotsPage';
 import TouristSpotDetailPage from '@/pages/info/TouristSpotDetailPage/TouristSpotDetailPage';
+import ToursPage from '@/pages/info/ToursPage/ToursPage';
+import TourDetailPage from '@/pages/info/ToursPage/TourDetailPage';
+import HotelsPage from '@/pages/info/HotelsPage/HotelsPage';
+import RestaurantsPage from '@/pages/info/RestaurantsPage/RestaurantsPage';
+import ResortsPage from '@/pages/info/ResortsPage/ResortsPage';
+import TransportsPage from '@/pages/info/TransportsPage/TransportsPage';
+import HotelDetailPage from '@/pages/info/HotelsPage/HotelDetailPage';
 import SearchPage from '@/pages/search/SearchPage/SearchPage';
 
 // Admin Dashboard
@@ -46,24 +53,6 @@ const WishlistPage = () => (
 
 const DestinationsPage = () => <TouristSpotsPage />;
 
-const HotelsPage = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Khách sạn</h1>
-  </div>
-);
-
-const RestaurantsPage = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Nhà hàng</h1>
-  </div>
-);
-
-const ResortsPage = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Resort</h1>
-  </div>
-);
-
 // Admin Pages
 import AdminHotelsPage from '@/pages/admin/hotels/HotelsPage';
 import AdminRestaurantsPage from '@/pages/admin/restaurants/RestaurantsPage';
@@ -73,8 +62,8 @@ import BookingsPage from '@/pages/admin/bookings/BookingsPage';
 import PromotionsPage from '@/pages/admin/promotions/PromotionsPage';
 import ContactsPage from '@/pages/admin/contacts/ContactsPage';
 import UsersManagement from '@/pages/admin/users/UsersManagement';
-import TransportsPage from '@/pages/admin/transports/TransportsPage';
-import ToursPage from '@/pages/admin/tours/ToursPage';
+import AdminTransportsPage from '@/pages/admin/transports/TransportsPage';
+import AdminToursPage from '@/pages/admin/tours/ToursPage';
 
 const AdminDashboard = () => <DashboardPage />;
 
@@ -84,7 +73,7 @@ const AdminBookings = () => <BookingsPage />;
 
 const AdminDestinations = () => <TouristSpotsPage />;
 
-const AdminTours = () => <ToursPage />;
+const AdminTours = () => <AdminToursPage />;
 
 const AdminHotels = () => <AdminHotelsPage />;
 
@@ -92,7 +81,7 @@ const AdminRestaurants = () => <AdminRestaurantsPage />;
 
 const AdminResorts = () => <AdminResortsPage />;
 
-const AdminTransports = () => <TransportsPage />;
+const AdminTransports = () => <AdminTransportsPage />;
 
 import ReportsPage from '@/pages/admin/reports/ReportsPage';
 
@@ -128,7 +117,9 @@ const AppRoutes = () => {
         <Route path="info/destinations" element={<DestinationsPage />} />
         <Route path="info/destinations/:id" element={<TouristSpotDetailPage />} />
         <Route path="info/tours" element={<ToursPage />} />
+        <Route path="info/tours/:id" element={<TourDetailPage />} />
         <Route path="info/hotels" element={<HotelsPage />} />
+        <Route path="info/hotels/:id" element={<HotelDetailPage />} />
         <Route path="info/restaurants" element={<RestaurantsPage />} />
         <Route path="info/resorts" element={<ResortsPage />} />
         <Route path="info/transports" element={<TransportsPage />} />

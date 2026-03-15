@@ -221,7 +221,7 @@ public class RestaurantService : IRestaurantService
         return menuItems ?? new List<MenuItemDto>();
     }
 
-    public async Task<MenuItemDto> CreateMenuItemAsync(Guid restaurantId, CreateMenuItemRequest request)
+    public async Task<MenuItemDto?> CreateMenuItemAsync(Guid restaurantId, CreateMenuItemRequest request)
     {
         var restaurant = await _context.Restaurants
             .FirstOrDefaultAsync(r => r.Id == restaurantId && !r.IsDeleted);

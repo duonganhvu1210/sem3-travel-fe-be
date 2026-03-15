@@ -25,14 +25,18 @@ public class TouristSpotsController : ControllerBase
         [FromQuery] string? region,
         [FromQuery] string? type,
         [FromQuery] string? sortBy,
-        [FromQuery] string? sortOrder = "ASC",
+        [FromQuery] string? sortOrder,
         [FromQuery] decimal? minPrice,
         [FromQuery] decimal? maxPrice,
         [FromQuery] double? rating,
         [FromQuery] bool? hasDiscount,
-        [FromQuery] int pageIndex = 1,
-        [FromQuery] int pageSize = 10)
+        [FromQuery] int pageIndex,
+        [FromQuery] int pageSize)
     {
+        sortOrder ??= "ASC";
+        pageIndex = pageIndex == 0 ? 1 : pageIndex;
+        pageSize = pageSize == 0 ? 10 : pageSize;
+        
         var query = _context.TouristSpots.Where(s => s.IsActive).AsQueryable();
 
         if (!string.IsNullOrEmpty(search))

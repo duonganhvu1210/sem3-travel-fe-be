@@ -1,5 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext/AuthContext';
+import { CompareProvider } from './contexts/CompareContext';
 import AppRoutes from './routes/AppRoutes';
 import { Toaster } from 'react-hot-toast';
 
@@ -7,7 +8,8 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppRoutes />
+        <CompareProvider>
+          <AppRoutes />
         <Toaster 
           position="top-right"
           toastOptions={{
@@ -30,6 +32,7 @@ function App() {
             },
           }}
         />
+        </CompareProvider>
       </AuthProvider>
     </BrowserRouter>
   );

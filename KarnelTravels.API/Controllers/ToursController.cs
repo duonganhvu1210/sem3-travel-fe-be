@@ -144,4 +144,166 @@ public class ToursController : ControllerBase
             }
         });
     }
+
+    // Featured Tours (F081)
+    [HttpGet("featured")]
+    public async Task<ActionResult<ApiResponse<List<TourPackageDto>>>> GetFeaturedTours(
+        [FromQuery] int pageIndex = 1,
+        [FromQuery] int pageSize = 6)
+    {
+        var query = _context.TourPackages
+            .Where(t => t.IsActive && t.IsFeatured)
+            .OrderByDescending(t => t.Rating)
+            .AsQueryable();
+
+        var totalCount = await query.CountAsync();
+        var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        var result = items.Select(t => new TourPackageDto
+        {
+            TourId = t.Id,
+            Name = t.Name,
+            Description = t.Description,
+            Destination = t.Destination,
+            DurationDays = t.DurationDays,
+            Price = t.Price,
+            DiscountPrice = t.DiscountPrice,
+            Images = string.IsNullOrEmpty(t.Images) ? null : JsonSerializer.Deserialize<List<string>>(t.Images),
+            Includes = string.IsNullOrEmpty(t.Includes) ? null : JsonSerializer.Deserialize<List<string>>(t.Includes),
+            Excludes = string.IsNullOrEmpty(t.Excludes) ? null : JsonSerializer.Deserialize<List<string>>(t.Excludes),
+            AvailableSlots = t.AvailableSlots,
+            DepartureDates = string.IsNullOrEmpty(t.DepartureDates) ? null : JsonSerializer.Deserialize<List<string>>(t.DepartureDates),
+            Rating = t.Rating,
+            ReviewCount = t.ReviewCount,
+            IsFeatured = t.IsFeatured,
+            IsNewArrival = t.IsNewArrival,
+            IsHotDeal = t.IsHotDeal
+        }).ToList();
+
+        return Ok(new ApiResponse<List<TourPackageDto>>
+        {
+            Success = true,
+            Data = result,
+            Pagination = new PaginationInfo
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            }
+        });
+    }
+
+    // New Arrivals (F082)
+    [HttpGet("new")]
+    public async Task<ActionResult<ApiResponse<List<TourPackageDto>>>> GetNewTours(
+        [FromQuery] int pageIndex = 1,
+        [FromQuery] int pageSize = 6)
+    {
+        var query = _context.TourPackages
+            .Where(t => t.IsActive && t.IsNewArrival)
+            .OrderByDescending(t => t.CreatedAt)
+            .AsQueryable();
+
+        var totalCount = await query.CountAsync();
+        var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        var result = items.Select(t => new TourPackageDto
+        {
+            TourId = t.Id,
+            Name = t.Name,
+            Description = t.Description,
+            Destination = t.Destination,
+            DurationDays = t.DurationDays,
+            Price = t.Price,
+            DiscountPrice = t.DiscountPrice,
+            Images = string.IsNullOrEmpty(t.Images) ? null : JsonSerializer.Deserialize<List<string>>(t.Images),
+            Includes = string.IsNullOrEmpty(t.Includes) ? null : JsonSerializer.Deserialize<List<string>>(t.Includes),
+            Excludes = string.IsNullOrEmpty(t.Excludes) ? null : JsonSerializer.Deserialize<List<string>>(t.Excludes),
+            AvailableSlots = t.AvailableSlots,
+            DepartureDates = string.IsNullOrEmpty(t.DepartureDates) ? null : JsonSerializer.Deserialize<List<string>>(t.DepartureDates),
+            Rating = t.Rating,
+            ReviewCount = t.ReviewCount,
+            IsFeatured = t.IsFeatured,
+            IsNewArrival = t.IsNewArrival,
+            IsHotDeal = t.IsHotDeal
+        }).ToList();
+
+        return Ok(new ApiResponse<List<TourPackageDto>>
+        {
+            Success = true,
+            Data = result,
+            Pagination = new PaginationInfo
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            }
+        });
+    }
+
+    // Hot Deals / Discounted Tours (F083)
+    [HttpGet("deals")]
+    public async Task<ActionResult<ApiResponse<List<TourPackageDto>>>> GetDealTours(
+        [FromQuery] int pageIndex = 1,
+        [FromQuery] int pageSize = 6)
+    {
+        var query = _context.TourPackages
+            .Where(t => t.IsActive && (t.IsHotDeal || t.DiscountPrice < t.Price))
+            .OrderBy(t => t.Price)
+            .AsQueryable();
+
+        var totalCount = await query.CountAsync();
+        var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        var result = items.Select(t => new TourPackageDto
+        {
+            TourId = t.Id,
+            Name = t.Name,
+            Description = t.Description,
+            Destination = t.Destination,
+            DurationDays = t.DurationDays,
+            Price = t.Price,
+            DiscountPrice = t.DiscountPrice,
+            Images = string.IsNullOrEmpty(t.Images) ? null : JsonSerializer.Deserialize<List<string>>(t.Images),
+            Includes = string.IsNullOrEmpty(t.Includes) ? null : JsonSerializer.Deserialize<List<string>>(t.Includes),
+            Excludes = string.IsNullOrEmpty(t.Excludes) ? null : JsonSerializer.Deserialize<List<string>>(t.Excludes),
+            AvailableSlots = t.AvailableSlots,
+            DepartureDates = string.IsNullOrEmpty(t.DepartureDates) ? null : JsonSerializer.Deserialize<List<string>>(t.DepartureDates),
+            Rating = t.Rating,
+            ReviewCount = t.ReviewCount,
+            IsFeatured = t.IsFeatured,
+            IsNewArrival = t.IsNewArrival,
+            IsHotDeal = t.IsHotDeal
+        }).ToList();
+
+        return Ok(new ApiResponse<List<TourPackageDto>>
+        {
+            Success = true,
+            Data = result,
+            Pagination = new PaginationInfo
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            }
+        });
+    }
+
+    // Get all destinations for filter
+    [HttpGet("destinations")]
+    public async Task<ActionResult<ApiResponse<List<string>>>> GetDestinations()
+    {
+        var destinations = await _context.TourPackages
+            .Where(t => t.IsActive)
+            .Select(t => t.Destination)
+            .Distinct()
+            .OrderBy(d => d)
+            .ToListAsync();
+
+        return Ok(new ApiResponse<List<string>>
+        {
+            Success = true,
+            Data = destinations
+        });
+    }
 }

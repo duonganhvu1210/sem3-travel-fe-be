@@ -94,51 +94,54 @@ public class SearchController : ControllerBase
         if (hotelStars.HasValue)
         {
             var hotels = await _context.Hotels
-                .Where(h => h.IsActive && h.Stars >= hotelStars)
+                .Where(h => h.IsActive && h.StarRating >= hotelStars)
                 .OrderByDescending(h => h.Rating)
                 .Take(5)
-                .Select(h => new SearchItemDto
-                {
-                    Id = h.Id,
-                    Name = h.Name,
-                    Description = h.Description,
-                    Type = "hotel",
-                    ImageUrl = h.Images,
-                    Price = h.PricePerNight,
-                    Rating = h.Rating,
-                    ReviewCount = h.ReviewCount,
-                    Location = h.Address ?? h.City,
-                    Stars = h.Stars
-                })
                 .ToListAsync();
 
-            if (maxBudget.HasValue)
-                hotels = hotels.Where(h => h.Price <= maxBudget.Value).ToList();
+            var hotelDtos = hotels.Select(h => new SearchItemDto
+            {
+                Id = h.Id,
+                Name = h.Name,
+                Description = h.Description,
+                Type = "hotel",
+                ImageUrl = h.Images,
+                Price = h.MinPrice ?? 0,
+                Rating = h.Rating,
+                ReviewCount = h.ReviewCount,
+                Location = h.Address ?? h.City,
+                Stars = h.StarRating
+            }).ToList();
 
-            results.Hotels = hotels;
+            if (maxBudget.HasValue)
+                hotelDtos = hotelDtos.Where(h => h.Price <= maxBudget.Value).ToList();
+
+            results.Hotels = hotelDtos;
         }
 
         // Search for transports
         if (!string.IsNullOrEmpty(transportType))
         {
             var transports = await _context.Transports
-                .Where(t => t.IsActive && t.VehicleType.Contains(transportType))
-                .OrderByDescending(t => t.Rating)
+                .Where(t => t.IsActive && t.Type.Contains(transportType))
+                .OrderByDescending(t => t.Price)
                 .Take(5)
-                .Select(t => new SearchItemDto
-                {
-                    Id = t.Id,
-                    Name = t.Name,
-                    Description = t.Description,
-                    Type = "transport",
-                    ImageUrl = t.Images,
-                    Price = t.Price,
-                    Rating = t.Rating,
-                    ReviewCount = t.ReviewCount,
-                    Location = t.DepartureCity + " - " + t.ArrivalCity
-                })
                 .ToListAsync();
-            results.Transports = transports;
+
+            var transportDtos = transports.Select(t => new SearchItemDto
+            {
+                Id = t.Id,
+                Name = t.Provider,
+                Description = t.Route,
+                Type = "transport",
+                ImageUrl = t.Images,
+                Price = t.Price,
+                Rating = 0,
+                ReviewCount = 0,
+                Location = t.FromCity + " - " + t.ToCity
+            }).ToList();
+
+            results.Transports = transportDtos;
         }
 
         // Calculate total budget
@@ -188,7 +191,7 @@ public class SearchController : ControllerBase
         var tours = await _context.Tours
             .Where(t => t.IsActive && t.Name.Contains(q))
             .Take(2)
-            .Select(t => new SuggestionDto { Text = t.Name, Type = "tour", Subtext = t.Duration })
+            .Select(t => new SuggestionDto { Text = t.Name, Type = "tour", Subtext = t.DurationDays + " days" })
             .ToListAsync();
         suggestions.AddRange(tours);
 

@@ -163,7 +163,7 @@ public class ResortService : IResortService
             .ToList();
     }
 
-    public async Task<ResortRoomDto> CreateRoomAsync(Guid resortId, CreateResortRoomRequest request)
+    public async Task<ResortRoomDto?> CreateRoomAsync(Guid resortId, CreateResortRoomRequest request)
     {
         var resort = await _context.Resorts
             .FirstOrDefaultAsync(r => r.Id == resortId && !r.IsDeleted);
