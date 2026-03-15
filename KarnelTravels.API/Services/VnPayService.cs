@@ -10,6 +10,7 @@ public interface IVnPayService
     string CreatePaymentUrl(Guid orderId, decimal amount, string orderDescription, string clientIp);
     bool ValidateSignature(Dictionary<string, string> responseData, string secureHash);
     Dictionary<string, string> GetResponseData(string queryString);
+    Task<VnPayRefundResult> RefundAsync(Guid orderId, decimal amount, string transactionNo, string reason);
 }
 
 public class VnPayService : IVnPayService
@@ -117,4 +118,83 @@ public class VnPayService : IVnPayService
             return BitConverter.ToString(hash).Replace("-", "").ToLower();
         }
     }
+
+    public async Task<VnPayRefundResult> RefundAsync(Guid orderId, decimal amount, string transactionNo, string reason)
+    {
+        try
+        {
+            var vnp_TmnCode = _configuration["VnPay:Vnp_TmnCode"];
+            var vnp_HashSecret = _configuration["VnPay:Vnp_HashSecret"];
+            var vnp_Api = _configuration["VnPay:Vnp_Api"];
+
+            // Build refund request
+            var vnp_Params = new Dictionary<string, string>
+            {
+                { "vnp_Version", "2.1.0" },
+                { "vnp_Command", "refund" },
+                { "vnp_TmnCode", vnp_TmnCode },
+                { "vnp_TransactionType", "02" }, // 02 = Refund
+                { "vnp_TxnRef", orderId.ToString() },
+                { "vnp_Amount", ((long)(amount * 100)).ToString() },
+                { "vnp_TransactionNo", transactionNo ?? "" },
+                { "vnp_CreateBy", "KarnelTravels" },
+                { "vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss") },
+                { "vnp_IpAddr", "127.0.0.1" },
+                { "vnp_OrderInfo", reason ?? "Hoàn tiền đơn hàng" }
+            };
+
+            // Sort and build query string
+            var sortedParams = vnp_Params.OrderBy(x => x.Key).ToList();
+            var queryString = new StringBuilder();
+            foreach (var param in sortedParams)
+            {
+                if (!string.IsNullOrEmpty(param.Value))
+                {
+                    queryString.Append(WebUtility.UrlEncode(param.Key) + "=" + WebUtility.UrlEncode(param.Value) + "&");
+                }
+            }
+            var rawData = queryString.ToString().TrimEnd('&');
+
+            // Create signature
+            var signature = HmacSha512(vnp_HashSecret, rawData);
+            var fullUrl = vnp_Api + "?" + rawData + "&vnp_SecureHash=" + signature;
+
+            // Send refund request
+            using var client = new HttpClient();
+            var response = await client.PostAsync(fullUrl, null);
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            Console.WriteLine($"[VNPAY Refund] Response: {responseContent}");
+
+            // Parse response
+            var responseData = GetResponseData("?" + responseContent);
+            var vnp_ResponseCode = responseData.ContainsKey("vnp_ResponseCode") ? responseData["vnp_ResponseCode"] : "99";
+
+            return new VnPayRefundResult
+            {
+                Success = vnp_ResponseCode == "00",
+                Message = vnp_ResponseCode == "00" ? "Hoàn tiền thành công" : "Hoàn tiền thất bại",
+                TransactionNo = responseData.ContainsKey("vnp_TransactionNo") ? responseData["vnp_TransactionNo"] : "",
+                ResponseCode = vnp_ResponseCode
+            };
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[VNPAY Refund] Error: {ex.Message}");
+            return new VnPayRefundResult
+            {
+                Success = false,
+                Message = $"Lỗi hoàn tiền: {ex.Message}",
+                ResponseCode = "99"
+            };
+        }
+    }
+}
+
+public class VnPayRefundResult
+{
+    public bool Success { get; set; }
+    public string Message { get; set; } = string.Empty;
+    public string TransactionNo { get; set; } = string.Empty;
+    public string ResponseCode { get; set; } = string.Empty;
 }

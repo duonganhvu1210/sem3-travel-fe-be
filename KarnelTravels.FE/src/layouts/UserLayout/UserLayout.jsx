@@ -50,7 +50,7 @@ const UserLayout = () => {
 
   const navItems = [
     { name: 'Trang chủ', path: '/', icon: Home },
-    { name: 'Giới thiệu', path: '/about', icon: Info },
+    
     { name: 'Tìm kiếm', path: '/search', icon: Search },
     {
       name: 'Thông tin',
@@ -323,7 +323,7 @@ const UserLayout = () => {
             <div>
               <h4 className="font-semibold text-lg mb-6">Liên kết nhanh</h4>
               <ul className="space-y-3">
-                {['Trang chủ', 'Giới thiệu', 'Tìm kiếm', 'Liên hệ'].map((item) => (
+                {['Trang chủ',  'Tìm kiếm', 'Liên hệ'].map((item) => (
                   <li key={item}>
                     <Link to="/" className="text-gray-400 hover:text-white transition-colors">
                       {item}

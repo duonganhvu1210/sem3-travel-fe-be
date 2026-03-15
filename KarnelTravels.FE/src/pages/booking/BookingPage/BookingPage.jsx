@@ -621,6 +621,9 @@ const BookingPage = () => {
       }
 
       // Build request body matching backend's CreateBookingRequest DTO
+      // Get userId from localStorage
+      const userId = localStorage.getItem('userId') || '00000000-0000-0000-0000-000000000001';
+      
       const bookingData = {
         ServiceType: serviceInfo.serviceType,
         ServiceId: serviceInfo.serviceId, // Should be a valid GUID
@@ -632,7 +635,7 @@ const BookingPage = () => {
         ContactEmail: contactInfo.email,
         ContactPhone: contactInfo.phone,
         Notes: contactInfo.notes || null,
-        UserId: '00000000-0000-0000-0000-000000000001' // Demo user
+        UserId: userId
       };
 
       console.log('Sending booking request:', bookingData);

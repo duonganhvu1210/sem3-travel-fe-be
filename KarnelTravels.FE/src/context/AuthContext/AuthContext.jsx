@@ -26,6 +26,10 @@ export const AuthProvider = ({ children }) => {
           if (response.success) {
             setUser(response.data);
             setIsAuthenticated(true);
+            // Also save userId to localStorage for orderService
+            if (response.data.userId || response.data.id) {
+              localStorage.setItem('userId', response.data.userId || response.data.id);
+            }
           } else {
             logout();
           }
@@ -46,6 +50,7 @@ export const AuthProvider = ({ children }) => {
       const { token: newToken, refreshToken: newRefreshToken, ...userData } = response.data;
       localStorage.setItem('token', newToken);
       localStorage.setItem('refreshToken', newRefreshToken);
+      localStorage.setItem('userId', userData.userId || userData.id);
       setToken(newToken);
       setRefreshToken(newRefreshToken);
       setUser(userData);
@@ -61,6 +66,7 @@ export const AuthProvider = ({ children }) => {
       const { token: newToken, refreshToken: newRefreshToken, ...userInfo } = response.data;
       localStorage.setItem('token', newToken);
       localStorage.setItem('refreshToken', newRefreshToken);
+      localStorage.setItem('userId', userInfo.userId || userInfo.id);
       setToken(newToken);
       setRefreshToken(newRefreshToken);
       setUser(userInfo);
@@ -73,6 +79,7 @@ export const AuthProvider = ({ children }) => {
   const logout = useCallback(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userId');
     setToken(null);
     setRefreshToken(null);
     setUser(null);

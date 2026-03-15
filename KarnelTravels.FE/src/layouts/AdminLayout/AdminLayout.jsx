@@ -48,11 +48,7 @@ const AdminLayout = () => {
       icon: Home,
       exact: true
     },
-    {
-      title: 'Quản lý người dùng',
-      path: '/admin/users',
-      icon: Users,
-    },
+    
     {
       title: 'Quản lý đặt tour',
       path: '/admin/bookings',
@@ -99,14 +95,9 @@ const AdminLayout = () => {
       icon: Bus,
     },
     {
-      title: 'Báo cáo & Thống kê',
-      path: '/admin/reports',
-      icon: BarChart3,
-    },
-    {
-      title: 'Cài đặt',
-      path: '/admin/settings',
-      icon: Settings,
+      title: 'Quản lý người dùng',
+      path: '/admin/users',
+      icon: Users,
     },
   ];
 

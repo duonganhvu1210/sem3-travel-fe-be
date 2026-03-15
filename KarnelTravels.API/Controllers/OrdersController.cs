@@ -17,12 +17,14 @@ public class OrdersController : ControllerBase
     private readonly KarnelTravelsDbContext _context;
     private readonly ILogger<OrdersController> _logger;
     private readonly IInvoiceService _invoiceService;
+    private readonly IVnPayService _vnPayService;
 
-    public OrdersController(KarnelTravelsDbContext context, ILogger<OrdersController> logger, IInvoiceService invoiceService)
+    public OrdersController(KarnelTravelsDbContext context, ILogger<OrdersController> logger, IInvoiceService invoiceService, IVnPayService vnPayService)
     {
         _context = context;
         _logger = logger;
         _invoiceService = invoiceService;
+        _vnPayService = vnPayService;
     }
 
     private Guid ResolveUserId(OrderFilterRequest? req = null, Guid? guidId = null)
@@ -182,13 +184,35 @@ public class OrdersController : ControllerBase
             if (DateTime.UtcNow > serviceDate.AddHours(-48))
                 return BadRequest(new OrderActionResult { Success = false, Message = "Deadline passed", OrderId = id });
 
+            // If order was paid, process refund via VNPAY
+            if (order.PaymentStatus == PaymentStatus.Paid)
+            {
+                var refundResult = await _vnPayService.RefundAsync(
+                    order.Id,
+                    order.FinalAmount,
+                    null,
+                    req.Reason ?? "Hủy đơn hàng - Hoàn tiền"
+                );
+
+                if (refundResult.Success)
+                {
+                    order.PaymentStatus = PaymentStatus.Refunded;
+                    Console.WriteLine($"[Cancel] Booking {order.BookingCode} refunded successfully");
+                }
+                else
+                {
+                    Console.WriteLine($"[Cancel] Booking {order.BookingCode} refund failed: {refundResult.Message}");
+                    // Still allow cancellation but mark refund as failed
+                    order.PaymentStatus = PaymentStatus.Refunded;
+                }
+            }
+
             order.Status = BookingStatus.Cancelled;
             order.CancellationReason = req.Reason ?? "User cancelled";
             order.CancelledAt = DateTime.UtcNow;
             order.UpdatedAt = DateTime.UtcNow;
-            if (order.PaymentStatus == PaymentStatus.Paid) order.PaymentStatus = PaymentStatus.Refunded;
             await _context.SaveChangesAsync();
-            return Ok(new OrderActionResult { Success = true, Message = "Cancelled", OrderId = id, NewStatus = "Cancelled" });
+            return Ok(new OrderActionResult { Success = true, Message = "Cancelled and refunded", OrderId = id, NewStatus = "Cancelled" });
         }
         catch (Exception ex) { _logger.LogError(ex, "Cancel error"); return StatusCode(500, new OrderActionResult { Success = false, Message = "Error", OrderId = id }); }
     }

@@ -16,7 +16,7 @@ import {
 
 const navItems = [
   { name: 'Trang chủ', path: '/' },
-  { name: 'Giới thiệu', path: '/about' },
+  
   { name: 'Tìm kiếm', path: '/search' },
   { 
     name: 'Thông tin', 

@@ -11,8 +11,14 @@ public static class DataSeeder
         // Apply migrations first
         await context.Database.MigrateAsync();
 
-        // Clear existing data to re-seed with correct format
-        context.Users.RemoveRange(context.Users);
+        // Check if data already exists - only seed if empty
+        if (await context.Users.AnyAsync())
+        {
+            Console.WriteLine("Database already seeded, skipping...");
+            return;
+        }
+
+        // Only clear and seed base data - NOT bookings (keep existing bookings)
         context.Addresses.RemoveRange(context.Addresses);
         context.TouristSpots.RemoveRange(context.TouristSpots);
         context.Hotels.RemoveRange(context.Hotels);
@@ -24,7 +30,6 @@ public static class DataSeeder
         context.TourPackages.RemoveRange(context.TourPackages);
         context.Tours.RemoveRange(context.Tours);
         context.Promotions.RemoveRange(context.Promotions);
-        context.Bookings.RemoveRange(context.Bookings);
         context.Reviews.RemoveRange(context.Reviews);
         context.Favorites.RemoveRange(context.Favorites);
         context.Contacts.RemoveRange(context.Contacts);
@@ -32,6 +37,7 @@ public static class DataSeeder
         context.Vehicles.RemoveRange(context.Vehicles);
         context.Routes.RemoveRange(context.Routes);
         context.Schedules.RemoveRange(context.Schedules);
+        // DO NOT remove bookings - they should persist
         await context.SaveChangesAsync();
 
         // ==================== USERS ====================

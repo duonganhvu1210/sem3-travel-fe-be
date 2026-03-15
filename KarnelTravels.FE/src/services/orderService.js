@@ -14,6 +14,10 @@ const orderService = {
     sortDescending = true,
     userId = null
   } = {}) => {
+    // Get userId from localStorage if not provided
+    const storedUserId = localStorage.getItem('userId');
+    const effectiveUserId = userId || storedUserId;
+
     const params = new URLSearchParams();
     params.append('pageNumber', page);
     params.append('pageSize', pageSize);
@@ -24,7 +28,7 @@ const orderService = {
     if (toDate) params.append('ToDate', toDate);
     if (sortBy) params.append('SortBy', sortBy);
     if (sortDescending) params.append('SortDescending', sortDescending);
-    if (userId) params.append('UserId', userId);
+    if (effectiveUserId) params.append('UserId', effectiveUserId);
 
     const response = await api.get(`/orders?${params.toString()}`);
     return response.data;
@@ -32,8 +36,12 @@ const orderService = {
 
   // Get order statistics
   getStatistics: async (userId = null) => {
+    // Get userId from localStorage if not provided
+    const storedUserId = localStorage.getItem('userId');
+    const effectiveUserId = userId || storedUserId;
+
     const params = new URLSearchParams();
-    if (userId) params.append('userId', userId);
+    if (effectiveUserId) params.append('userId', effectiveUserId);
     
     const response = await api.get(`/orders/statistics?${params.toString()}`);
     return response.data;

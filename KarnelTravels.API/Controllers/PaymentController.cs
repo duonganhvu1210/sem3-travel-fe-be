@@ -244,6 +244,78 @@ public class PaymentController : ControllerBase
             });
         }
     }
+
+    /// <summary>
+    /// Hoàn tiền đơn hàng qua VNPAY
+    /// </summary>
+    [HttpPost("refund")]
+    public async Task<ActionResult<ApiResponse<VnPayRefundResult>>> Refund([FromBody] RefundRequest request)
+    {
+        try
+        {
+            // Find the booking
+            var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.Id == request.OrderId);
+            if (booking == null)
+            {
+                return NotFound(new ApiResponse<VnPayRefundResult>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy đơn hàng"
+                });
+            }
+
+            // Check if booking was paid
+            if (booking.PaymentStatus != PaymentStatus.Paid)
+            {
+                return BadRequest(new ApiResponse<VnPayRefundResult>
+                {
+                    Success = false,
+                    Message = "Đơn hàng chưa được thanh toán"
+                });
+            }
+
+            // Call VNPAY refund API
+            var refundResult = await _vnPayService.RefundAsync(
+                request.OrderId,
+                booking.FinalAmount,
+                request.TransactionNo,
+                request.Reason ?? "Hoàn tiền đơn hàng"
+            );
+
+            if (refundResult.Success)
+            {
+                // Update booking status
+                booking.PaymentStatus = PaymentStatus.Refunded;
+                booking.Status = BookingStatus.Cancelled;
+                booking.CancellationReason = request.Reason ?? "Đã hoàn tiền";
+                booking.CancelledAt = DateTime.UtcNow;
+                booking.UpdatedAt = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+
+                Console.WriteLine($"[Refund] Booking {booking.BookingCode} refunded successfully");
+            }
+            else
+            {
+                Console.WriteLine($"[Refund] Booking {booking.BookingCode} refund failed: {refundResult.Message}");
+            }
+
+            return Ok(new ApiResponse<VnPayRefundResult>
+            {
+                Success = refundResult.Success,
+                Message = refundResult.Message,
+                Data = refundResult
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Refund] Error: {ex.Message}");
+            return BadRequest(new ApiResponse<VnPayRefundResult>
+            {
+                Success = false,
+                Message = $"Lỗi hoàn tiền: {ex.Message}"
+            });
+        }
+    }
 }
 
 // DTOs
@@ -268,4 +340,11 @@ public class VnPayReturnResponse
     public long Amount { get; set; }
     public string ResponseCode { get; set; } = string.Empty;
     public string TransactionStatus { get; set; } = string.Empty;
+}
+
+public class RefundRequest
+{
+    public Guid OrderId { get; set; }
+    public string? TransactionNo { get; set; }
+    public string? Reason { get; set; }
 }
