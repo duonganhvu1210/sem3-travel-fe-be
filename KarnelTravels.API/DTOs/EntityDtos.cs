@@ -132,6 +132,30 @@ public class TransportDto
     public bool IsFeatured { get; set; }
 }
 
+public class TransportStatisticsDto
+{
+    public int TotalTransports { get; set; }
+    public int AverageDurationMinutes { get; set; }
+    public decimal AveragePrice { get; set; }
+    public decimal MinPrice { get; set; }
+    public decimal MaxPrice { get; set; }
+    public List<string> AvailableTypes { get; set; } = new();
+    public List<string> AvailableProviders { get; set; } = new();
+    public List<string> AvailableRoutes { get; set; } = new();
+    public Dictionary<string, int> AverageDurationByType { get; set; } = new();
+}
+
+public class TransportFilterOptionsDto
+{
+    public List<string> Types { get; set; } = new();
+    public List<string> Providers { get; set; } = new();
+    public List<string> Cities { get; set; } = new();
+    public decimal MinPrice { get; set; }
+    public decimal MaxPrice { get; set; }
+    public int MinDuration { get; set; }
+    public int MaxDuration { get; set; }
+}
+
 public class CreateTransportRequest
 {
     public string Type { get; set; } = string.Empty;

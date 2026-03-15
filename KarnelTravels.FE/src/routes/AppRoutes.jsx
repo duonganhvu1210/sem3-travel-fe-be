@@ -21,6 +21,7 @@ import HotelsPage from '@/pages/info/HotelsPage/HotelsPage';
 import RestaurantsPage from '@/pages/info/RestaurantsPage/RestaurantsPage';
 import ResortsPage from '@/pages/info/ResortsPage/ResortsPage';
 import TransportsPage from '@/pages/info/TransportsPage/TransportsPage';
+import TransportDetailPage from '@/pages/info/TransportsPage/TransportDetailPage';
 import HotelDetailPage from '@/pages/info/HotelsPage/HotelDetailPage';
 import SearchPage from '@/pages/search/SearchPage/SearchPage';
 
@@ -123,6 +124,7 @@ const AppRoutes = () => {
         <Route path="info/restaurants" element={<RestaurantsPage />} />
         <Route path="info/resorts" element={<ResortsPage />} />
         <Route path="info/transports" element={<TransportsPage />} />
+        <Route path="info/transports/:id" element={<TransportDetailPage />} />
       </Route>
 
       {/* ==================== ADMIN LAYOUT (Admin Only) ==================== */}
