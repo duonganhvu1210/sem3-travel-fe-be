@@ -40,6 +40,7 @@ public class KarnelTravelsDbContext : DbContext
     public DbSet<TourService> TourServices => Set<TourService>();
     public DbSet<TourGuide> TourGuides => Set<TourGuide>();
     public DbSet<TourImage> TourImages => Set<TourImage>();
+    public DbSet<SearchHistory> SearchHistories => Set<SearchHistory>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
