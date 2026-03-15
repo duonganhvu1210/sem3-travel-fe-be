@@ -531,7 +531,10 @@ const BookingPage = () => {
   const hotelId = searchParams.get('hotelId');
   const roomId = searchParams.get('roomId');
   const transportId = searchParams.get('transportId');
-  
+  // Support for item and type params (from TouristSpotDetailPage, SearchPage)
+  const itemId = searchParams.get('item');
+  const itemType = searchParams.get('type');
+
   // Determine service type and ID based on URL params
   let serviceType = 'tour';
   let serviceId = '';
@@ -540,8 +543,24 @@ const BookingPage = () => {
   const urlPrice = parseFloat(searchParams.get('price') || '0');
   const urlDiscountPrice = parseFloat(searchParams.get('discountPrice') || '0');
   let price = urlDiscountPrice > 0 ? urlDiscountPrice : urlPrice;
-  
-  if (tourId) {
+
+  // Handle item and type params
+  if (itemId && itemType) {
+    serviceId = itemId;
+    if (itemType === 'touristspot') {
+      serviceType = 'touristspot';
+    } else if (itemType === 'hotel') {
+      serviceType = 'hotel';
+    } else if (itemType === 'restaurant') {
+      serviceType = 'restaurant';
+    } else if (itemType === 'resort') {
+      serviceType = 'resort';
+    } else if (itemType === 'transport') {
+      serviceType = 'transport';
+    } else if (itemType === 'tour') {
+      serviceType = 'tour';
+    }
+  } else if (tourId) {
     serviceType = 'tour';
     serviceId = tourId;
   } else if (hotelId && roomId) {
@@ -565,14 +584,17 @@ const BookingPage = () => {
         if (serviceType === 'tour') endpoint = `/tours/${serviceId}`;
         else if (serviceType === 'hotel') endpoint = `/hotels/${serviceId}`;
         else if (serviceType === 'transport') endpoint = `/transports/${serviceId}`;
-        
+        else if (serviceType === 'touristspot') endpoint = `/touristspots/${serviceId}`;
+        else if (serviceType === 'restaurant') endpoint = `/restaurants/${serviceId}`;
+        else if (serviceType === 'resort') endpoint = `/resorts/${serviceId}`;
+
         if (endpoint) {
           const response = await api.get(endpoint);
           if (response.data.success && response.data.data) {
             const data = response.data.data;
             let name = 'Dịch vụ';
             let servicePrice = 0;
-            
+
             if (serviceType === 'tour') {
               name = data.name || data.tourName || 'Tour du lịch';
               servicePrice = data.basePrice || data.price || 0;
@@ -581,6 +603,15 @@ const BookingPage = () => {
               servicePrice = data.minPrice || data.price || 0;
             } else if (serviceType === 'transport') {
               name = data.name || data.vehicleType || 'Vận chuyển';
+              servicePrice = data.price || 0;
+            } else if (serviceType === 'touristspot') {
+              name = data.name || 'Điểm du lịch';
+              servicePrice = data.discountPrice || data.ticketPrice || 0;
+            } else if (serviceType === 'restaurant') {
+              name = data.name || 'Nhà hàng';
+              servicePrice = data.price || 0;
+            } else if (serviceType === 'resort') {
+              name = data.name || 'Resort';
               servicePrice = data.price || 0;
             }
             

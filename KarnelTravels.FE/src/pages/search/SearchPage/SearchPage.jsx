@@ -87,8 +87,8 @@ const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   
   // State
-  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'all');
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
+  const [activeTab, setActiveTab] = useState(() => searchParams.get('tab') || 'all');
+  const [searchQuery, setSearchQuery] = useState(() => searchParams.get('q') ?? '');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('grid');
@@ -129,7 +129,7 @@ const SearchPage = () => {
   const fetchResults = async () => {
     try {
       setLoading(true);
-      
+
       const params = {
         search: searchQuery,
         pageIndex,
@@ -145,24 +145,40 @@ const SearchPage = () => {
       }
       if (starRating) params.starRating = starRating;
       if (sortBy && sortBy !== 'relevance') params.sortBy = sortBy;
+      if (showOnlyDiscount) params.hasDiscount = 'true';
+      if (selectedAmenities.length > 0) params.amenities = selectedAmenities.join(',');
 
       let response;
-      
+
       // Fetch based on active tab
       switch (activeTab) {
         case 'all':
-          response = await api.get('/touristspots', { params: { ...params, limit: pageSize * 3 } });
           // Also fetch hotels, tours, etc. and combine
-          const [spotsRes, hotelsRes] = await Promise.all([
-            api.get('/touristspots', { params }),
+          const [spotsRes, hotelsRes, toursRes, restaurantsRes, resortsRes, transportsRes] = await Promise.all([
+            api.get('/touristspots', { params: { ...params, limit: 6 } }),
             api.get('/hotels', { params: { ...params, limit: 6 } }),
+            api.get('/tours', { params: { ...params, limit: 4 } }),
+            api.get('/restaurants', { params: { ...params, limit: 4 } }),
+            api.get('/resorts', { params: { ...params, limit: 4 } }),
+            api.get('/transports', { params: { ...params, limit: 4 } }),
           ]);
           const combined = [
             ...(spotsRes.data.data || []).map(s => ({ ...s, type: 'spot' })),
             ...(hotelsRes.data.data || []).map(h => ({ ...h, type: 'hotel' })),
+            ...(toursRes.data.data || []).map(t => ({ ...t, type: 'tour' })),
+            ...(restaurantsRes.data.data || []).map(r => ({ ...r, type: 'restaurant' })),
+            ...(resortsRes.data.data || []).map(r => ({ ...r, type: 'resort' })),
+            ...(transportsRes.data.data || []).map(t => ({ ...t, type: 'transport' })),
           ];
           setResults(combined);
-          setTotalCount((spotsRes.data.pagination?.totalCount || 0) + (hotelsRes.data.pagination?.totalCount || 0));
+          setTotalCount(
+            (spotsRes.data.pagination?.totalCount || 0) +
+            (hotelsRes.data.pagination?.totalCount || 0) +
+            (toursRes.data.pagination?.totalCount || 0) +
+            (restaurantsRes.data.pagination?.totalCount || 0) +
+            (resortsRes.data.pagination?.totalCount || 0) +
+            (transportsRes.data.pagination?.totalCount || 0)
+          );
           setLoading(false);
           return;
         case 'spots':
@@ -730,7 +746,7 @@ const SearchPage = () => {
                               Xem chi tiết
                             </Link>
                             <Link
-                              to={`/bookings?item=${itemId}&type=${item.type || activeTab}`}
+                              to={`/booking?item=${itemId}&type=${item.type || activeTab}`}
                               className="flex-1 px-4 py-2 bg-primary text-white text-center rounded-lg font-medium hover:bg-primary/90 transition-colors"
                             >
                               Đặt ngay

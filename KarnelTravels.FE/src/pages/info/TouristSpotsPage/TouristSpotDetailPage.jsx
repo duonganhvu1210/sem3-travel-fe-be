@@ -77,7 +77,7 @@ const TouristSpotDetailPage = () => {
     // Pass both original price and discount price
     const originalPrice = spot?.ticketPrice || 0;
     const discountPrice = spot?.discountPrice || originalPrice;
-    navigate(`/bookings?item=${id}&type=touristspot&name=${encodeURIComponent(spot?.name || '')}&price=${originalPrice}&discountPrice=${discountPrice}`);
+    navigate(`/booking?item=${id}&type=touristspot&name=${encodeURIComponent(spot?.name || '')}&price=${originalPrice}&discountPrice=${discountPrice}`);
   };
 
   const handleConsult = () => {
