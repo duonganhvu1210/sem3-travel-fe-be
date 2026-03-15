@@ -323,10 +323,13 @@ public class ContactDto
     public string Email { get; set; } = string.Empty;
     public string? PhoneNumber { get; set; }
     public string? Address { get; set; }
+    public string? Subject { get; set; }
+    public string RequestType { get; set; } = string.Empty;
     public string? ServiceType { get; set; }
-    public DateTime? PreferredDate { get; set; }
-    public int? NumberOfPeople { get; set; }
-    public string Message { get; set; } = string.Empty;
+    public DateTime? ExpectedDate { get; set; }
+    public int? ParticipantCount { get; set; }
+    public string MessageContent { get; set; } = string.Empty;
+    public int? Rating { get; set; }
     public string Status { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
 }
@@ -337,10 +340,19 @@ public class CreateContactRequest
     public string Email { get; set; } = string.Empty;
     public string? PhoneNumber { get; set; }
     public string? Address { get; set; }
+    public string? Subject { get; set; }
+    public ContactRequestType RequestType { get; set; } = ContactRequestType.General;
     public string? ServiceType { get; set; }
-    public DateTime? PreferredDate { get; set; }
-    public int? NumberOfPeople { get; set; }
-    public string Message { get; set; } = string.Empty;
+    public DateTime? ExpectedDate { get; set; }
+    public int? ParticipantCount { get; set; }
+    public string MessageContent { get; set; } = string.Empty;
+    public int? Rating { get; set; }
+}
+
+public class UpdateContactStatusRequest
+{
+    public ContactStatus Status { get; set; }
+    public string? ReplyMessage { get; set; }
 }
 
 public class UpdateContactRequest

@@ -24,6 +24,7 @@ import TransportsPage from '@/pages/info/TransportsPage/TransportsPage';
 import TransportDetailPage from '@/pages/info/TransportsPage/TransportDetailPage';
 import HotelDetailPage from '@/pages/info/HotelsPage/HotelDetailPage';
 import SearchPage from '@/pages/search/SearchPage/SearchPage';
+import ContactPage from '@/pages/ContactPage/ContactPage';
 
 // Admin Dashboard
 import DashboardPage from '@/pages/admin/dashboard/DashboardPage';
@@ -31,12 +32,6 @@ import DashboardPage from '@/pages/admin/dashboard/DashboardPage';
 const AboutPage = () => (
   <div className="min-h-screen flex items-center justify-center">
     <h1 className="text-4xl font-bold text-gray-800">Giới thiệu</h1>
-  </div>
-);
-
-const ContactPage = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Liên hệ</h1>
   </div>
 );
 

@@ -14,24 +14,28 @@ public class Contact : BaseEntity
     [MaxLength(255)]
     public string Email { get; set; } = string.Empty;
 
-    [MaxLength(200)]
-    public string? Subject { get; set; }
-
     [MaxLength(20)]
     public string? PhoneNumber { get; set; }
 
     [MaxLength(500)]
     public string? Address { get; set; }
 
+    [MaxLength(200)]
+    public string? Subject { get; set; }
+
+    public ContactRequestType RequestType { get; set; } = ContactRequestType.General;
+
     [MaxLength(100)]
-    public string? ServiceType { get; set; } // Tour, Hotel, Resort, Transport, General
+    public string? ServiceType { get; set; } // Tour, Hotel, Resort, Transport
 
-    public DateTime? PreferredDate { get; set; }
+    public DateTime? ExpectedDate { get; set; }
 
-    public int? NumberOfPeople { get; set; }
+    public int? ParticipantCount { get; set; }
 
     [Required]
-    public string Message { get; set; } = string.Empty;
+    public string MessageContent { get; set; } = string.Empty;
+
+    public int? Rating { get; set; } // 1-5 for feedback
 
     public ContactStatus Status { get; set; } = ContactStatus.Unread;
 
@@ -40,11 +44,19 @@ public class Contact : BaseEntity
 
     public DateTime? RepliedAt { get; set; }
 
-    // Foreign key
     public Guid? UserId { get; set; }
 
     [ForeignKey("UserId")]
     public virtual User? User { get; set; }
+}
+
+public enum ContactRequestType
+{
+    General = 0,
+    Booking = 1,
+    Consulting = 2,
+    Feedback = 3,
+    Callback = 4
 }
 
 public enum ContactStatus
