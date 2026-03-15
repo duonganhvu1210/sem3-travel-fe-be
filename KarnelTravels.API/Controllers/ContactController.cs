@@ -200,7 +200,87 @@ public class ContactController : ControllerBase
                 MessageContent = contact.MessageContent,
                 Rating = contact.Rating,
                 Status = contact.Status.ToString(),
+                ReplyContent = contact.ReplyContent,
+                RepliedAt = contact.RepliedAt,
                 CreatedAt = contact.CreatedAt
+            }
+        });
+    }
+
+    // Get contacts by email (for user to view their messages)
+    [HttpGet("by-email")]
+    public async Task<ActionResult<ApiResponse<List<ContactDto>>>> GetContactsByEmail([FromQuery] string email)
+    {
+        if (string.IsNullOrEmpty(email))
+            return BadRequest(new ApiResponse<List<ContactDto>>
+            {
+                Success = false,
+                Message = "Email là bắt buộc"
+            });
+
+        var contacts = await _context.Contacts
+            .Where(c => c.Email == email)
+            .OrderByDescending(c => c.CreatedAt)
+            .ToListAsync();
+
+        var result = contacts.Select(c => new ContactDto
+        {
+            ContactId = c.Id,
+            FullName = c.FullName,
+            Email = c.Email,
+            PhoneNumber = c.PhoneNumber,
+            Address = c.Address,
+            Subject = c.Subject,
+            RequestType = c.RequestType.ToString(),
+            ServiceType = c.ServiceType,
+            ExpectedDate = c.ExpectedDate,
+            ParticipantCount = c.ParticipantCount,
+            MessageContent = c.MessageContent,
+            Rating = c.Rating,
+            Status = c.Status.ToString(),
+            ReplyContent = c.ReplyContent,
+            RepliedAt = c.RepliedAt,
+            CreatedAt = c.CreatedAt
+        }).ToList();
+
+        return Ok(new ApiResponse<List<ContactDto>>
+        {
+            Success = true,
+            Data = result
+        });
+    }
+
+    // Reply to contact (for admin)
+    [HttpPost("{id}/reply")]
+    public async Task<ActionResult<ApiResponse<ContactDto>>> ReplyContact(Guid id, [FromBody] ReplyContactRequest request)
+    {
+        var contact = await _context.Contacts.FindAsync(id);
+
+        if (contact == null)
+            return NotFound(new ApiResponse<ContactDto>
+            {
+                Success = false,
+                Message = "Contact not found"
+            });
+
+        contact.ReplyMessage = request.ReplyContent;
+        contact.RepliedAt = DateTime.UtcNow;
+        contact.Status = ContactStatus.Replied;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new ApiResponse<ContactDto>
+        {
+            Success = true,
+            Message = "Phản hồi đã được gửi",
+            Data = new ContactDto
+            {
+                ContactId = contact.Id,
+                FullName = contact.FullName,
+                Email = contact.Email,
+                Status = contact.Status.ToString(),
+                ReplyContent = contact.ReplyMessage,
+                RepliedAt = contact.RepliedAt
             }
         });
     }

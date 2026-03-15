@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, 
   MapPin, 
@@ -26,25 +26,70 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import api from '@/services/api';
 import CommonButton from '@/components/common/CommonButton';
+import favoriteService from '@/services/favoriteService';
 
 const TouristSpotDetailPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [spot, setSpot] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
 
   useEffect(() => {
     if (id) {
       fetchSpotDetail();
+      checkFavoriteStatus();
     }
   }, [id]);
 
-  const fetchSpotDetail = async () => {
+  const checkFavoriteStatus = async () => {
     try {
-      setLoading(true);
+      const response = await favoriteService.checkFavorites([id], 'TouristSpot');
+      if (response.success && response.data) {
+        setIsFavorite(response.data[id] || false);
+      }
+    } catch (err) {
+      console.error('Error checking favorite status:', err);
+    }
+  };
+
+  const handleToggleFavorite = async () => {
+    setFavoriteLoading(true);
+    try {
+      if (isFavorite) {
+        await favoriteService.removeByItem('TouristSpot', id);
+        setIsFavorite(false);
+      } else {
+        await favoriteService.addFavorite('TouristSpot', id);
+        setIsFavorite(true);
+      }
+    } catch (err) {
+      console.error('Error toggling favorite:', err);
+    } finally {
+      setFavoriteLoading(false);
+    }
+  };
+
+  const handleBooking = () => {
+    // Pass both original price and discount price
+    const originalPrice = spot?.ticketPrice || 0;
+    const discountPrice = spot?.discountPrice || originalPrice;
+    navigate(`/bookings?item=${id}&type=touristspot&name=${encodeURIComponent(spot?.name || '')}&price=${originalPrice}&discountPrice=${discountPrice}`);
+  };
+
+  const handleConsult = () => {
+    // Navigate to contact page with pre-filled info
+    navigate(`/contact?item=${id}&type=touristspot&name=${encodeURIComponent(spot?.name || '')}`);
+  };
+
+  const fetchSpotDetail = async () => {
+    setLoading(true);
+    setError(null);
+    try {
       const response = await api.get(`/touristspots/${id}`);
-      
       if (response.data.success) {
         setSpot(response.data.data);
       } else {
@@ -145,8 +190,14 @@ const TouristSpotDetailPage = () => {
               )}
               {/* Actions */}
               <div className="absolute top-4 right-4 flex gap-2">
-                <button className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-600 hover:text-red-500 transition-colors">
-                  <Heart className="w-5 h-5" />
+                <button 
+                  onClick={handleToggleFavorite}
+                  disabled={favoriteLoading}
+                  className={`w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center transition-colors ${
+                    isFavorite ? 'text-red-500 hover:text-red-600' : 'text-gray-600 hover:text-red-500'
+                  }`}
+                >
+                  <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
                 </button>
                 <button className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-600 hover:text-primary transition-colors">
                   <Share2 className="w-5 h-5" />
@@ -306,13 +357,13 @@ const TouristSpotDetailPage = () => {
                   </div>
                 </div>
 
-                <CommonButton className="w-full mb-3">
-                  Đặt tour ngay
-                </CommonButton>
-                
-                <CommonButton variant="outline" className="w-full">
-                  Yêu cầu tư vấn
-                </CommonButton>
+              <CommonButton className="w-full mb-3" onClick={handleBooking}>
+                Đặt tour ngay
+              </CommonButton>
+
+              <CommonButton variant="outline" className="w-full" onClick={handleConsult}>
+                Yêu cầu tư vấn
+              </CommonButton>
 
                 <p className="text-center text-xs text-gray-400 mt-4">
                   Liên hệ: 1900 xxxx để được hỗ trợ

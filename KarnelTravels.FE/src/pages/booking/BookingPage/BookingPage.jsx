@@ -191,13 +191,13 @@ const ReviewStep = ({ serviceInfo, pricing, setPricing, onNext, onPrev }) => {
 
   const applyCoupon = async () => {
     if (!couponCode.trim()) return;
-    
+
     setCouponLoading(true);
     setCouponError('');
 
     try {
       const response = await api.get(`/bookings/validate-coupon?code=${couponCode}&orderAmount=${pricing.totalAmount}`);
-      
+
       if (response.data.success) {
         setPricing(prev => ({
           ...prev,
@@ -205,7 +205,9 @@ const ReviewStep = ({ serviceInfo, pricing, setPricing, onNext, onPrev }) => {
           couponData: response.data.data
         }));
         setCouponApplied(true);
-        calculatePrice();
+
+        // Call calculatePrice with the new coupon code immediately
+        await calculatePriceWithCoupon(couponCode);
       } else {
         setCouponError(response.data.message || 'Mã giảm giá không hợp lệ');
       }
@@ -213,6 +215,33 @@ const ReviewStep = ({ serviceInfo, pricing, setPricing, onNext, onPrev }) => {
       setCouponError('Không thể xác thực mã giảm giá');
     } finally {
       setCouponLoading(false);
+    }
+  };
+
+  // Separate function to calculate price with specific coupon
+  const calculatePriceWithCoupon = async (coupon) => {
+    if (!serviceInfo.serviceId) return;
+
+    try {
+      const response = await api.post('/bookings/calculate-price', {
+        ServiceType: serviceInfo.serviceType,
+        ServiceId: serviceInfo.serviceId,
+        Quantity: serviceInfo.quantity,
+        ServiceDate: serviceInfo.serviceDate || null,
+        EndDate: serviceInfo.endDate || null,
+        CouponCode: coupon
+      });
+
+      if (response.data.success) {
+        setPricing(prev => ({
+          ...prev,
+          totalAmount: response.data.data.totalAmount,
+          discountAmount: response.data.data.discountAmount || 0,
+          finalAmount: response.data.data.finalAmount
+        }));
+      }
+    } catch (error) {
+      console.error('Price calculation error:', error);
     }
   };
 
@@ -507,7 +536,10 @@ const BookingPage = () => {
   let serviceType = 'tour';
   let serviceId = '';
   let serviceName = searchParams.get('name') || 'Dịch vụ';
-  let price = parseFloat(searchParams.get('price') || '0');
+  // Use discountPrice from URL if available, otherwise fall back to price
+  const urlPrice = parseFloat(searchParams.get('price') || '0');
+  const urlDiscountPrice = parseFloat(searchParams.get('discountPrice') || '0');
+  let price = urlDiscountPrice > 0 ? urlDiscountPrice : urlPrice;
   
   if (tourId) {
     serviceType = 'tour';

@@ -357,7 +357,7 @@ public class KarnelTravelsDbContext : DbContext
             entity.HasIndex(e => e.Action);
             entity.HasIndex(e => e.CreatedAt);
             entity.HasOne(a => a.User)
-                .WithMany()
+                .WithMany(u => u.AccountActivities)
                 .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         });

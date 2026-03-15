@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plane, Loader2, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, Loader2, Eye, EyeOff } from 'lucide-react';
 
 const schema = yup.object().shape({
   email: yup.string().required('Email là bắt buộc').email('Email không hợp lệ'),
@@ -49,36 +49,14 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-700">
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-300/20 rounded-full blur-3xl"></div>
-      </div>
-
-      {/* Floating Elements */}
-      <div className="absolute top-20 left-20 w-5 h-5 bg-white/20 rounded-full animate-bounce"></div>
-      <div className="absolute bottom-32 right-20 w-7 h-7 bg-white/15 rounded-full animate-bounce delay-300"></div>
-      <div className="absolute top-1/3 right-1/4 w-4 h-4 bg-white/30 rounded-full animate-bounce delay-500"></div>
-      <div className="absolute bottom-1/3 left-1/4 w-6 h-6 bg-white/15 rounded-full animate-bounce delay-700"></div>
-
-      {/* Back to Home */}
-      <Link
-        to="/"
-        className="absolute top-6 left-6 z-10 flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white/90 hover:text-white hover:bg-white/20 rounded-full transition-all"
-      >
-        <Plane className="w-4 h-4" />
-        <span className="font-medium">Về trang chủ</span>
-      </Link>
-
+    <div className="min-h-screen flex items-center justify-center">
       {/* Login Card */}
       <div className="relative z-10 w-full max-w-md mx-4">
         <Card className="backdrop-blur-xl bg-white/95 dark:bg-gray-900/95 border-0 shadow-2xl">
           <CardHeader className="space-y-1 text-center pb-2">
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg">
-                <Plane className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg">
+                <ArrowLeft className="w-8 h-8 text-white" />
               </div>
             </div>
             <CardTitle className="text-2xl font-bold">Chào mừng trở lại!</CardTitle>

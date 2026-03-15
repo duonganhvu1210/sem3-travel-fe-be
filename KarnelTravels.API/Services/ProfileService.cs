@@ -99,7 +99,16 @@ public class ProfileService : IProfileService
         user.UpdatedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
 
-        await LogActivityAsync(userId, AccountActivityActions.UpdateProfile, "Cập nhật thông tin hồ sơ");
+        // Log activity - wrap in try-catch to ensure profile update is saved even if logging fails
+        try
+        {
+            await LogActivityAsync(userId, AccountActivityActions.UpdateProfile, "Cập nhật thông tin hồ sơ");
+        }
+        catch (Exception ex)
+        {
+            // Log error but don't fail the profile update
+            Console.WriteLine($"Failed to log activity: {ex.Message}");
+        }
 
         return new ApiResponse<UserProfileDto>
         {
@@ -593,16 +602,24 @@ public class ProfileService : IProfileService
 
     public async Task LogActivityAsync(Guid userId, string action, string? description = null)
     {
-        var activity = new AccountActivity
+        try
         {
-            UserId = userId,
-            Action = action,
-            Description = description,
-            CreatedAt = DateTime.UtcNow,
-            IsActive = true
-        };
+            var activity = new AccountActivity
+            {
+                UserId = userId,
+                Action = action,
+                Description = description,
+                CreatedAt = DateTime.UtcNow,
+                IsActive = true
+            };
 
-        _context.AccountActivities.Add(activity);
-        await _context.SaveChangesAsync();
+            _context.AccountActivities.Add(activity);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            // Log error but don't throw - activity logging should not affect main operations
+            Console.WriteLine($"Failed to log activity: {ex.Message}");
+        }
     }
 }

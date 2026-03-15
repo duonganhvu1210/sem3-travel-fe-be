@@ -27,7 +27,8 @@ import {
   Home,
   Info,
   Phone,
-  Calendar
+  Calendar,
+  MessageCircle
 } from 'lucide-react';
 
 const MainLayout = () => {
@@ -77,11 +78,7 @@ const MainLayout = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Header */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-lg py-3'
-            : 'bg-transparent py-5'
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md shadow-lg py-3`}
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
@@ -90,9 +87,7 @@ const MainLayout = () => {
               <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                 <Plane className="w-5 h-5 text-white" />
               </div>
-              <span className={`font-bold text-xl transition-colors ${
-                isScrolled ? 'text-gray-800' : 'text-white'
-              }`}>
+              <span className={`font-bold text-xl text-gray-800`}>
                 KarnelTravels
               </span>
             </Link>
@@ -104,11 +99,7 @@ const MainLayout = () => {
                   {item.hasDropdown ? (
                     <button
                       onClick={() => handleDropdownToggle(index)}
-                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg font-medium transition-all ${
-                        isScrolled
-                          ? 'text-gray-700 hover:bg-teal-50 hover:text-teal-600'
-                          : 'text-white/90 hover:text-white hover:bg-white/10'
-                      } ${location.pathname === item.path ? 'bg-teal-500/20 text-teal-600' : ''}`}
+                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg font-medium transition-all text-gray-700 hover:bg-teal-50 hover:text-teal-600 ${location.pathname === item.path ? 'bg-teal-500/20 text-teal-600' : ''}`}
                     >
                       {item.name}
                       <ChevronDown className={`w-4 h-4 transition-transform ${
@@ -118,11 +109,7 @@ const MainLayout = () => {
                   ) : (
                     <Link
                       to={item.path}
-                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg font-medium transition-all ${
-                        isScrolled
-                          ? 'text-gray-700 hover:bg-teal-50 hover:text-teal-600'
-                          : 'text-white/90 hover:text-white hover:bg-white/10'
-                      } ${location.pathname === item.path ? 'bg-teal-500/20 text-teal-600' : ''}`}
+                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg font-medium transition-all text-gray-700 hover:bg-teal-50 hover:text-teal-600 ${location.pathname === item.path ? 'bg-teal-500/20 text-teal-600' : ''}`}
                     >
                       {item.name}
                     </Link>
@@ -159,11 +146,7 @@ const MainLayout = () => {
               {/* Search Button */}
               <Link
                 to="/search"
-                className={`p-2.5 rounded-full transition-all ${
-                  isScrolled
-                    ? 'bg-gray-100 text-gray-700 hover:bg-teal-50 hover:text-teal-600'
-                    : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
+                className="p-2.5 rounded-full bg-gray-100 text-gray-700 hover:bg-teal-50 hover:text-teal-600 transition-all"
               >
                 <Search className="w-5 h-5" />
               </Link>
@@ -173,11 +156,7 @@ const MainLayout = () => {
                   {/* Wishlist */}
                   <Link
                     to="/wishlist"
-                    className={`p-2.5 rounded-full transition-all ${
-                      isScrolled
-                        ? 'bg-gray-100 text-gray-700 hover:bg-teal-50 hover:text-teal-600'
-                        : 'bg-white/10 text-white hover:bg-white/20'
-                    }`}
+                    className="p-2.5 rounded-full bg-gray-100 text-gray-700 hover:bg-teal-50 hover:text-teal-600 transition-all"
                   >
                     <Heart className="w-5 h-5" />
                   </Link>
@@ -185,11 +164,7 @@ const MainLayout = () => {
                   {/* Bookings */}
                   <Link
                     to="/bookings"
-                    className={`p-2.5 rounded-full transition-all ${
-                      isScrolled
-                        ? 'bg-gray-100 text-gray-700 hover:bg-teal-50 hover:text-teal-600'
-                        : 'bg-white/10 text-white hover:bg-white/20'
-                    }`}
+                    className="p-2.5 rounded-full bg-gray-100 text-gray-700 hover:bg-teal-50 hover:text-teal-600 transition-all"
                   >
                     <Calendar className="w-5 h-5" />
                   </Link>
@@ -224,6 +199,12 @@ const MainLayout = () => {
                           Đơn đặt
                         </Link>
                       </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/my-messages" className="flex items-center">
+                          <MessageCircle className="mr-2 h-4 w-4" />
+                          Tin nhắn
+                        </Link>
+                      </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={logout} className="text-red-600 cursor-pointer">
                         <LogOut className="mr-2 h-4 w-4" />
@@ -236,11 +217,7 @@ const MainLayout = () => {
                 <div className="flex items-center gap-2">
                   <Link
                     to="/login"
-                    className={`px-5 py-2.5 rounded-full font-medium transition-all ${
-                      isScrolled
-                        ? 'text-gray-700 hover:bg-gray-100'
-                        : 'text-white hover:bg-white/10'
-                    }`}
+                    className="px-5 py-2.5 rounded-full font-medium transition-all text-gray-700 hover:bg-gray-100"
                   >
                     Đăng nhập
                   </Link>
@@ -256,11 +233,7 @@ const MainLayout = () => {
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`lg:hidden p-2.5 rounded-lg transition-all ${
-                  isScrolled
-                    ? 'bg-gray-100 text-gray-700'
-                    : 'bg-white/10 text-white'
-                }`}
+                className="lg:hidden p-2.5 rounded-lg bg-gray-100 text-gray-700"
               >
                 {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>

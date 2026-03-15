@@ -331,6 +331,8 @@ public class ContactDto
     public string MessageContent { get; set; } = string.Empty;
     public int? Rating { get; set; }
     public string Status { get; set; } = string.Empty;
+    public string? ReplyContent { get; set; }
+    public DateTime? RepliedAt { get; set; }
     public DateTime CreatedAt { get; set; }
 }
 
@@ -359,6 +361,11 @@ public class UpdateContactRequest
 {
     public string? ReplyMessage { get; set; }
     public ContactStatus Status { get; set; }
+}
+
+public class ReplyContactRequest
+{
+    public string ReplyContent { get; set; } = string.Empty;
 }
 
 // Review DTOs

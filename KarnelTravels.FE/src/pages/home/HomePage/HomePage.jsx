@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -59,6 +59,21 @@ const HomePage = () => {
   const [homeData, setHomeData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchDate, setSearchDate] = useState('');
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (searchQuery.trim()) {
+      params.set('q', searchQuery.trim());
+    }
+    if (searchDate) {
+      params.set('date', searchDate);
+    }
+    const queryString = params.toString();
+    navigate(`/search${queryString ? '?' + queryString : ''}`);
+  };
 
   useEffect(() => {
     const fetchHomeData = async () => {
@@ -141,17 +156,22 @@ const HomePage = () => {
                     type="text"
                     placeholder="Bạn muốn đi đâu?"
                     className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-0 focus:outline-none focus:ring-2 focus:ring-primary"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                   />
                 </div>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <input
-                    type="text"
+                    type="date"
                     placeholder="Ngày khởi hành"
                     className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-0 focus:outline-none focus:ring-2 focus:ring-primary"
+                    value={searchDate}
+                    onChange={(e) => setSearchDate(e.target.value)}
                   />
                 </div>
-                <Button size="lg" className="w-full h-full min-h-[52px]">
+                <Button size="lg" className="w-full h-full min-h-[52px]" onClick={handleSearch}>
                   <Search className="w-5 h-5 mr-2" />
                   Tìm kiếm
                 </Button>

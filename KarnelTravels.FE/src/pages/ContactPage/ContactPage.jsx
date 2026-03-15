@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSearchParams, Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { 
-  MapPin, Phone, Mail, Clock, Send, Star, CheckCircle, 
+import {
+  MapPin, Phone, Mail, Clock, Send, Star, CheckCircle,
   Loader2, Facebook, Youtube, MessageCircle, Instagram
 } from 'lucide-react';
 import api from '@/services/api';
@@ -75,19 +76,42 @@ const StarRating = ({ value, onChange, readonly = false }) => {
 
 // Contact Page Component
 const ContactPage = () => {
+  const [searchParams] = useSearchParams();
   const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+  const [submittedContactId, setSubmittedContactId] = useState(null);
+
+  // Get pre-filled data from URL params
+  const itemType = searchParams.get('type');
+  const itemName = searchParams.get('name');
+
+  // Map item type to service type
+  const getServiceTypeFromItemType = (type) => {
+    if (!type) return '';
+    const typeMap = {
+      'touristspot': 'Tour',
+      'tour': 'Tour',
+      'hotel': 'Hotel',
+      'resort': 'Resort',
+      'restaurant': 'Restaurant',
+      'transport': 'Transport'
+    };
+    return typeMap[type.toLowerCase()] || '';
+  };
 
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors, isSubmitting }
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      requestType: 'General',
-      rating: 0
+      requestType: 'Consulting',
+      rating: 0,
+      serviceType: getServiceTypeFromItemType(itemType),
+      messageContent: itemName ? `Tôi quan tâm đến dịch vụ: ${itemName}` : ''
     }
   });
 
@@ -111,8 +135,17 @@ const ContactPage = () => {
         rating: data.rating || null
       };
 
-      await api.post('/contacts', requestData);
-      setSubmitStatus('success');
+      const response = await api.post('/contacts', requestData);
+
+      if (response.data.success && response.data.data) {
+        // Save contact ID for viewing later
+        const contactId = response.data.data.contactId || response.data.data.id;
+        localStorage.setItem('lastContactId', contactId);
+        setSubmittedContactId(contactId);
+        setSubmitStatus('success');
+      } else {
+        setSubmitStatus('error');
+      }
     } catch (error) {
       console.error('Contact submission error:', error);
       setSubmitStatus('error');
@@ -130,15 +163,23 @@ const ContactPage = () => {
           <p className="text-gray-600 mb-6">
             Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi trong thời gian sớm nhất.
           </p>
-          <button
-            onClick={() => {
-              setSubmitStatus(null);
-              window.location.reload();
-            }}
-            className="px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-teal-700 transition-colors"
-          >
-            Gửi yêu cầu khác
-          </button>
+          <div className="space-y-3">
+            <Link
+              to="/my-messages"
+              className="block w-full px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-teal-700 transition-colors"
+            >
+              Xem tin nhắn của bạn
+            </Link>
+            <button
+              onClick={() => {
+                setSubmitStatus(null);
+                reset();
+              }}
+              className="block w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-colors"
+            >
+              Gửi yêu cầu khác
+            </button>
+          </div>
         </div>
       </div>
     );

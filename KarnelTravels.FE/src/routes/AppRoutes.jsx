@@ -29,6 +29,8 @@ import BookingPage from '@/pages/booking/BookingPage/BookingPage';
 import PaymentReturnPage from '@/pages/booking/PaymentReturnPage/PaymentReturnPage';
 import ProfilePage from '@/pages/profile/ProfilePage/ProfilePage';
 import MyOrdersPage from '@/pages/orders/MyOrdersPage/MyOrdersPage';
+import WishlistPage from '@/pages/wishlist/WishlistPage';
+import MyMessagesPage from '@/pages/messages/MyMessagesPage';
 
 // Admin Dashboard
 import DashboardPage from '@/pages/admin/dashboard/DashboardPage';
@@ -36,12 +38,6 @@ import DashboardPage from '@/pages/admin/dashboard/DashboardPage';
 const AboutPage = () => (
   <div className="min-h-screen flex items-center justify-center">
     <h1 className="text-4xl font-bold text-gray-800">Giới thiệu</h1>
-  </div>
-);
-
-const WishlistPage = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Danh sách yêu thích</h1>
   </div>
 );
 
@@ -113,6 +109,7 @@ const AppRoutes = () => {
         <Route path="promotions" element={<PromotionsPage />} />
         <Route path="contacts" element={<ContactsPage />} />
         <Route path="wishlist" element={<WishlistPage />} />
+        <Route path="my-messages" element={<MyMessagesPage />} />
         <Route path="info/destinations" element={<DestinationsPage />} />
         <Route path="info/tourist-spots/:id" element={<TouristSpotDetailPage />} />
         <Route path="info/tours" element={<ToursPage />} />

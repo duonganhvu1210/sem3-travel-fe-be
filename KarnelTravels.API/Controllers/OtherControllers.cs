@@ -207,6 +207,30 @@ public class FavoritesController : ControllerBase
         });
     }
 
+    [HttpGet("check")]
+    public async Task<ActionResult<ApiResponse<Dictionary<string, bool>>>> CheckFavorites([FromQuery] string itemIds, [FromQuery] string itemType)
+    {
+        var userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? Guid.Empty.ToString());
+
+        var ids = itemIds.Split(',').Select(Guid.Parse).ToList();
+        var result = new Dictionary<string, bool>();
+
+        foreach (var id in ids)
+        {
+            var exists = await _context.Favorites
+                .AnyAsync(f => f.UserId == userId && f.ItemType.ToString() == itemType && 
+                    (f.TouristSpotId == id || f.HotelId == id || f.RestaurantId == id || 
+                     f.ResortId == id || f.TourPackageId == id || f.TransportId == id));
+            result[id.ToString()] = exists;
+        }
+
+        return Ok(new ApiResponse<Dictionary<string, bool>>
+        {
+            Success = true,
+            Data = result
+        });
+    }
+
     [HttpPost]
     public async Task<ActionResult<ApiResponse<FavoriteDto>>> AddFavorite([FromBody] CreateFavoriteRequest request)
     {
@@ -283,17 +307,54 @@ public class FavoritesController : ControllerBase
 
     private string GetItemName(Favorite f)
     {
-        return "Item";
+        return f.ItemType switch
+        {
+            FavoriteType.TouristSpot => _context.TouristSpots.FirstOrDefault(t => t.Id == f.TouristSpotId)?.Name ?? "Địa điểm du lịch",
+            FavoriteType.Hotel => _context.Hotels.FirstOrDefault(h => h.Id == f.HotelId)?.Name ?? "Khách sạn",
+            FavoriteType.Restaurant => _context.Restaurants.FirstOrDefault(r => r.Id == f.RestaurantId)?.Name ?? "Nhà hàng",
+            FavoriteType.Resort => _context.Resorts.FirstOrDefault(r => r.Id == f.ResortId)?.Name ?? "Resort",
+            FavoriteType.Tour => _context.TourPackages.FirstOrDefault(t => t.Id == f.TourPackageId)?.Name ?? "Tour du lịch",
+            FavoriteType.Transport => "Phương tiện",
+            _ => "Item"
+        };
     }
 
     private string? GetItemImage(Favorite f)
     {
-        return null;
+        string? images = f.ItemType switch
+        {
+            FavoriteType.TouristSpot => _context.TouristSpots.FirstOrDefault(t => t.Id == f.TouristSpotId)?.Images,
+            FavoriteType.Hotel => _context.Hotels.FirstOrDefault(h => h.Id == f.HotelId)?.Images,
+            FavoriteType.Restaurant => _context.Restaurants.FirstOrDefault(r => r.Id == f.RestaurantId)?.Images,
+            FavoriteType.Resort => _context.Resorts.FirstOrDefault(r => r.Id == f.ResortId)?.Images,
+            FavoriteType.Tour => _context.TourPackages.FirstOrDefault(t => t.Id == f.TourPackageId)?.Images,
+            _ => null
+        };
+
+        if (string.IsNullOrEmpty(images)) return null;
+
+        try
+        {
+            var imageList = System.Text.Json.JsonSerializer.Deserialize<List<string>>(images);
+            return imageList?.FirstOrDefault();
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     private decimal? GetItemPrice(Favorite f)
     {
-        return null;
+        return f.ItemType switch
+        {
+            FavoriteType.TouristSpot => _context.TouristSpots.FirstOrDefault(t => t.Id == f.TouristSpotId)?.TicketPrice,
+            FavoriteType.Hotel => _context.Hotels.FirstOrDefault(h => h.Id == f.HotelId)?.PricePerNight,
+            FavoriteType.Restaurant => _context.Restaurants.FirstOrDefault(r => r.Id == f.RestaurantId)?.PriceRange,
+            FavoriteType.Resort => _context.Resorts.FirstOrDefault(r => r.Id == f.ResortId)?.PricePerNight,
+            FavoriteType.Tour => _context.TourPackages.FirstOrDefault(t => t.Id == f.TourPackageId)?.Price,
+            _ => null
+        };
     }
 
     private Guid? GetItemIdField(string itemType, Favorite f)

@@ -36,4 +36,5 @@ public class User
     public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
     public virtual ICollection<Contact> Contacts { get; set; } = new List<Contact>();
     public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+    public virtual ICollection<AccountActivity> AccountActivities { get; set; } = new List<AccountActivity>();
 }
