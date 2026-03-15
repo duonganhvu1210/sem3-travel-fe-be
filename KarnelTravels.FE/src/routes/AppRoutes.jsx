@@ -26,6 +26,7 @@ import HotelDetailPage from '@/pages/info/HotelsPage/HotelDetailPage';
 import SearchPage from '@/pages/search/SearchPage/SearchPage';
 import ContactPage from '@/pages/ContactPage/ContactPage';
 import BookingPage from '@/pages/booking/BookingPage/BookingPage';
+import ProfilePage from '@/pages/profile/ProfilePage/ProfilePage';
 
 // Admin Dashboard
 import DashboardPage from '@/pages/admin/dashboard/DashboardPage';
@@ -33,12 +34,6 @@ import DashboardPage from '@/pages/admin/dashboard/DashboardPage';
 const AboutPage = () => (
   <div className="min-h-screen flex items-center justify-center">
     <h1 className="text-4xl font-bold text-gray-800">Giới thiệu</h1>
-  </div>
-);
-
-const ProfilePage = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Hồ sơ</h1>
   </div>
 );
 

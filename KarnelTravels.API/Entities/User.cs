@@ -19,6 +19,7 @@ public class User
     public string? Avatar { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public string? Gender { get; set; }
+    public string? TravelPreferences { get; set; }
     public bool IsEmailVerified { get; set; } = false;
     public UserRole Role { get; set; } = UserRole.User;
     public bool IsLocked { get; set; } = false;

@@ -86,6 +86,7 @@ public class UserProfileDto
     public string? Avatar { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public string? Gender { get; set; }
+    public string? TravelPreferences { get; set; }
     public bool IsEmailVerified { get; set; }
     public DateTime CreatedAt { get; set; }
 }
@@ -96,6 +97,27 @@ public class UpdateProfileRequest
     public string? PhoneNumber { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public string? Gender { get; set; }
+    public string? TravelPreferences { get; set; }
+}
+
+public class AccountActivityDto
+{
+    public Guid Id { get; set; }
+    public string Action { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? IPAddress { get; set; }
+    public DateTime Timestamp { get; set; }
+}
+
+public class UpdateAddressRequest
+{
+    public Guid AddressId { get; set; }
+    public string AddressLine { get; set; } = string.Empty;
+    public string? Ward { get; set; }
+    public string? District { get; set; }
+    public string City { get; set; } = string.Empty;
+    public string Country { get; set; } = "Vietnam";
+    public bool IsDefault { get; set; } = false;
 }
 
 public class AddressDto

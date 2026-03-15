@@ -41,6 +41,7 @@ public class KarnelTravelsDbContext : DbContext
     public DbSet<TourGuide> TourGuides => Set<TourGuide>();
     public DbSet<TourImage> TourImages => Set<TourImage>();
     public DbSet<SearchHistory> SearchHistories => Set<SearchHistory>();
+    public DbSet<AccountActivity> AccountActivities => Set<AccountActivity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -347,6 +348,18 @@ public class KarnelTravelsDbContext : DbContext
         modelBuilder.Entity<TourGuide>(entity =>
         {
             entity.HasIndex(e => e.Email).IsUnique();
+        });
+
+        // AccountActivity
+        modelBuilder.Entity<AccountActivity>(entity =>
+        {
+            entity.HasIndex(e => e.UserId);
+            entity.HasIndex(e => e.Action);
+            entity.HasIndex(e => e.CreatedAt);
+            entity.HasOne(a => a.User)
+                .WithMany()
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
