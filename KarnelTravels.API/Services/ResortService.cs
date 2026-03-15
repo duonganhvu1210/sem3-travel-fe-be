@@ -593,10 +593,10 @@ public class ResortService : IResortService
             amenities = System.Text.Json.JsonSerializer.Deserialize<List<string>>(resort.Amenities);
         }
 
-        List<ResortServiceDto>? services = null;
+        List<string>? activities = null;
         if (!string.IsNullOrEmpty(resort.Activities))
         {
-            services = System.Text.Json.JsonSerializer.Deserialize<List<ResortServiceDto>>(resort.Activities);
+            activities = System.Text.Json.JsonSerializer.Deserialize<List<string>>(resort.Activities);
         }
 
         List<ComboPackageDto>? packages = null;
@@ -618,8 +618,8 @@ public class ResortService : IResortService
             MinPrice = resort.MinPrice,
             MaxPrice = resort.MaxPrice,
             Amenities = amenities,
-            Activities = resort.Activities != null ? System.Text.Json.JsonSerializer.Deserialize<List<string>>(resort.Activities) : null,
-            Services = services,
+            Activities = activities,
+            Services = null,
             Packages = packages,
             Rooms = resort.Rooms?.Where(r => !r.IsDeleted).Select(MapRoomToDto).ToList(),
             Rating = resort.Rating,

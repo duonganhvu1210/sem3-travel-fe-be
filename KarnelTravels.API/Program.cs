@@ -128,30 +128,8 @@ static async Task SeedDataAsync(WebApplication app)
     // Ensure database is created
     await context.Database.EnsureCreatedAsync();
     
-    // Seed Admin Account if not exists
-    var adminEmail = "admin@karneltravels.com";
-    var existingAdmin = await context.Users.FirstOrDefaultAsync(u => u.Email == adminEmail);
+    // Seed all data
+    await DataSeeder.SeedAsync(context);
     
-    if (existingAdmin == null)
-    {
-        var adminUser = new KarnelTravels.API.Entities.User
-        {
-            Id = Guid.NewGuid(),
-            Email = adminEmail,
-            FullName = "Administrator",
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
-            PhoneNumber = "0123456789",
-            Role = KarnelTravels.API.Entities.UserRole.Admin,
-            IsEmailVerified = true,
-            IsLocked = false,
-            CreatedAt = DateTime.UtcNow
-        };
-        
-        context.Users.Add(adminUser);
-        await context.SaveChangesAsync();
-        
-        Console.WriteLine("Admin account seeded successfully!");
-        Console.WriteLine($"Email: {adminEmail}");
-        Console.WriteLine("Password: Admin@123");
-    }
+    Console.WriteLine("Database seeded successfully!");
 }
