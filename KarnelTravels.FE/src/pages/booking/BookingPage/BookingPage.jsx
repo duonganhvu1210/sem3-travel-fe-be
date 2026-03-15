@@ -164,18 +164,16 @@ const ReviewStep = ({ serviceInfo, pricing, setPricing, onNext, onPrev }) => {
   }, [serviceInfo]);
 
   const calculatePrice = async () => {
-    try {
-      const nights = serviceInfo.endDate && serviceInfo.serviceDate
-        ? Math.ceil((new Date(serviceInfo.endDate) - new Date(serviceInfo.serviceDate)) / (1000 * 60 * 60 * 24))
-        : 1;
+    if (!serviceInfo.serviceId) return;
 
+    try {
       const response = await api.post('/bookings/calculate-price', {
-        serviceType: serviceInfo.serviceType,
-        serviceId: serviceInfo.serviceId,
-        quantity: serviceInfo.quantity,
-        serviceDate: serviceInfo.serviceDate,
-        endDate: serviceInfo.endDate,
-        couponCode: pricing.couponCode
+        ServiceType: serviceInfo.serviceType,
+        ServiceId: serviceInfo.serviceId,
+        Quantity: serviceInfo.quantity,
+        ServiceDate: serviceInfo.serviceDate || null,
+        EndDate: serviceInfo.endDate || null,
+        CouponCode: pricing.couponCode || null
       });
 
       if (response.data.success) {
@@ -609,26 +607,27 @@ const BookingPage = () => {
     setLoading(true);
 
     try {
-      // Map serviceType to correct ID field
-      const getServiceIdField = (type) => {
-        switch (type) {
-          case 'tour': return { TourPackageId: serviceInfo.serviceId };
-          case 'hotel': return { HotelId: serviceInfo.serviceId };
-          case 'resort': return { ResortId: serviceInfo.serviceId };
-          case 'transport': return { TransportId: serviceInfo.serviceId };
-          case 'restaurant': return { RestaurantId: serviceInfo.serviceId };
-          default: return {};
-        }
-      };
+      // Validate required fields
+      if (!serviceInfo.serviceId) {
+        alert('Không tìm thấy thông tin dịch vụ. Vui lòng chọn lại dịch vụ.');
+        setLoading(false);
+        return;
+      }
+
+      if (!serviceInfo.serviceDate) {
+        alert('Vui lòng chọn ngày sử dụng dịch vụ.');
+        setLoading(false);
+        return;
+      }
 
       // Build request body matching backend's CreateBookingRequest DTO
       const bookingData = {
-        Type: serviceInfo.serviceType,
-        ...getServiceIdField(serviceInfo.serviceType),
-        ServiceDate: serviceInfo.serviceDate ? new Date(serviceInfo.serviceDate).toISOString() : null,
+        ServiceType: serviceInfo.serviceType,
+        ServiceId: serviceInfo.serviceId, // Should be a valid GUID
+        ServiceDate: new Date(serviceInfo.serviceDate).toISOString(),
         EndDate: serviceInfo.endDate ? new Date(serviceInfo.endDate).toISOString() : null,
-        Quantity: serviceInfo.quantity,
-        PromoCode: pricing.couponCode || null,
+        Quantity: serviceInfo.quantity || 1,
+        CouponCode: pricing.couponCode || null,
         ContactName: contactInfo.name,
         ContactEmail: contactInfo.email,
         ContactPhone: contactInfo.phone,

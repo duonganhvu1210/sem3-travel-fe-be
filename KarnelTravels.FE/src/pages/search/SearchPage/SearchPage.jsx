@@ -717,7 +717,14 @@ const SearchPage = () => {
                           {/* Actions */}
                           <div className="flex gap-2">
                             <Link
-                              to={item.type === 'hotel' ? `/info/hotels/${item.hotelId}` : `/info/destinations/${itemId}`}
+                              to={
+                                item.type === 'hotel' ? `/info/hotels/${item.hotelId}` :
+                                item.type === 'tour' ? `/info/tours/${item.tourId || itemId}` :
+                                item.type === 'resort' ? `/info/resorts/${item.resortId || itemId}` :
+                                item.type === 'transport' ? `/info/transports/${item.transportId || itemId}` :
+                                item.type === 'restaurant' ? `/info/restaurants/${item.restaurantId || itemId}` :
+                                `/info/tourist-spots/${itemId}`
+                              }
                               className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 text-center rounded-lg font-medium hover:bg-gray-200 transition-colors"
                             >
                               Xem chi tiết

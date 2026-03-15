@@ -213,6 +213,89 @@ public class BookingsController : ControllerBase
     }
 
     /// <summary>
+    /// Tính giá đặt dịch vụ
+    /// </summary>
+    [HttpPost("calculate-price")]
+    public async Task<ActionResult<ApiResponse<PriceCalculationDto>>> CalculatePrice([FromBody] CalculatePriceRequest request)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ApiResponse<PriceCalculationDto>
+                {
+                    Success = false,
+                    Message = "Dữ liệu không hợp lệ"
+                });
+            }
+
+            var serviceType = request.GetBookingType();
+            var (price, serviceName) = await GetServicePriceAsync(serviceType, request.ServiceId);
+
+            var totalAmount = price * request.Quantity;
+            decimal? discountAmount = null;
+            decimal finalAmount = totalAmount;
+
+            // Apply promotion if provided
+            if (!string.IsNullOrEmpty(request.CouponCode))
+            {
+                var promotion = await _context.Promotions
+                    .FirstOrDefaultAsync(p => p.Code == request.CouponCode && p.IsActive);
+
+                if (promotion != null && promotion.StartDate <= DateTime.UtcNow && promotion.EndDate >= DateTime.UtcNow)
+                {
+                    decimal discount = 0;
+
+                    if (promotion.MinOrderAmount.HasValue && totalAmount < promotion.MinOrderAmount.Value)
+                    {
+                        // Promotion doesn't apply
+                    }
+                    else
+                    {
+                        if (promotion.DiscountType == DiscountType.Percentage)
+                        {
+                            discount = totalAmount * promotion.DiscountValue / 100;
+                            if (promotion.MaxDiscountAmount.HasValue && discount > promotion.MaxDiscountAmount.Value)
+                            {
+                                discount = promotion.MaxDiscountAmount.Value;
+                            }
+                        }
+                        else
+                        {
+                            discount = promotion.DiscountValue;
+                        }
+                    }
+
+                    discountAmount = discount;
+                    finalAmount = totalAmount - discount;
+                }
+            }
+
+            return Ok(new ApiResponse<PriceCalculationDto>
+            {
+                Success = true,
+                Data = new PriceCalculationDto
+                {
+                    ServiceName = serviceName,
+                    UnitPrice = price,
+                    Quantity = request.Quantity,
+                    TotalAmount = totalAmount,
+                    DiscountAmount = discountAmount,
+                    FinalAmount = finalAmount
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<PriceCalculationDto>
+            {
+                Success = false,
+                Message = $"Lỗi tính giá: {ex.Message}"
+            });
+        }
+    }
+
+    /// <summary>
     /// Lấy thông tin đơn đặt theo ID
     /// </summary>
     [HttpGet("{id}")]
@@ -588,4 +671,34 @@ public class BookingResponseDto
 public class CancelBookingRequest
 {
     public string? Reason { get; set; }
+}
+
+public class CalculatePriceRequest
+{
+    public string ServiceType { get; set; } = "tour";
+    public Guid ServiceId { get; set; }
+    public int Quantity { get; set; } = 1;
+    public DateTime? ServiceDate { get; set; }
+    public DateTime? EndDate { get; set; }
+    public string? CouponCode { get; set; }
+
+    public BookingType GetBookingType() => ServiceType?.ToLower() switch
+    {
+        "tour" => BookingType.Tour,
+        "hotel" => BookingType.Hotel,
+        "resort" => BookingType.Resort,
+        "transport" => BookingType.Transport,
+        "restaurant" => BookingType.Restaurant,
+        _ => BookingType.Tour
+    };
+}
+
+public class PriceCalculationDto
+{
+    public string ServiceName { get; set; } = string.Empty;
+    public decimal UnitPrice { get; set; }
+    public int Quantity { get; set; }
+    public decimal TotalAmount { get; set; }
+    public decimal? DiscountAmount { get; set; }
+    public decimal FinalAmount { get; set; }
 }

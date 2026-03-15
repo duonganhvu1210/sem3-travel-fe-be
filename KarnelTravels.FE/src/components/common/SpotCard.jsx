@@ -109,7 +109,7 @@ const SpotCard = ({ spot, onFavorite }) => {
         {/* Actions */}
         <div className="flex gap-2">
           <Link
-            to={`/info/destinations/${spotId}`}
+            to={`/info/tourist-spots/${spotId}`}
             className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 text-center rounded-lg font-medium hover:bg-gray-200 transition-colors"
           >
             Xem chi tiết

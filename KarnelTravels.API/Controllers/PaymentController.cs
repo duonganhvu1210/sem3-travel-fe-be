@@ -1,7 +1,10 @@
 using KarnelTravels.API.DTOs;
 using KarnelTravels.API.Services;
+using KarnelTravels.API.Data;
+using KarnelTravels.API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace KarnelTravels.API.Controllers;
 
@@ -12,11 +15,13 @@ public class PaymentController : ControllerBase
 {
     private readonly IVnPayService _vnPayService;
     private readonly IConfiguration _configuration;
+    private readonly KarnelTravelsDbContext _context;
 
-    public PaymentController(IVnPayService vnPayService, IConfiguration configuration)
+    public PaymentController(IVnPayService vnPayService, IConfiguration configuration, KarnelTravelsDbContext context)
     {
         _vnPayService = vnPayService;
         _configuration = configuration;
+        _context = context;
     }
 
     /// <summary>
@@ -96,8 +101,34 @@ public class PaymentController : ControllerBase
             var responseCode = responseData["vnp_ResponseCode"];
             var transactionStatus = responseData["vnp_TransactionStatus"];
 
-            // Xử lý kết quả thanh toán
-            // TODO: Cập nhật trạng thái đơn hàng trong database
+            // Tìm và cập nhật booking
+            var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.Id == orderId);
+            if (booking != null)
+            {
+                if (responseCode == "00" && transactionStatus == "00")
+                {
+                    // Thanh toán thành công
+                    booking.PaymentStatus = PaymentStatus.Paid;
+                    booking.Status = BookingStatus.Confirmed;
+                    booking.PaymentMethod = "VNPAY";
+                    booking.PaidAt = DateTime.UtcNow;
+                    booking.UpdatedAt = DateTime.UtcNow;
+                    await _context.SaveChangesAsync();
+                    Console.WriteLine($"[Payment] Booking {booking.BookingCode} updated to Paid status");
+                }
+                else
+                {
+                    // Thanh toán thất bại
+                    booking.PaymentStatus = PaymentStatus.Failed;
+                    booking.UpdatedAt = DateTime.UtcNow;
+                    await _context.SaveChangesAsync();
+                    Console.WriteLine($"[Payment] Booking {booking.BookingCode} payment failed");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"[Payment] Booking not found: {orderId}");
+            }
 
             if (responseCode == "00" && transactionStatus == "00")
             {
@@ -165,7 +196,29 @@ public class PaymentController : ControllerBase
 
             bool isSuccess = responseCode == "00" && transactionStatus == "00";
 
-            // TODO: Cập nhật trạng thái đơn hàng trong database
+            // Cập nhật booking trong database
+            var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.Id == orderId);
+            if (booking != null)
+            {
+                if (isSuccess)
+                {
+                    booking.PaymentStatus = PaymentStatus.Paid;
+                    booking.Status = BookingStatus.Confirmed;
+                    booking.PaymentMethod = "VNPAY";
+                    booking.PaidAt = DateTime.UtcNow;
+                }
+                else
+                {
+                    booking.PaymentStatus = PaymentStatus.Failed;
+                }
+                booking.UpdatedAt = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"[Payment Return] Booking {booking.BookingCode} updated. Success: {isSuccess}");
+            }
+            else
+            {
+                Console.WriteLine($"[Payment Return] Booking not found: {orderId}");
+            }
 
             return Ok(new ApiResponse<VnPayReturnResponse>
             {

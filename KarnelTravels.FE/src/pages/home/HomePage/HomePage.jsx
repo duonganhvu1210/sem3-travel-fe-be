@@ -241,7 +241,7 @@ const HomePage = () => {
               ))
             ) : (
               homeData?.featuredSpots?.slice(0, 4).map((spot) => (
-                <Link key={spot.spotId} to={`/info/destinations/${spot.spotId}`}>
+                <Link key={spot.spotId} to={`/info/tourist-spots/${spot.spotId}`}>
                   <Card className="group overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300">
                     <div className="relative h-56 overflow-hidden">
                       <img
@@ -289,7 +289,7 @@ const HomePage = () => {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {homeData.featuredSpots.slice(4, 8).map((spot) => (
-                <Link key={spot.spotId} to={`/info/destinations/${spot.spotId}`}>
+                <Link key={spot.spotId} to={`/info/tourist-spots/${spot.spotId}`}>
                   <Card className="group overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300">
                     <div className="relative h-56 overflow-hidden">
                       <img
