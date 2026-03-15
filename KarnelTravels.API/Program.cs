@@ -59,6 +59,7 @@ builder.Services.AddSignalR();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.AddHostedService<PromotionExpirationService>();
 
 // Add Authentication

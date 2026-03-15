@@ -26,6 +26,7 @@ import HotelDetailPage from '@/pages/info/HotelsPage/HotelDetailPage';
 import SearchPage from '@/pages/search/SearchPage/SearchPage';
 import ContactPage from '@/pages/ContactPage/ContactPage';
 import BookingPage from '@/pages/booking/BookingPage/BookingPage';
+import PaymentReturnPage from '@/pages/booking/PaymentReturnPage/PaymentReturnPage';
 import ProfilePage from '@/pages/profile/ProfilePage/ProfilePage';
 
 // Admin Dashboard
@@ -104,6 +105,7 @@ const AppRoutes = () => {
         <Route path="contact" element={<ContactPage />} />
         <Route path="booking" element={<BookingPage />} />
         <Route path="checkout" element={<BookingPage />} />
+        <Route path="booking/payment-return" element={<PaymentReturnPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="bookings" element={<BookingsPage />} />
         <Route path="promotions" element={<PromotionsPage />} />

@@ -632,14 +632,16 @@ const BookingPage = () => {
 
       const newBooking = createResponse.data.data;
 
-      // Process payment
-      const paymentResponse = await api.post(`/bookings/${newBooking.bookingId}/payment`, {
-        paymentMethod: 'online'
+      // Process payment with VNPAY
+      const paymentResponse = await api.post('/payment/vnpay', {
+        orderId: newBooking.bookingId,
+        amount: pricing.finalAmount,
+        orderDescription: `Thanh toán đơn hàng ${newBooking.bookingId} - ${serviceInfo.serviceName}`
       });
 
-      if (paymentResponse.data.success) {
-        setBooking(paymentResponse.data.data);
-        setCurrentStep(4);
+      if (paymentResponse.data.success && paymentResponse.data.data.paymentUrl) {
+        // Redirect to VNPAY payment page
+        window.location.href = paymentResponse.data.data.paymentUrl;
       } else {
         // If payment fails but booking created, show pending
         setBooking(newBooking);
