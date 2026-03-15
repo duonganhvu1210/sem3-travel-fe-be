@@ -28,6 +28,7 @@ import ContactPage from '@/pages/ContactPage/ContactPage';
 import BookingPage from '@/pages/booking/BookingPage/BookingPage';
 import PaymentReturnPage from '@/pages/booking/PaymentReturnPage/PaymentReturnPage';
 import ProfilePage from '@/pages/profile/ProfilePage/ProfilePage';
+import MyOrdersPage from '@/pages/orders/MyOrdersPage/MyOrdersPage';
 
 // Admin Dashboard
 import DashboardPage from '@/pages/admin/dashboard/DashboardPage';
@@ -107,7 +108,8 @@ const AppRoutes = () => {
         <Route path="checkout" element={<BookingPage />} />
         <Route path="booking/payment-return" element={<PaymentReturnPage />} />
         <Route path="profile" element={<ProfilePage />} />
-        <Route path="bookings" element={<BookingsPage />} />
+        <Route path="my-orders" element={<MyOrdersPage />} />
+        <Route path="bookings" element={<MyOrdersPage />} />
         <Route path="promotions" element={<PromotionsPage />} />
         <Route path="contacts" element={<ContactsPage />} />
         <Route path="wishlist" element={<WishlistPage />} />

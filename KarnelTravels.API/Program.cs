@@ -60,7 +60,9 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddHostedService<PromotionExpirationService>();
+builder.Services.AddHostedService<BookingReminderService>();
 
 // Add Authentication
 builder.Services.AddAuthentication(options =>

@@ -609,35 +609,57 @@ const BookingPage = () => {
     setLoading(true);
 
     try {
+      // Map serviceType to correct ID field
+      const getServiceIdField = (type) => {
+        switch (type) {
+          case 'tour': return { TourPackageId: serviceInfo.serviceId };
+          case 'hotel': return { HotelId: serviceInfo.serviceId };
+          case 'resort': return { ResortId: serviceInfo.serviceId };
+          case 'transport': return { TransportId: serviceInfo.serviceId };
+          case 'restaurant': return { RestaurantId: serviceInfo.serviceId };
+          default: return {};
+        }
+      };
+
+      // Build request body matching backend's CreateBookingRequest DTO
+      const bookingData = {
+        Type: serviceInfo.serviceType,
+        ...getServiceIdField(serviceInfo.serviceType),
+        ServiceDate: serviceInfo.serviceDate ? new Date(serviceInfo.serviceDate).toISOString() : null,
+        EndDate: serviceInfo.endDate ? new Date(serviceInfo.endDate).toISOString() : null,
+        Quantity: serviceInfo.quantity,
+        PromoCode: pricing.couponCode || null,
+        ContactName: contactInfo.name,
+        ContactEmail: contactInfo.email,
+        ContactPhone: contactInfo.phone,
+        Notes: contactInfo.notes || null,
+        UserId: '00000000-0000-0000-0000-000000000001' // Demo user
+      };
+
+      console.log('Sending booking request:', bookingData);
+
       // Create booking
-      const createResponse = await api.post('/bookings', {
-        serviceType: serviceInfo.serviceType,
-        serviceId: serviceInfo.serviceId,
-        serviceDate: serviceInfo.serviceDate,
-        endDate: serviceInfo.endDate,
-        quantity: serviceInfo.quantity,
-        couponCode: pricing.couponCode || null,
-        contactName: contactInfo.name,
-        contactEmail: contactInfo.email,
-        contactPhone: contactInfo.phone,
-        notes: contactInfo.notes || null,
-        userId: '00000000-0000-0000-0000-000000000001' // Demo user
-      });
+      const createResponse = await api.post('/bookings', bookingData);
 
       if (!createResponse.data.success) {
+        console.error('Booking failed:', createResponse.data);
         alert(createResponse.data.message || 'Có lỗi xảy ra');
         setLoading(false);
         return;
       }
 
       const newBooking = createResponse.data.data;
+      console.log('Booking created:', newBooking);
 
       // Process payment with VNPAY
+      console.log('Creating payment for:', { orderId: newBooking.bookingId, amount: pricing.finalAmount });
       const paymentResponse = await api.post('/payment/vnpay', {
         orderId: newBooking.bookingId,
         amount: pricing.finalAmount,
         orderDescription: `Thanh toán đơn hàng ${newBooking.bookingId} - ${serviceInfo.serviceName}`
       });
+      
+      console.log('Payment response:', paymentResponse.data);
 
       if (paymentResponse.data.success && paymentResponse.data.data.paymentUrl) {
         // Redirect to VNPAY payment page
@@ -649,7 +671,8 @@ const BookingPage = () => {
       }
     } catch (error) {
       console.error('Booking error:', error);
-      alert('Có lỗi xảy ra. Vui lòng thử lại.');
+      console.error('Error response:', error.response?.data);
+      alert(error.response?.data?.message || 'Có lỗi xảy ra. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }
