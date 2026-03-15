@@ -12,10 +12,12 @@ import ForbiddenPage from '@/pages/error/ForbiddenPage/ForbiddenPage';
 
 // Pages
 import HomePage from '@/pages/home/HomePage/HomePage';
+import InformationPage from '@/pages/info/InformationPage/InformationPage';
+import TouristSpotsPage from '@/pages/info/TouristSpotsPage/TouristSpotsPage';
+import TouristSpotDetailPage from '@/pages/info/TouristSpotDetailPage/TouristSpotDetailPage';
 
 // Admin Dashboard
 import DashboardPage from '@/pages/admin/dashboard/DashboardPage';
-import TouristSpotsPage from '@/pages/admin/tourist-spots/TouristSpotsPage';
 
 const AboutPage = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -47,11 +49,7 @@ const WishlistPage = () => (
   </div>
 );
 
-const DestinationsPage = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Điểm du lịch</h1>
-  </div>
-);
+const DestinationsPage = () => <TouristSpotsPage />;
 
 const HotelsPage = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -123,6 +121,7 @@ const AppRoutes = () => {
       {/* ==================== MAIN LAYOUT (User - Protected) ==================== */}
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="info" element={<InformationPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="search" element={<SearchPage />} />
         <Route path="contact" element={<ContactPage />} />
@@ -132,6 +131,7 @@ const AppRoutes = () => {
         <Route path="contacts" element={<ContactsPage />} />
         <Route path="wishlist" element={<WishlistPage />} />
         <Route path="info/destinations" element={<DestinationsPage />} />
+        <Route path="info/destinations/:id" element={<TouristSpotDetailPage />} />
         <Route path="info/tours" element={<ToursPage />} />
         <Route path="info/hotels" element={<HotelsPage />} />
         <Route path="info/restaurants" element={<RestaurantsPage />} />
