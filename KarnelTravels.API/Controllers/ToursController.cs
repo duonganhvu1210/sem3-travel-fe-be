@@ -26,6 +26,9 @@ public class ToursController : ControllerBase
         [FromQuery] decimal? minPrice,
         [FromQuery] decimal? maxPrice,
         [FromQuery] int? duration,
+        [FromQuery] double? rating,
+        [FromQuery] string? sortBy,
+        [FromQuery] string? sortOrder = "ASC",
         [FromQuery] int pageIndex = 1,
         [FromQuery] int pageSize = 10)
     {
@@ -45,6 +48,15 @@ public class ToursController : ControllerBase
 
         if (duration.HasValue)
             query = query.Where(t => t.DurationDays == duration.Value);
+
+        // Sort
+        query = sortBy?.ToLower() switch
+        {
+            "name" => sortOrder == "DESC" ? query.OrderByDescending(t => t.Name) : query.OrderBy(t => t.Name),
+            "price-asc" => query.OrderBy(t => t.Price),
+            "price-desc" => query.OrderByDescending(t => t.Price),
+            _ => query.OrderByDescending(t => t.Rating)
+        };
 
         var totalCount = await query.CountAsync();
         var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();

@@ -143,9 +143,8 @@ const SearchPage = () => {
         if (min) params.minPrice = min;
         if (max) params.maxPrice = max;
       }
-      if (starRating) params.rating = starRating;
-      if (selectedAmenities.length > 0) params.amenities = selectedAmenities.join(',');
-      if (showOnlyDiscount) params.hasDiscount = true;
+      if (starRating) params.starRating = starRating;
+      if (sortBy && sortBy !== 'relevance') params.sortBy = sortBy;
 
       let response;
       
@@ -251,10 +250,15 @@ const SearchPage = () => {
   };
 
   const toggleCompareItem = (item) => {
+    const itemId = item.spotId || item.SpotId || item.hotelId || item.HotelId || item.tourId || item.TourId || item.id;
     setCompareItems(prev => {
-      const exists = prev.find(i => i.id === item.id || i.spotId === item.spotId || i.hotelId === item.hotelId);
+      const exists = prev.find(i => 
+        (i.spotId || i.SpotId || i.hotelId || i.HotelId || i.tourId || i.TourId || i.id) === itemId
+      );
       if (exists) {
-        return prev.filter(i => i.id !== item.id && i.spotId !== item.spotId && i.hotelId !== item.hotelId);
+        return prev.filter(i => 
+          (i.spotId || i.SpotId || i.hotelId || i.HotelId || i.tourId || i.TourId || i.id) !== itemId
+        );
       }
       if (prev.length >= 3) return prev;
       return [...prev, item];
@@ -553,7 +557,7 @@ const SearchPage = () => {
                     <div key={index} className="relative p-4 bg-gray-50 rounded-xl">
                       <button
                         onClick={() => toggleCompareItem(item)}
-                        className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center"
+                        className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center cursor-pointer hover:scale-110 z-10"
                       >
                         <X className="w-3 h-3" />
                       </button>
@@ -616,9 +620,9 @@ const SearchPage = () => {
                     : 'grid-cols-1'
                 }`}>
                   {results.map((item) => {
-                    const itemId = item.spotId || item.hotelId || item.tourId || item.id;
+                    const itemId = item.spotId || item.SpotId || item.hotelId || item.HotelId || item.tourId || item.TourId || item.id;
                     const isInCompare = compareItems.some(
-                      i => (i.spotId || i.hotelId || i.tourId || i.id) === itemId
+                      i => (i.spotId || i.SpotId || i.hotelId || i.HotelId || i.tourId || i.TourId || i.id) === itemId
                     );
 
                     return (
@@ -648,15 +652,21 @@ const SearchPage = () => {
 
                           {/* Actions */}
                           <div className="absolute top-3 right-3 flex gap-2">
-                            <button
-                              onClick={() => toggleCompareItem(item)}
-                              className={`w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center transition-colors ${
+                              <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleCompareItem(item);
+                              }}
+                              className={`w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center transition-colors cursor-pointer hover:scale-110 z-10 ${
                                 isInCompare ? 'text-primary' : 'text-gray-400 hover:text-primary'
                               }`}
                             >
                               <ArrowLeftRight className="w-4 h-4" />
                             </button>
-                            <button className="w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+                            <button 
+                              onClick={(e) => e.stopPropagation()}
+                              className="w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors cursor-pointer hover:scale-110 z-10"
+                            >
                               <Heart className="w-4 h-4" />
                             </button>
                           </div>

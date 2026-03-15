@@ -26,6 +26,10 @@ public class TouristSpotsController : ControllerBase
         [FromQuery] string? type,
         [FromQuery] string? sortBy,
         [FromQuery] string? sortOrder = "ASC",
+        [FromQuery] decimal? minPrice,
+        [FromQuery] decimal? maxPrice,
+        [FromQuery] double? rating,
+        [FromQuery] bool? hasDiscount,
         [FromQuery] int pageIndex = 1,
         [FromQuery] int pageSize = 10)
     {
@@ -40,11 +44,25 @@ public class TouristSpotsController : ControllerBase
         if (!string.IsNullOrEmpty(type))
             query = query.Where(s => s.Type == type);
 
+        if (minPrice.HasValue)
+            query = query.Where(s => s.TicketPrice >= minPrice.Value);
+
+        if (maxPrice.HasValue)
+            query = query.Where(s => s.TicketPrice <= maxPrice.Value);
+
+        if (rating.HasValue)
+            query = query.Where(s => s.Rating >= rating.Value);
+
+        if (hasDiscount == true)
+            query = query.Where(s => s.TicketPrice > 0); // Places with price have "discounts" conceptually
+
         query = sortBy?.ToLower() switch
         {
             "name" => sortOrder == "DESC" ? query.OrderByDescending(s => s.Name) : query.OrderBy(s => s.Name),
             "rating" => sortOrder == "DESC" ? query.OrderByDescending(s => s.Rating) : query.OrderBy(s => s.Rating),
-            _ => query.OrderBy(s => s.Name)
+            "price-asc" => query.OrderBy(s => s.TicketPrice),
+            "price-desc" => query.OrderByDescending(s => s.TicketPrice),
+            _ => query.OrderByDescending(s => s.Rating)
         };
 
         var totalCount = await query.CountAsync();

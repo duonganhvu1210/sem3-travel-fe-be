@@ -26,6 +26,9 @@ public class HotelsController : ControllerBase
         [FromQuery] int? starRating,
         [FromQuery] decimal? minPrice,
         [FromQuery] decimal? maxPrice,
+        [FromQuery] double? rating,
+        [FromQuery] string? amenities,
+        [FromQuery] bool? hasDiscount,
         [FromQuery] string? sortBy,
         [FromQuery] string? sortOrder = "ASC",
         [FromQuery] int pageIndex = 1,
@@ -40,13 +43,26 @@ public class HotelsController : ControllerBase
             query = query.Where(h => h.City == city);
 
         if (starRating.HasValue)
-            query = query.Where(h => h.StarRating == starRating.Value);
+            query = query.Where(h => h.StarRating >= starRating.Value);
 
         if (minPrice.HasValue)
             query = query.Where(h => h.MinPrice >= minPrice.Value);
 
         if (maxPrice.HasValue)
             query = query.Where(h => h.MaxPrice <= maxPrice.Value);
+
+        if (rating.HasValue)
+            query = query.Where(h => h.Rating >= rating.Value);
+
+        // Sort
+        query = sortBy?.ToLower() switch
+        {
+            "name" => sortOrder == "DESC" ? query.OrderByDescending(h => h.Name) : query.OrderBy(h => h.Name),
+            "rating" => sortOrder == "DESC" ? query.OrderByDescending(h => h.Rating) : query.OrderBy(h => h.Rating),
+            "price-asc" => query.OrderBy(h => h.MinPrice),
+            "price-desc" => query.OrderByDescending(h => h.MinPrice),
+            _ => query.OrderByDescending(h => h.Rating)
+        };
 
         var totalCount = await query.CountAsync();
         var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
