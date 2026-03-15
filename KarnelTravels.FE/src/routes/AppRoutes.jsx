@@ -87,11 +87,7 @@ const AdminDashboard = () => <DashboardPage />;
 
 const AdminUsers = () => <UsersManagement />;
 
-const AdminBookings = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Quản lý đặt tour</h1>
-  </div>
-);
+const AdminBookings = () => <BookingsPage />;
 
 const AdminDestinations = () => <TouristSpotsPage />;
 
@@ -154,7 +150,6 @@ const AppRoutes = () => {
         <Route path="tours" element={<AdminTours />} />
         <Route path="hotels" element={<AdminHotels />} />
         <Route path="hotels/:hotelId/rooms" element={<RoomDetailsPage />} />
-        <Route path="bookings" element={<BookingsPage />} />
         <Route path="promotions" element={<PromotionsPage />} />
         <Route path="contacts" element={<ContactsPage />} />
         <Route path="restaurants" element={<AdminRestaurants />} />
