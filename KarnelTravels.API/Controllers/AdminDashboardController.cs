@@ -198,7 +198,7 @@ public class AdminDashboardController : ControllerBase
                 Email = c.Email,
                 PhoneNumber = c.PhoneNumber,
                 ServiceType = c.ServiceType,
-                Message = c.Message,
+                Message = c.MessageContent,
                 CreatedAt = c.CreatedAt
             })
             .ToListAsync();

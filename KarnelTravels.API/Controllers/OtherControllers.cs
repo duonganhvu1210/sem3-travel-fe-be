@@ -115,9 +115,9 @@ public class ContactsController : ControllerBase
             PhoneNumber = request.PhoneNumber,
             Address = request.Address,
             ServiceType = request.ServiceType,
-            PreferredDate = request.PreferredDate,
-            NumberOfPeople = request.NumberOfPeople,
-            Message = request.Message,
+            ExpectedDate = request.ExpectedDate,
+            ParticipantCount = request.ParticipantCount,
+            MessageContent = request.MessageContent,
             Status = ContactStatus.Unread
         };
 
@@ -136,9 +136,9 @@ public class ContactsController : ControllerBase
                 PhoneNumber = contact.PhoneNumber,
                 Address = contact.Address,
                 ServiceType = contact.ServiceType,
-                PreferredDate = contact.PreferredDate,
-                NumberOfPeople = contact.NumberOfPeople,
-                Message = contact.Message,
+                ExpectedDate = contact.ExpectedDate,
+                ParticipantCount = contact.ParticipantCount,
+                MessageContent = contact.MessageContent,
                 Status = contact.Status.ToString(),
                 CreatedAt = contact.CreatedAt
             }

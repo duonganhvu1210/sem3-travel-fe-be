@@ -74,7 +74,7 @@ public class AdminContactsController : ControllerBase
             Email = c.Email,
             Subject = c.Subject,
             PhoneNumber = c.PhoneNumber,
-            Message = c.Message,
+            Message = c.MessageContent,
             IsRead = c.Status == ContactStatus.Read || c.Status == ContactStatus.Replied || c.Status == ContactStatus.Closed,
             Status = c.Status,
             ReplyMessage = c.ReplyMessage,
@@ -126,9 +126,9 @@ public class AdminContactsController : ControllerBase
             PhoneNumber = contact.PhoneNumber,
             Address = contact.Address,
             ServiceType = contact.ServiceType,
-            PreferredDate = contact.PreferredDate,
-            NumberOfPeople = contact.NumberOfPeople,
-            Message = contact.Message,
+            ExpectedDate = contact.ExpectedDate,
+            ParticipantCount = contact.ParticipantCount,
+            Message = contact.MessageContent,
             IsRead = contact.Status == ContactStatus.Read || contact.Status == ContactStatus.Replied || contact.Status == ContactStatus.Closed,
             Status = contact.Status,
             ReplyMessage = contact.ReplyMessage,
@@ -184,7 +184,7 @@ public class AdminContactsController : ControllerBase
             Email = contact.Email,
             Subject = contact.Subject,
             PhoneNumber = contact.PhoneNumber,
-            Message = contact.Message,
+            Message = contact.MessageContent,
             IsRead = contact.Status == ContactStatus.Read || contact.Status == ContactStatus.Replied || contact.Status == ContactStatus.Closed,
             Status = contact.Status,
             ReplyMessage = contact.ReplyMessage,
@@ -233,7 +233,7 @@ public class AdminContactsController : ControllerBase
             contact.FullName,
             contact.Subject ?? "Phản hồi từ Karnel Travels",
             request.ReplyMessage,
-            contact.Message
+            contact.MessageContent
         );
 
         if (!emailSent)
@@ -260,7 +260,7 @@ public class AdminContactsController : ControllerBase
             Email = contact.Email,
             Subject = contact.Subject,
             PhoneNumber = contact.PhoneNumber,
-            Message = contact.Message,
+            Message = contact.MessageContent,
             IsRead = true,
             Status = contact.Status,
             ReplyMessage = contact.ReplyMessage,
@@ -353,7 +353,7 @@ public class AdminContactsController : ControllerBase
                 _ => c.Status.ToString()
             };
 
-            csv.AppendLine($"\"{c.FullName}\",\"{c.Email}\",\"{c.PhoneNumber ?? ""}\",\"{c.Subject ?? ""}\",\"{c.Message.Replace("\"", "\"\"")}\",\"{statusText}\",\"{c.CreatedAt:dd/MM/yyyy}\",\"{c.RepliedAt:dd/MM/yyyy HH:mm}\"");
+            csv.AppendLine($"\"{c.FullName}\",\"{c.Email}\",\"{c.PhoneNumber ?? ""}\",\"{c.Subject ?? ""}\",\"{c.MessageContent.Replace("\"", "\"\"")}\",\"{statusText}\",\"{c.CreatedAt:dd/MM/yyyy}\",\"{c.RepliedAt:dd/MM/yyyy HH:mm}\"");
         }
 
         var bytes = System.Text.Encoding.UTF8.GetBytes(csv.ToString());
@@ -411,8 +411,8 @@ public class AdminContactDetailDto : AdminContactDto
 {
     public string? Address { get; set; }
     public string? ServiceType { get; set; }
-    public DateTime? PreferredDate { get; set; }
-    public int? NumberOfPeople { get; set; }
+    public DateTime? ExpectedDate { get; set; }
+    public int? ParticipantCount { get; set; }
     public string? UserName { get; set; }
     public string? UserEmail { get; set; }
 }
