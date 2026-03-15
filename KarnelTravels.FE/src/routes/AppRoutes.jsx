@@ -73,6 +73,8 @@ const ResortsPage = () => (
 
 // Admin Pages
 import AdminHotelsPage from '@/pages/admin/hotels/HotelsPage';
+import AdminRestaurantsPage from '@/pages/admin/restaurants/RestaurantsPage';
+import AdminResortsPage from '@/pages/admin/resorts/ResortsPage';
 import RoomDetailsPage from '@/pages/admin/hotels/RoomDetailsPage';
 import BookingsPage from '@/pages/admin/bookings/BookingsPage';
 import PromotionsPage from '@/pages/admin/promotions/PromotionsPage';
@@ -97,17 +99,9 @@ const AdminTours = () => <ToursPage />;
 
 const AdminHotels = () => <AdminHotelsPage />;
 
-const AdminRestaurants = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Quản lý nhà hàng</h1>
-  </div>
-);
+const AdminRestaurants = () => <AdminRestaurantsPage />;
 
-const AdminResorts = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Quản lý resort</h1>
-  </div>
-);
+const AdminResorts = () => <AdminResortsPage />;
 
 const AdminTransports = () => <TransportsPage />;
 

@@ -960,26 +960,6 @@ public class UpdateHotelRoomRequest
     public int TotalRooms { get; set; }
 }
 
-public class RoomAvailabilityDto
-{
-    public DateTime Date { get; set; }
-    public int AvailableRooms { get; set; }
-    public decimal Price { get; set; }
-    public bool IsAvailable { get; set; }
-}
-
-public class UpdateRoomAvailabilityRequest
-{
-    public List<RoomAvailabilityUpdateItem> Availabilities { get; set; } = new();
-}
-
-public class RoomAvailabilityUpdateItem
-{
-    public DateTime Date { get; set; }
-    public int AvailableRooms { get; set; }
-    public decimal Price { get; set; }
-}
-
 public class HotelReviewDto
 {
     public Guid ReviewId { get; set; }

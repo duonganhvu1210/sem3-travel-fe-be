@@ -46,23 +46,6 @@ public class ImageUploadResult
     public string FileName { get; set; } = string.Empty;
 }
 
-public class CreateRestaurantRequest
-{
-    public string Name { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    public string? Address { get; set; }
-    public string City { get; set; } = string.Empty;
-    public string CuisineType { get; set; } = string.Empty;
-    public string PriceLevel { get; set; } = "Budget";
-    public string Style { get; set; } = "Restaurant";
-    public string? OpeningTime { get; set; }
-    public string? ClosingTime { get; set; }
-    public string? ContactPhone { get; set; }
-    public List<string>? Images { get; set; }
-    public bool HasReservation { get; set; } = true;
-    public bool IsFeatured { get; set; } = false;
-}
-
 // Hotel DTOs
 public class HotelDto
 {
@@ -128,87 +111,6 @@ public class CreateHotelRequest
     public string? CheckOutTime { get; set; }
     public bool IsFeatured { get; set; } = false;
     public List<CreateHotelRoomRequest>? Rooms { get; set; }
-}
-
-// Restaurant DTOs
-public class RestaurantDto
-{
-    public Guid RestaurantId { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    public string? Address { get; set; }
-    public string City { get; set; } = string.Empty;
-    public string CuisineType { get; set; } = string.Empty;
-    public string PriceLevel { get; set; } = string.Empty;
-    public string Style { get; set; } = string.Empty;
-    public string? OpeningTime { get; set; }
-    public string? ClosingTime { get; set; }
-    public string? ContactPhone { get; set; }
-    public List<string>? Images { get; set; }
-    public bool HasReservation { get; set; }
-    public double Rating { get; set; }
-    public int ReviewCount { get; set; }
-    public bool IsFeatured { get; set; }
-}
-
-// Resort DTOs
-public class ResortDto
-{
-    public Guid ResortId { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    public string? Address { get; set; }
-    public string City { get; set; } = string.Empty;
-    public string LocationType { get; set; } = string.Empty;
-    public int StarRating { get; set; }
-    public List<string>? Images { get; set; }
-    public decimal? MinPrice { get; set; }
-    public decimal? MaxPrice { get; set; }
-    public List<string>? Amenities { get; set; }
-    public double Rating { get; set; }
-    public int ReviewCount { get; set; }
-    public bool IsFeatured { get; set; }
-}
-
-public class ResortRoomDto
-{
-    public Guid RoomId { get; set; }
-    public string RoomType { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    public int MaxOccupancy { get; set; }
-    public decimal PricePerNight { get; set; }
-    public string? BedType { get; set; }
-    public List<string>? RoomAmenities { get; set; }
-    public List<string>? Images { get; set; }
-    public int TotalRooms { get; set; }
-    public int AvailableRooms { get; set; }
-}
-
-public class CreateResortRequest
-{
-    public string Name { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    public string? Address { get; set; }
-    public string City { get; set; } = string.Empty;
-    public string LocationType { get; set; } = string.Empty;
-    public int StarRating { get; set; } = 3;
-    public List<string>? Images { get; set; }
-    public decimal? MinPrice { get; set; }
-    public decimal? MaxPrice { get; set; }
-    public List<string>? Amenities { get; set; }
-    public bool IsFeatured { get; set; } = false;
-}
-
-public class CreateResortRoomRequest
-{
-    public string RoomType { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    public int MaxOccupancy { get; set; } = 2;
-    public decimal PricePerNight { get; set; }
-    public string? BedType { get; set; }
-    public List<string>? RoomAmenities { get; set; }
-    public List<string>? Images { get; set; }
-    public int TotalRooms { get; set; }
 }
 
 // Transport DTOs
@@ -853,4 +755,448 @@ public class UpdateTourImageRequest
     public string? Caption { get; set; }
     public int? DisplayOrder { get; set; }
     public bool? IsPrimary { get; set; }
+}
+
+// ==================== Restaurant Management DTOs ====================
+
+// Restaurant with Menu and Reviews
+public class RestaurantDto
+{
+    public Guid RestaurantId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? Address { get; set; }
+    public string City { get; set; } = string.Empty;
+    public string CuisineType { get; set; } = string.Empty;
+    public string PriceLevel { get; set; } = "Budget";
+    public string Style { get; set; } = "Restaurant";
+    public string? OpeningTime { get; set; }
+    public string? ClosingTime { get; set; }
+    public string? ContactPhone { get; set; }
+    public List<string>? Images { get; set; }
+    public List<MenuItemDto>? Menu { get; set; }
+    public bool HasReservation { get; set; } = true;
+    public double Rating { get; set; }
+    public int ReviewCount { get; set; }
+    public bool IsFeatured { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public bool IsOpen => IsCurrentlyOpen();
+    
+    private bool IsCurrentlyOpen()
+    {
+        if (string.IsNullOrEmpty(OpeningTime) || string.IsNullOrEmpty(ClosingTime))
+            return false;
+            
+        if (!TimeSpan.TryParse(OpeningTime, out var openTime) || 
+            !TimeSpan.TryParse(ClosingTime, out var closeTime))
+            return false;
+            
+        var now = DateTime.Now.TimeOfDay;
+        return now >= openTime && now <= closeTime;
+    }
+}
+
+public class CreateRestaurantRequest
+{
+    [Required]
+    [MaxLength(200)]
+    public string Name { get; set; } = string.Empty;
+
+    [MaxLength(2000)]
+    public string? Description { get; set; }
+
+    [MaxLength(500)]
+    public string? Address { get; set; }
+
+    [Required]
+    [MaxLength(100)]
+    public string City { get; set; } = string.Empty;
+
+    public CuisineType CuisineType { get; set; } = CuisineType.Vietnamese;
+    public PriceRange PriceLevel { get; set; } = PriceRange.Budget;
+    public RestaurantStyle Style { get; set; } = RestaurantStyle.Restaurant;
+    
+    public string? OpeningTime { get; set; }
+    public string? ClosingTime { get; set; }
+    
+    [MaxLength(50)]
+    public string? ContactPhone { get; set; }
+    
+    public List<string>? Images { get; set; }
+    public List<MenuItemDto>? Menu { get; set; }
+    public bool HasReservation { get; set; } = true;
+    public bool IsFeatured { get; set; } = false;
+}
+
+public class UpdateRestaurantRequest
+{
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+    public string? Address { get; set; }
+    public string? City { get; set; }
+    public CuisineType? CuisineType { get; set; }
+    public PriceRange? PriceLevel { get; set; }
+    public RestaurantStyle? Style { get; set; }
+    public string? OpeningTime { get; set; }
+    public string? ClosingTime { get; set; }
+    public string? ContactPhone { get; set; }
+    public List<string>? Images { get; set; }
+    public bool? HasReservation { get; set; }
+    public bool? IsFeatured { get; set; }
+}
+
+public class UpdateRestaurantHoursRequest
+{
+    public string? OpeningTime { get; set; }
+    public string? ClosingTime { get; set; }
+}
+
+// Menu Item DTOs
+public class MenuItemDto
+{
+    public Guid MenuItemId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public decimal Price { get; set; }
+    public string? ImageUrl { get; set; }
+    public string Category { get; set; } = "Main"; // Appetizer, Main, Dessert, Drink
+    public bool IsAvailable { get; set; } = true;
+    public bool IsVegetarian { get; set; } = false;
+    public bool IsSpicy { get; set; } = false;
+}
+
+public class CreateMenuItemRequest
+{
+    [Required]
+    [MaxLength(200)]
+    public string Name { get; set; } = string.Empty;
+
+    [MaxLength(500)]
+    public string? Description { get; set; }
+
+    [Required]
+    [Range(0, double.MaxValue)]
+    public decimal Price { get; set; }
+
+    public string? ImageUrl { get; set; }
+    public string Category { get; set; } = "Main";
+    public bool IsAvailable { get; set; } = true;
+    public bool IsVegetarian { get; set; } = false;
+    public bool IsSpicy { get; set; } = false;
+}
+
+public class UpdateMenuItemRequest
+{
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+    public decimal? Price { get; set; }
+    public string? ImageUrl { get; set; }
+    public string? Category { get; set; }
+    public bool? IsAvailable { get; set; }
+    public bool? IsVegetarian { get; set; }
+    public bool? IsSpicy { get; set; }
+}
+
+// Restaurant Table Reservation DTOs
+public class TableReservationDto
+{
+    public Guid ReservationId { get; set; }
+    public string CustomerName { get; set; } = string.Empty;
+    public string CustomerEmail { get; set; } = string.Empty;
+    public string CustomerPhone { get; set; } = string.Empty;
+    public int PartySize { get; set; }
+    public DateTime ReservationDate { get; set; }
+    public string ReservationTime { get; set; } = string.Empty;
+    public string? Notes { get; set; }
+    public string Status { get; set; } = "Pending"; // Pending, Confirmed, Cancelled, Completed
+    public DateTime CreatedAt { get; set; }
+}
+
+public class CreateTableReservationRequest
+{
+    [Required]
+    public Guid RestaurantId { get; set; }
+    
+    [Required]
+    [MaxLength(100)]
+    public string CustomerName { get; set; } = string.Empty;
+
+    [Required]
+    [EmailAddress]
+    public string CustomerEmail { get; set; } = string.Empty;
+
+    [Required]
+    [MaxLength(20)]
+    public string CustomerPhone { get; set; } = string.Empty;
+
+    [Required]
+    [Range(1, 50)]
+    public int PartySize { get; set; }
+
+    [Required]
+    public DateTime ReservationDate { get; set; }
+
+    [Required]
+    public string ReservationTime { get; set; } = string.Empty;
+
+    public string? Notes { get; set; }
+}
+
+public class UpdateReservationStatusRequest
+{
+    public string Status { get; set; } = "Pending";
+}
+
+// ==================== Resort Management DTOs ====================
+
+public class ResortDto
+{
+    public Guid ResortId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? Address { get; set; }
+    public string City { get; set; } = string.Empty;
+    public string LocationType { get; set; } = string.Empty;
+    public int StarRating { get; set; }
+    public List<string>? Images { get; set; }
+    public decimal? MinPrice { get; set; }
+    public decimal? MaxPrice { get; set; }
+    public List<string>? Amenities { get; set; }
+    public List<string>? Activities { get; set; }
+    public List<ResortServiceDto>? Services { get; set; }
+    public List<ComboPackageDto>? Packages { get; set; }
+    public List<ResortRoomDto>? Rooms { get; set; }
+    public double Rating { get; set; }
+    public int ReviewCount { get; set; }
+    public bool IsFeatured { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class CreateResortRequest
+{
+    [Required]
+    [MaxLength(200)]
+    public string Name { get; set; } = string.Empty;
+
+    [MaxLength(2000)]
+    public string? Description { get; set; }
+
+    [MaxLength(500)]
+    public string? Address { get; set; }
+
+    [Required]
+    [MaxLength(100)]
+    public string City { get; set; } = string.Empty;
+
+    public ResortType LocationType { get; set; } = ResortType.Beach;
+    public int StarRating { get; set; } = 3;
+    public List<string>? Images { get; set; }
+    public decimal? MinPrice { get; set; }
+    public decimal? MaxPrice { get; set; }
+    public List<ResortAmenity>? Amenities { get; set; }
+    public bool IsFeatured { get; set; } = false;
+}
+
+public class UpdateResortRequest
+{
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+    public string? Address { get; set; }
+    public string? City { get; set; }
+    public ResortType? LocationType { get; set; }
+    public int? StarRating { get; set; }
+    public List<string>? Images { get; set; }
+    public decimal? MinPrice { get; set; }
+    public decimal? MaxPrice { get; set; }
+    public List<ResortAmenity>? Amenities { get; set; }
+    public bool? IsFeatured { get; set; }
+}
+
+// Resort Room DTOs
+public class ResortRoomDto
+{
+    public Guid RoomId { get; set; }
+    public string RoomType { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public int MaxOccupancy { get; set; }
+    public decimal PricePerNight { get; set; }
+    public string? BedType { get; set; }
+    public List<string>? RoomAmenities { get; set; }
+    public List<string>? Images { get; set; }
+    public int TotalRooms { get; set; }
+    public int AvailableRooms { get; set; }
+    public bool IsAvailable { get; set; }
+}
+
+public class CreateResortRoomRequest
+{
+    [Required]
+    [MaxLength(100)]
+    public string RoomType { get; set; } = string.Empty;
+
+    [MaxLength(500)]
+    public string? Description { get; set; }
+
+    [Range(1, 20)]
+    public int MaxOccupancy { get; set; } = 2;
+
+    [Required]
+    [Range(0, double.MaxValue)]
+    public decimal PricePerNight { get; set; }
+
+    public string? BedType { get; set; }
+    public List<string>? RoomAmenities { get; set; }
+    public List<string>? Images { get; set; }
+
+    [Range(1, 1000)]
+    public int TotalRooms { get; set; }
+}
+
+public class UpdateResortRoomRequest
+{
+    public string? RoomType { get; set; }
+    public string? Description { get; set; }
+    public int? MaxOccupancy { get; set; }
+    public decimal? PricePerNight { get; set; }
+    public string? BedType { get; set; }
+    public List<string>? RoomAmenities { get; set; }
+    public List<string>? Images { get; set; }
+    public int? TotalRooms { get; set; }
+    public int? AvailableRooms { get; set; }
+}
+
+public class UpdateRoomAvailabilityRequest
+{
+    public int AvailableRooms { get; set; }
+    public DateTime EffectiveDate { get; set; }
+    public decimal? PriceOverride { get; set; }
+    public List<RoomAvailabilityUpdateItem> Availabilities { get; set; } = new();
+}
+
+public class RoomAvailabilityUpdateItem
+{
+    public DateTime Date { get; set; }
+    public int AvailableRooms { get; set; }
+    public decimal Price { get; set; }
+}
+
+// Resort Service DTOs
+public class ResortServiceDto
+{
+    public Guid ServiceId { get; set; }
+    public string ServiceName { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public decimal? Price { get; set; }
+    public string? ImageUrl { get; set; }
+    public ResortService Category { get; set; }
+    public bool IsAvailable { get; set; } = true;
+    public string? Schedule { get; set; }
+}
+
+public class CreateResortServiceRequest
+{
+    [Required]
+    [MaxLength(200)]
+    public string ServiceName { get; set; } = string.Empty;
+
+    [MaxLength(500)]
+    public string? Description { get; set; }
+
+    public decimal? Price { get; set; }
+    public string? ImageUrl { get; set; }
+    public ResortService Category { get; set; }
+    public bool IsAvailable { get; set; } = true;
+    public string? Schedule { get; set; }
+}
+
+public class UpdateResortServiceRequest
+{
+    public string? ServiceName { get; set; }
+    public string? Description { get; set; }
+    public decimal? Price { get; set; }
+    public string? ImageUrl { get; set; }
+    public ResortService? Category { get; set; }
+    public bool? IsAvailable { get; set; }
+    public string? Schedule { get; set; }
+}
+
+// Combo Package DTOs
+public class ComboPackageDto
+{
+    public Guid PackageId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public decimal TotalPrice { get; set; }
+    public decimal? DiscountPrice { get; set; }
+    public string? RoomType { get; set; }
+    public bool IncludesMeals { get; set; }
+    public int MealPlan { get; set; } // 0: None, 1: Breakfast, 2: HalfBoard, 3: FullBoard
+    public List<string>? IncludedServices { get; set; }
+    public bool IsAvailable { get; set; } = true;
+    public DateTime? ValidFrom { get; set; }
+    public DateTime? ValidTo { get; set; }
+}
+
+public class CreateComboPackageRequest
+{
+    [Required]
+    [MaxLength(200)]
+    public string Name { get; set; } = string.Empty;
+
+    [MaxLength(1000)]
+    public string? Description { get; set; }
+
+    [Required]
+    public decimal TotalPrice { get; set; }
+
+    public decimal? DiscountPrice { get; set; }
+    public string? RoomType { get; set; }
+    public bool IncludesMeals { get; set; }
+    public int MealPlan { get; set; }
+    public List<string>? IncludedServices { get; set; }
+    public bool IsAvailable { get; set; } = true;
+    public DateTime? ValidFrom { get; set; }
+    public DateTime? ValidTo { get; set; }
+}
+
+public class UpdateComboPackageRequest
+{
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+    public decimal? TotalPrice { get; set; }
+    public decimal? DiscountPrice { get; set; }
+    public string? RoomType { get; set; }
+    public bool? IncludesMeals { get; set; }
+    public int? MealPlan { get; set; }
+    public List<string>? IncludedServices { get; set; }
+    public bool? IsAvailable { get; set; }
+    public DateTime? ValidFrom { get; set; }
+    public DateTime? ValidTo { get; set; }
+}
+
+// Room Availability DTOs
+public class RoomAvailabilityDto
+{
+    public Guid RoomId { get; set; }
+    public DateTime Date { get; set; }
+    public int AvailableRooms { get; set; }
+    public decimal? PriceOverride { get; set; }
+    public decimal Price { get; set; }
+    public bool IsAvailable { get; set; }
+    public bool IsHoliday { get; set; }
+}
+
+public class BulkUpdateRoomAvailabilityRequest
+{
+    public List<RoomAvailabilityDto> Availabilities { get; set; } = new();
+}
+
+public class RoomPricingDto
+{
+    public Guid RoomId { get; set; }
+    public DateTime Date { get; set; }
+    public decimal BasePrice { get; set; }
+    public decimal FinalPrice { get; set; }
+    public decimal DiscountPercentage { get; set; }
+    public bool IsAvailable { get; set; }
 }
