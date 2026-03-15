@@ -57,6 +57,8 @@ public class HotelDto
     public int StarRating { get; set; }
     public string? ContactPhone { get; set; }
     public string? ContactEmail { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
     public List<string>? Images { get; set; }
     public decimal? MinPrice { get; set; }
     public decimal? MaxPrice { get; set; }
@@ -78,6 +80,49 @@ public class HotelRoomDto
     public List<string>? Images { get; set; }
     public int TotalRooms { get; set; }
     public int AvailableRooms { get; set; }
+    public bool IsAvailable { get; set; }
+}
+
+public class HotelReviewDto
+{
+    public Guid ReviewId { get; set; }
+    public string UserName { get; set; } = string.Empty;
+    public double Rating { get; set; }
+    public string? Comment { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class HotelDetailDto
+{
+    public Guid HotelId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? Address { get; set; }
+    public string City { get; set; } = string.Empty;
+    public int StarRating { get; set; }
+    public string? ContactPhone { get; set; }
+    public string? ContactEmail { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
+    public string? CancellationPolicy { get; set; }
+    public List<string>? Images { get; set; }
+    public decimal? MinPrice { get; set; }
+    public decimal? MaxPrice { get; set; }
+    public List<string>? Amenities { get; set; }
+    public double Rating { get; set; }
+    public int ReviewCount { get; set; }
+    public bool IsFeatured { get; set; }
+    public List<HotelRoomDto>? Rooms { get; set; }
+    public List<HotelReviewDto>? Reviews { get; set; }
+}
+
+public class HotelFilterOptionsDto
+{
+    public List<string> Cities { get; set; } = new();
+    public List<int> StarRatings { get; set; } = new();
+    public decimal MinPrice { get; set; }
+    public decimal MaxPrice { get; set; }
+    public List<string> Amenities { get; set; } = new();
 }
 
 public class CreateHotelRoomRequest

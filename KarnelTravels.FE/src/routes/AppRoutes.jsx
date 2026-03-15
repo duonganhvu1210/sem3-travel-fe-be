@@ -14,7 +14,7 @@ import ForbiddenPage from '@/pages/error/ForbiddenPage/ForbiddenPage';
 import HomePage from '@/pages/home/HomePage/HomePage';
 import InformationPage from '@/pages/info/InformationPage/InformationPage';
 import TouristSpotsPage from '@/pages/info/TouristSpotsPage/TouristSpotsPage';
-import TouristSpotDetailPage from '@/pages/info/TouristSpotDetailPage/TouristSpotDetailPage';
+import TouristSpotDetailPage from '@/pages/info/TouristSpotsPage/TouristSpotDetailPage';
 import ToursPage from '@/pages/info/ToursPage/ToursPage';
 import TourDetailPage from '@/pages/info/ToursPage/TourDetailPage';
 import HotelsPage from '@/pages/info/HotelsPage/HotelsPage';
@@ -116,7 +116,7 @@ const AppRoutes = () => {
         <Route path="contacts" element={<ContactsPage />} />
         <Route path="wishlist" element={<WishlistPage />} />
         <Route path="info/destinations" element={<DestinationsPage />} />
-        <Route path="info/destinations/:id" element={<TouristSpotDetailPage />} />
+        <Route path="info/tourist-spots/:id" element={<TouristSpotDetailPage />} />
         <Route path="info/tours" element={<ToursPage />} />
         <Route path="info/tours/:id" element={<TourDetailPage />} />
         <Route path="info/hotels" element={<HotelsPage />} />

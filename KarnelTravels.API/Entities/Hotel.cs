@@ -54,6 +54,10 @@ public class Hotel : BaseEntity
 
     public bool IsFeatured { get; set; } = false;
 
+    public double? Latitude { get; set; }
+
+    public double? Longitude { get; set; }
+
     // Navigation properties
     public virtual ICollection<HotelRoom> Rooms { get; set; } = new List<HotelRoom>();
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();

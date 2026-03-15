@@ -94,7 +94,7 @@ const TouristSpotDetailPage = () => {
           <h2 className="text-2xl font-bold text-gray-600 mb-2">Không tìm thấy</h2>
           <p className="text-gray-500 mb-4">{error || 'Điểm du lịch không tồn tại'}</p>
           <CommonButton>
-            <Link to="/info/destinations">Quay lại</Link>
+            <Link to="/info/tourist-spots">Quay lại</Link>
           </CommonButton>
         </div>
       </div>
@@ -109,7 +109,7 @@ const TouristSpotDetailPage = () => {
           <nav className="flex items-center gap-2 text-sm text-gray-500">
             <Link to="/" className="hover:text-primary">Trang chủ</Link>
             <ChevronRight className="w-4 h-4" />
-            <Link to="/info/destinations" className="hover:text-primary">Điểm du lịch</Link>
+            <Link to="/info/tourist-spots" className="hover:text-primary">Điểm du lịch</Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-gray-800 font-medium">{spot.name}</span>
           </nav>
