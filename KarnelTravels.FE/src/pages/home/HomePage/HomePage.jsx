@@ -1,6 +1,9 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { getHomeData } from '@/services/homeService';
 import {
   Plane,
   Search,
@@ -18,138 +21,116 @@ import {
   Mountain,
   Waves,
   Sun,
-  Camera
+  Camera,
+  Phone,
+  Mail,
+  Clock,
+  Facebook,
+  Instagram,
+  Youtube,
+  MessageCircle
 } from 'lucide-react';
 
-const destinations = [
-  {
-    id: 1,
-    name: 'Đà Nẵng',
-    image: 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=800&q=80',
-    description: 'Thành phố đáng sống nhất Việt Nam',
-    hotels: 234,
-    tours: 56
-  },
-  {
-    id: 2,
-    name: 'Phú Quốc',
-    image: 'https://images.unsplash.com/photo-1536682961021-145f3053a224?w=800&q=80',
-    description: 'Đảo ngọc xanh bình yên',
-    hotels: 189,
-    tours: 42
-  },
-  {
-    id: 3,
-    name: 'Sa Pa',
-    image: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80',
-    description: 'Thị trấn sương mù huyền bí',
-    hotels: 156,
-    tours: 38
-  },
-  {
-    id: 4,
-    name: 'Nha Trang',
-    image: 'https://images.unsplash.com/photo-1540883470104-2f9a8a57e5a3?w=800&q=80',
-    description: 'Thiên đường biển đảo',
-    hotels: 287,
-    tours: 63
-  }
-];
-
-const tours = [
-  {
-    id: 1,
-    name: 'Tour Đà Nẵng - Hội An 4N3Đ',
-    image: 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=800&q=80',
-    price: '4.990.000',
-    duration: '4 ngày 3 đêm',
-    rating: 4.8,
-    reviews: 127
-  },
-  {
-    id: 2,
-    name: 'Tour Phú Quốc 3N2Đ',
-    image: 'https://images.unsplash.com/photo-1536682961021-145f3053a224?w=800&q=80',
-    price: '3.490.000',
-    duration: '3 ngày 2 đêm',
-    rating: 4.9,
-    reviews: 89
-  },
-  {
-    id: 3,
-    name: 'Tour Sa Pa - Fansipan 2N1Đ',
-    image: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80',
-    price: '2.990.000',
-    duration: '2 ngày 1 đêm',
-    rating: 4.7,
-    reviews: 156
-  }
-];
-
-const categories = [
-  { icon: MapPin, name: 'Điểm du lịch', count: 156 },
-  { icon: Palmtree, name: 'Tour du lịch', count: 89 },
-  { icon: Building2, name: 'Khách sạn', count: 234 },
-  { icon: Utensils, name: 'Nhà hàng', count: 178 },
-  { icon: Bus, name: 'Thuê xe', count: 45 },
-  { icon: Plane, name: 'Vé máy bay', count: 12 }
-];
-
-const features = [
-  {
-    icon: CheckCircle,
-    title: 'Giá tốt nhất',
-    description: 'Cam kết giá tốt nhất thị trường'
-  },
-  {
-    icon: Users,
-    title: 'Hỗ trợ 24/7',
-    description: 'Đội ngũ hỗ trợ nhiệt tình'
-  },
-  {
-    icon: Star,
-    title: 'Đánh giá cao',
-    description: 'Hơn 10,000+ đánh giá 5 sao'
-  },
-  {
-    icon: Heart,
-    title: 'Uy tín',
-    description: 'Nhiều năm kinh nghiệm'
-  }
-];
+// Icon mapping
+const iconMap = {
+  MapPin,
+  Palmtree,
+  Building2,
+  Utensils,
+  Bus,
+  Plane,
+  CheckCircle,
+  Users,
+  Star,
+  Heart,
+  Sun,
+  Mountain,
+  Waves,
+  Phone,
+  Mail,
+  Clock,
+  Facebook,
+  Instagram,
+  Youtube,
+  MessageCircle
+};
 
 const HomePage = () => {
+  const [homeData, setHomeData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      try {
+        setLoading(true);
+        const response = await getHomeData();
+        if (response.success) {
+          setHomeData(response.data);
+        } else {
+          setError(response.message);
+        }
+      } catch (err) {
+        console.error('Error fetching home data:', err);
+        setError('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHomeData();
+  }, []);
+
+  // Get icon component from name
+  const getIconComponent = (iconName) => {
+    const Icon = iconMap[iconName] || MapPin;
+    return <Icon />;
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1920&q=80"
-            alt="Travel"
-            className="w-full h-full object-cover"
-          />
+          {loading ? (
+            <Skeleton className="w-full h-full" />
+          ) : (
+            <img
+              src={homeData?.banner?.imageUrl || "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1920&q=80"}
+              alt="Travel"
+              className="w-full h-full object-cover"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
         </div>
 
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4 text-center text-white">
           <div className="max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-6">
-              <Plane className="w-4 h-4" />
-              <span className="text-sm font-medium">Khám phá Việt Nam cùng KarnelTravels</span>
-            </div>
+            {loading ? (
+              <>
+                <Skeleton className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 w-64 h-10 mx-auto" />
+                <Skeleton className="h-16 w-3/4 mx-auto mb-6" />
+                <Skeleton className="h-6 w-2/3 mx-auto mb-10" />
+              </>
+            ) : (
+              <>
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-6">
+                  <Plane className="w-4 h-4" />
+                  <span className="text-sm font-medium">{homeData?.banner?.title || "Khám phá Việt Nam cùng KarnelTravels"}</span>
+                </div>
 
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Hành trình của bạn
-              <span className="block text-teal-400">bắt đầu tại đây</span>
-            </h1>
+                <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                  {homeData?.banner?.subtitle?.split(' - ')[0] || "Hành trình của bạn"}
+                  <span className="block text-teal-400">{homeData?.banner?.subtitle?.split(' - ')[1] || "bắt đầu tại đây"}</span>
+                </h1>
 
-            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-              Khám phá những điểm đến tuyệt vời nhất Việt Nam và thế giới.
-              Trải nghiệm dịch vụ chuyên nghiệp, giá cả hợp lý
-            </p>
+                <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
+                  {homeData?.banner?.subtitle || "Khám phá những điểm đến tuyệt vời nhất Việt Nam và thế giới. Trải nghiệm dịch vụ chuyên nghiệp, giá cả hợp lý"}
+                </p>
+              </>
+            )}
 
             {/* Search Box */}
             <div className="bg-white rounded-2xl p-2 md:p-3 shadow-2xl max-w-3xl mx-auto">
@@ -191,66 +172,104 @@ const HomePage = () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((category, index) => (
-              <Link
-                key={index}
-                to={`/info/${category.name.toLowerCase().replace(/ /g, '-')}`}
-                className="group p-6 rounded-2xl border border-gray-100 hover:border-teal-200 hover:bg-teal-50/50 transition-all duration-300 text-center"
-              >
-                <div className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <category.icon className="w-6 h-6 text-teal-600" />
+            {loading ? (
+              Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="p-6 rounded-2xl border border-gray-100">
+                  <Skeleton className="w-14 h-14 rounded-xl mx-auto mb-4" />
+                  <Skeleton className="h-5 w-20 mx-auto mb-1" />
+                  <Skeleton className="h-4 w-16 mx-auto" />
                 </div>
-                <h3 className="font-semibold text-gray-800 mb-1">{category.name}</h3>
-                <p className="text-sm text-muted-foreground">{category.count} địa điểm</p>
-              </Link>
-            ))}
+              ))
+            ) : (
+              homeData?.serviceCategories?.map((category, index) => (
+                <Link
+                  key={category.id || index}
+                  to={category.link}
+                  className="group p-6 rounded-2xl border border-gray-100 hover:border-teal-200 hover:bg-teal-50/50 transition-all duration-300 text-center"
+                >
+                  <div 
+                    className="w-14 h-14 mx-auto mb-4 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform"
+                    style={{ backgroundColor: `${category.color}20` }}
+                  >
+                    {getIconComponent(category.icon)}
+                    <MapPin 
+                      className="w-6 h-6" 
+                      style={{ color: category.color }}
+                    />
+                  </div>
+                  <h3 className="font-semibold text-gray-800 mb-1">{category.name}</h3>
+                  <p className="text-sm text-muted-foreground">{category.itemCount} địa điểm</p>
+                </Link>
+              ))
+            )}
           </div>
         </div>
       </section>
 
-      {/* Popular Destinations */}
+      {/* Popular Destinations - Featured Spots */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              Điểm đến phổ biến
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Khám phá những địa điểm du lịch hấp dẫn nhất được nhiều du khách lựa chọn
-            </p>
+            {loading ? (
+              <>
+                <Skeleton className="h-10 w-80 mx-auto mb-4" />
+                <Skeleton className="h-6 w-96 mx-auto" />
+              </>
+            ) : (
+              <>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                  Điểm đến phổ biến
+                </h2>
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                  Khám phá những địa điểm du lịch hấp dẫn nhất được nhiều du khách lựa chọn
+                </p>
+              </>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {destinations.map((destination) => (
-              <Link key={destination.id} to={`/info/destinations/${destination.id}`}>
-                <Card className="group overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300">
-                  <div className="relative h-56 overflow-hidden">
-                    <img
-                      src={destination.image}
-                      alt={destination.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute top-3 right-3 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-lg text-sm font-medium text-gray-800">
-                      {destination.name}
-                    </div>
-                  </div>
+            {loading ? (
+              Array.from({ length: 4 }).map((_, index) => (
+                <Card key={index} className="overflow-hidden border-0 shadow-md">
+                  <Skeleton className="h-56 w-full" />
                   <CardContent className="p-4">
-                    <h3 className="font-bold text-lg text-gray-800 mb-1">{destination.name}</h3>
-                    <p className="text-muted-foreground text-sm mb-3">{destination.description}</p>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Building2 className="w-4 h-4" />
-                        {destination.hotels} khách sạn
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Palmtree className="w-4 h-4" />
-                        {destination.tours} tours
-                      </span>
-                    </div>
+                    <Skeleton className="h-6 w-3/4 mb-2" />
+                    <Skeleton className="h-4 w-full mb-2" />
+                    <Skeleton className="h-4 w-1/2" />
                   </CardContent>
                 </Card>
-              </Link>
-            ))}
+              ))
+            ) : (
+              homeData?.featuredSpots?.slice(0, 4).map((spot) => (
+                <Link key={spot.spotId} to={`/info/destinations/${spot.spotId}`}>
+                  <Card className="group overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300">
+                    <div className="relative h-56 overflow-hidden">
+                      <img
+                        src={spot.imageUrl || "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=800&q=80"}
+                        alt={spot.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute top-3 right-3 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-lg text-sm font-medium text-gray-800">
+                        {spot.city || spot.region}
+                      </div>
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-bold text-lg text-gray-800 mb-1">{spot.name}</h3>
+                      <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
+                        {spot.description || `Địa điểm du lịch ${spot.type}`}
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                          <span>{spot.rating.toFixed(1)}</span>
+                          <span>({spot.reviewCount})</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))
+            )}
           </div>
 
           <div className="text-center mt-10">
@@ -264,60 +283,97 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Featured Tours */}
+      {/* More Featured Spots - Row 2 */}
+      {homeData?.featuredSpots?.length > 4 && (
+        <section className="py-10 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {homeData.featuredSpots.slice(4, 8).map((spot) => (
+                <Link key={spot.spotId} to={`/info/destinations/${spot.spotId}`}>
+                  <Card className="group overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300">
+                    <div className="relative h-56 overflow-hidden">
+                      <img
+                        src={spot.imageUrl || "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=800&q=80"}
+                        alt={spot.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute top-3 right-3 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-lg text-sm font-medium text-gray-800">
+                        {spot.city || spot.region}
+                      </div>
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-bold text-lg text-gray-800 mb-1">{spot.name}</h3>
+                      <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
+                        {spot.description || `Địa điểm du lịch ${spot.type}`}
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                          <span>{spot.rating.toFixed(1)}</span>
+                          <span>({spot.reviewCount})</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* About Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              Tour du lịch nổi bật
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Những tour được đánh giá cao và được nhiều khách hàng lựa chọn
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tours.map((tour) => (
-              <Card key={tour.id} className="group overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300">
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={tour.image}
-                    alt={tour.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 px-2 py-1 bg-teal-500 text-white rounded-lg text-sm font-medium flex items-center gap-1">
-                    <Star className="w-3 h-3 fill-current" />
-                    {tour.rating}
-                  </div>
-                  <button className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
-                    <Heart className="w-4 h-4" />
-                  </button>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {loading ? (
+              <>
+                <Skeleton className="h-96 w-full rounded-2xl" />
+                <div>
+                  <Skeleton className="h-10 w-3/4 mb-4" />
+                  <Skeleton className="h-6 w-full mb-2" />
+                  <Skeleton className="h-6 w-full mb-2" />
+                  <Skeleton className="h-6 w-2/3 mb-6" />
+                  <Skeleton className="h-12 w-40" />
                 </div>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Calendar className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">{tour.duration}</span>
+              </>
+            ) : (
+              <>
+                <div className="relative">
+                  <img
+                    src={homeData?.companyInfo?.aboutImage || "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80"}
+                    alt="Về Karnel Travels"
+                    className="rounded-2xl shadow-xl"
+                  />
+                  <div className="absolute -bottom-6 -right-6 bg-teal-600 text-white p-6 rounded-xl shadow-lg">
+                    <div className="text-4xl font-bold">10+</div>
+                    <div className="text-sm">Năm kinh nghiệm</div>
                   </div>
-                  <h3 className="font-bold text-lg text-gray-800 mb-2 line-clamp-2">{tour.name}</h3>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-2xl font-bold text-teal-600">{tour.price}</span>
-                      <span className="text-muted-foreground text-sm">/người</span>
-                    </div>
-                    <span className="text-sm text-muted-foreground">{tour.reviews} đánh giá</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Button size="lg" asChild>
-              <Link to="/info/tours">
-                Xem tất cả tour
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Link>
-            </Button>
+                </div>
+                <div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                    {homeData?.companyInfo?.aboutTitle || "Về chúng tôi"}
+                  </h2>
+                  <p className="text-lg text-muted-foreground mb-6">
+                    {homeData?.companyInfo?.description || "Karnel Travels tự hào là công ty du lịch và lữ hành hàng đầu Việt Nam."}
+                  </p>
+                  <ul className="space-y-3 mb-8">
+                    {homeData?.companyInfo?.aboutPoints?.map((point, index) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 text-teal-600 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-600">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Button size="lg" asChild>
+                    <Link to="/about">
+                      Tìm hiểu thêm
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -326,24 +382,43 @@ const HomePage = () => {
       <section className="py-20 bg-gradient-to-br from-teal-600 to-cyan-700 text-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Tại sao chọn KarnelTravels?
-            </h2>
-            <p className="text-white/80 text-lg max-w-2xl mx-auto">
-              Chúng tôi cam kết mang đến cho bạn trải nghiệm du lịch tốt nhất
-            </p>
+            {loading ? (
+              <>
+                <Skeleton className="h-10 w-80 mx-auto mb-4" />
+                <Skeleton className="h-6 w-96 mx-auto" />
+              </>
+            ) : (
+              <>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Tại sao chọn KarnelTravels?
+                </h2>
+                <p className="text-white/80 text-lg max-w-2xl mx-auto">
+                  Chúng tôi cam kết mang đến cho bạn trải nghiệm du lịch tốt nhất
+                </p>
+              </>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => (
-              <div key={index} className="text-center p-6">
-                <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-2xl flex items-center justify-center">
-                  <feature.icon className="w-8 h-8" />
+            {loading ? (
+              Array.from({ length: 4 }).map((_, index) => (
+                <div key={index} className="text-center p-6">
+                  <Skeleton className="w-16 h-16 rounded-2xl mx-auto mb-4" />
+                  <Skeleton className="h-6 w-32 mx-auto mb-2" />
+                  <Skeleton className="h-4 w-48 mx-auto" />
                 </div>
-                <h3 className="font-bold text-xl mb-2">{feature.title}</h3>
-                <p className="text-white/70">{feature.description}</p>
-              </div>
-            ))}
+              ))
+            ) : (
+              homeData?.companyInfo?.features?.map((feature, index) => (
+                <div key={index} className="text-center p-6">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-2xl flex items-center justify-center">
+                    {getIconComponent(feature.icon)}
+                  </div>
+                  <h3 className="font-bold text-xl mb-2">{feature.title}</h3>
+                  <p className="text-white/70">{feature.description}</p>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -450,6 +525,13 @@ const HomePage = () => {
           </Card>
         </div>
       </section>
+
+      {/* Error Message */}
+      {error && (
+        <div className="fixed bottom-4 right-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg shadow-lg">
+          <p>{error}</p>
+        </div>
+      )}
     </div>
   );
 };
