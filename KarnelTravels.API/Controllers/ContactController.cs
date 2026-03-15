@@ -60,6 +60,12 @@ public class ContactController : ControllerBase
             });
 
         // F123: Map request to entity
+        var requestType = ContactRequestType.General;
+        if (!string.IsNullOrEmpty(request.RequestType))
+        {
+            Enum.TryParse<ContactRequestType>(request.RequestType, true, out requestType);
+        }
+
         var contact = new Contact
         {
             FullName = request.FullName,
@@ -67,7 +73,7 @@ public class ContactController : ControllerBase
             PhoneNumber = request.PhoneNumber,
             Address = request.Address,
             Subject = request.Subject,
-            RequestType = request.RequestType,
+            RequestType = requestType,
             ServiceType = request.ServiceType,
             ExpectedDate = request.ExpectedDate,
             ParticipantCount = request.ParticipantCount,

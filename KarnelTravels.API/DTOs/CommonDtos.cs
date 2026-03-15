@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace KarnelTravels.API.DTOs;
 
 public class ApiResponse<T>
@@ -72,8 +74,11 @@ public class ResetPasswordRequest
 
 public class ChangePasswordRequest
 {
+    [JsonPropertyName("currentPassword")]
     public string CurrentPassword { get; set; } = string.Empty;
+    [JsonPropertyName("newPassword")]
     public string NewPassword { get; set; } = string.Empty;
+    [JsonPropertyName("confirmNewPassword")]
     public string ConfirmNewPassword { get; set; } = string.Empty;
 }
 
@@ -93,10 +98,15 @@ public class UserProfileDto
 
 public class UpdateProfileRequest
 {
+    [JsonPropertyName("fullName")]
     public string? FullName { get; set; }
+    [JsonPropertyName("phoneNumber")]
     public string? PhoneNumber { get; set; }
+    [JsonPropertyName("dateOfBirth")]
     public DateTime? DateOfBirth { get; set; }
+    [JsonPropertyName("gender")]
     public string? Gender { get; set; }
+    [JsonPropertyName("travelPreferences")]
     public string? TravelPreferences { get; set; }
 }
 

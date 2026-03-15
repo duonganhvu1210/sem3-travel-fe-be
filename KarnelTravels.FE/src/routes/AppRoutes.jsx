@@ -46,6 +46,7 @@ const WishlistPage = () => (
 const DestinationsPage = () => <TouristSpotsPage />;
 
 // Admin Pages
+import AdminTouristSpotsPage from '@/pages/admin/tourist-spots/TouristSpotsPage';
 import AdminHotelsPage from '@/pages/admin/hotels/HotelsPage';
 import AdminRestaurantsPage from '@/pages/admin/restaurants/RestaurantsPage';
 import AdminResortsPage from '@/pages/admin/resorts/ResortsPage';
@@ -63,7 +64,7 @@ const AdminUsers = () => <UsersManagement />;
 
 const AdminBookings = () => <BookingsPage />;
 
-const AdminDestinations = () => <TouristSpotsPage />;
+const AdminDestinations = () => <AdminTouristSpotsPage />;
 
 const AdminTours = () => <AdminToursPage />;
 

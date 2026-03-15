@@ -96,58 +96,6 @@ public class PromotionsController : ControllerBase
 
 [ApiController]
 [Route("api/[controller]")]
-public class ContactsController : ControllerBase
-{
-    private readonly KarnelTravelsDbContext _context;
-
-    public ContactsController(KarnelTravelsDbContext context)
-    {
-        _context = context;
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<ApiResponse<ContactDto>>> CreateContact([FromBody] CreateContactRequest request)
-    {
-        var contact = new Contact
-        {
-            FullName = request.FullName,
-            Email = request.Email,
-            PhoneNumber = request.PhoneNumber,
-            Address = request.Address,
-            ServiceType = request.ServiceType,
-            ExpectedDate = request.ExpectedDate,
-            ParticipantCount = request.ParticipantCount,
-            MessageContent = request.MessageContent,
-            Status = ContactStatus.Unread
-        };
-
-        _context.Contacts.Add(contact);
-        await _context.SaveChangesAsync();
-
-        return Ok(new ApiResponse<ContactDto>
-        {
-            Success = true,
-            Message = "Contact request submitted successfully",
-            Data = new ContactDto
-            {
-                ContactId = contact.Id,
-                FullName = contact.FullName,
-                Email = contact.Email,
-                PhoneNumber = contact.PhoneNumber,
-                Address = contact.Address,
-                ServiceType = contact.ServiceType,
-                ExpectedDate = contact.ExpectedDate,
-                ParticipantCount = contact.ParticipantCount,
-                MessageContent = contact.MessageContent,
-                Status = contact.Status.ToString(),
-                CreatedAt = contact.CreatedAt
-            }
-        });
-    }
-}
-
-[ApiController]
-[Route("api/[controller]")]
 [Authorize]
 public class ReviewsController : ControllerBase
 {

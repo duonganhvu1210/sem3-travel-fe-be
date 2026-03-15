@@ -8,7 +8,7 @@ namespace KarnelTravels.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[AllowAnonymous]
 public class ResortsController : ControllerBase
 {
     private readonly IResortService _resortService;

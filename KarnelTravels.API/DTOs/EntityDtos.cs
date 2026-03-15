@@ -341,7 +341,7 @@ public class CreateContactRequest
     public string? PhoneNumber { get; set; }
     public string? Address { get; set; }
     public string? Subject { get; set; }
-    public ContactRequestType RequestType { get; set; } = ContactRequestType.General;
+    public string? RequestType { get; set; }
     public string? ServiceType { get; set; }
     public DateTime? ExpectedDate { get; set; }
     public int? ParticipantCount { get; set; }

@@ -111,7 +111,7 @@ const ContactPage = () => {
         rating: data.rating || null
       };
 
-      await api.post('/contact', requestData);
+      await api.post('/contacts', requestData);
       setSubmitStatus('success');
     } catch (error) {
       console.error('Contact submission error:', error);

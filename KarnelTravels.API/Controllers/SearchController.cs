@@ -236,6 +236,300 @@ public class SearchController : ControllerBase
 
         return Ok(new ApiResponse<List<SearchHistoryDto>> { Success = true, Data = history });
     }
+
+    // =========== Unified Endpoints for Frontend ===========
+    
+    /// <summary>
+    /// Get hotels with pagination
+    /// </summary>
+    [HttpGet("hotels")]
+    public async Task<ActionResult<ApiResponse<List<SearchItemDto>>>> GetHotels(
+        [FromQuery] string? search = "",
+        [FromQuery] int pageIndex = 1,
+        [FromQuery] int pageSize = 12,
+        [FromQuery] string? sortBy = "",
+        [FromQuery] int? stars = null)
+    {
+        var query = _context.Hotels.Where(h => h.IsActive);
+
+        if (!string.IsNullOrWhiteSpace(search))
+            query = query.Where(h => h.Name.Contains(search) || (h.Address != null && h.Address.Contains(search)));
+
+        if (stars.HasValue)
+            query = query.Where(h => h.StarRating == stars.Value);
+
+        query = sortBy?.ToLower() switch
+        {
+            "price" => query.OrderBy(h => h.MinPrice),
+            "price_desc" => query.OrderByDescending(h => h.MinPrice),
+            "rating" => query.OrderByDescending(h => h.Rating),
+            "name" => query.OrderBy(h => h.Name),
+            _ => query.OrderByDescending(h => h.IsFeatured).ThenByDescending(h => h.Rating)
+        };
+
+        var totalCount = await query.CountAsync();
+        var hotels = await query
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .Select(h => new SearchItemDto
+            {
+                Id = h.Id,
+                Name = h.Name,
+                Description = h.Description,
+                Type = "hotel",
+                ImageUrl = h.Images,
+                Price = h.MinPrice ?? 0,
+                Rating = h.Rating,
+                ReviewCount = h.ReviewCount,
+                Location = h.City,
+                AdditionalInfo = h.StarRating.ToString()
+            })
+            .ToListAsync();
+
+        return Ok(new ApiResponse<List<SearchItemDto>> 
+        { 
+            Success = true, 
+            Data = hotels,
+            Pagination = new PaginationInfo { PageIndex = pageIndex, PageSize = pageSize, TotalCount = totalCount }
+        });
+    }
+
+    /// <summary>
+    /// Get tours with pagination
+    /// </summary>
+    [HttpGet("tours")]
+    public async Task<ActionResult<ApiResponse<List<SearchItemDto>>>> GetTours(
+        [FromQuery] string? search = "",
+        [FromQuery] int pageIndex = 1,
+        [FromQuery] int pageSize = 12,
+        [FromQuery] string? sortBy = "",
+        [FromQuery] string? destination = null)
+    {
+        var query = _context.TourPackages.Where(t => t.IsActive);
+
+        if (!string.IsNullOrWhiteSpace(search))
+            query = query.Where(t => t.Name.Contains(search) || t.Destination.Contains(search));
+
+        if (!string.IsNullOrWhiteSpace(destination))
+            query = query.Where(t => t.Destination.Contains(destination));
+
+        query = sortBy?.ToLower() switch
+        {
+            "price" => query.OrderBy(t => t.Price),
+            "price_desc" => query.OrderByDescending(t => t.Price),
+            "rating" => query.OrderByDescending(t => t.Rating),
+            "name" => query.OrderBy(t => t.Name),
+            _ => query.OrderByDescending(t => t.IsFeatured).ThenByDescending(t => t.Rating)
+        };
+
+        var totalCount = await query.CountAsync();
+        var tours = await query
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .Select(t => new SearchItemDto
+            {
+                Id = t.Id,
+                Name = t.Name,
+                Description = t.Description,
+                Type = "tour",
+                ImageUrl = t.Images,
+                Price = t.DiscountPrice ?? t.Price,
+                Rating = t.Rating,
+                ReviewCount = t.ReviewCount,
+                Location = t.Destination,
+                AdditionalInfo = t.DurationDays.ToString()
+            })
+            .ToListAsync();
+
+        return Ok(new ApiResponse<List<SearchItemDto>> 
+        { 
+            Success = true, 
+            Data = tours,
+            Pagination = new PaginationInfo { PageIndex = pageIndex, PageSize = pageSize, TotalCount = totalCount }
+        });
+    }
+
+    /// <summary>
+    /// Get restaurants with pagination
+    /// </summary>
+    [HttpGet("restaurants")]
+    public async Task<ActionResult<ApiResponse<List<SearchItemDto>>>> GetRestaurants(
+        [FromQuery] string? search = "",
+        [FromQuery] int pageIndex = 1,
+        [FromQuery] int pageSize = 12,
+        [FromQuery] string? sortBy = "",
+        [FromQuery] string? city = null)
+    {
+        var query = _context.Restaurants.Where(r => r.IsActive);
+
+        if (!string.IsNullOrWhiteSpace(search))
+            query = query.Where(r => r.Name.Contains(search) || (r.Description != null && r.Description.Contains(search)));
+
+        if (!string.IsNullOrWhiteSpace(city))
+            query = query.Where(r => r.City == city);
+
+        query = sortBy?.ToLower() switch
+        {
+            "price" => query.OrderBy(r => r.PriceLevel),
+            "price_desc" => query.OrderByDescending(r => r.PriceLevel),
+            "rating" => query.OrderByDescending(r => r.Rating),
+            "name" => query.OrderBy(r => r.Name),
+            _ => query.OrderByDescending(r => r.IsFeatured).ThenByDescending(r => r.Rating)
+        };
+
+        var totalCount = await query.CountAsync();
+        var restaurants = await query
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .Select(r => new SearchItemDto
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Description = r.Description,
+                Type = "restaurant",
+                ImageUrl = r.Images,
+                Price = 0,
+                Rating = r.Rating,
+                ReviewCount = r.ReviewCount,
+                Location = r.City,
+                AdditionalInfo = r.CuisineType
+            })
+            .ToListAsync();
+
+        return Ok(new ApiResponse<List<SearchItemDto>> 
+        { 
+            Success = true, 
+            Data = restaurants,
+            Pagination = new PaginationInfo { PageIndex = pageIndex, PageSize = pageSize, TotalCount = totalCount }
+        });
+    }
+
+    /// <summary>
+    /// Get transports with pagination
+    /// </summary>
+    [HttpGet("transports")]
+    public async Task<ActionResult<ApiResponse<List<SearchItemDto>>>> GetTransports(
+        [FromQuery] string? search = "",
+        [FromQuery] int pageIndex = 1,
+        [FromQuery] int pageSize = 12,
+        [FromQuery] string? sortBy = "",
+        [FromQuery] string? fromCity = null,
+        [FromQuery] string? toCity = null)
+    {
+        var query = _context.Transports.Where(t => t.IsActive);
+
+        if (!string.IsNullOrWhiteSpace(search))
+            query = query.Where(t => t.Provider.Contains(search) || t.Route.Contains(search));
+
+        if (!string.IsNullOrWhiteSpace(fromCity))
+            query = query.Where(t => t.FromCity == fromCity);
+
+        if (!string.IsNullOrWhiteSpace(toCity))
+            query = query.Where(t => t.ToCity == toCity);
+
+        query = sortBy?.ToLower() switch
+        {
+            "price" => query.OrderBy(t => t.Price),
+            "price_desc" => query.OrderByDescending(t => t.Price),
+            _ => query.OrderByDescending(t => t.IsFeatured)
+        };
+
+        var totalCount = await query.CountAsync();
+        var transports = await query
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .Select(t => new SearchItemDto
+            {
+                Id = t.Id,
+                Name = t.Provider,
+                Description = t.Route,
+                Type = "transport",
+                ImageUrl = t.Images,
+                Price = t.Price,
+                Rating = 0,
+                ReviewCount = 0,
+                Location = $"{t.FromCity} → {t.ToCity}",
+                AdditionalInfo = t.Type
+            })
+            .ToListAsync();
+
+        return Ok(new ApiResponse<List<SearchItemDto>> 
+        { 
+            Success = true, 
+            Data = transports,
+            Pagination = new PaginationInfo { PageIndex = pageIndex, PageSize = pageSize, TotalCount = totalCount }
+        });
+    }
+
+    /// <summary>
+    /// Get resorts with pagination
+    /// </summary>
+    [HttpGet("resorts")]
+    public async Task<ActionResult<ApiResponse<List<SearchItemDto>>>> GetResorts(
+        [FromQuery] string? search = "",
+        [FromQuery] int pageIndex = 1,
+        [FromQuery] int pageSize = 12,
+        [FromQuery] string? sortBy = "",
+        [FromQuery] int? stars = null)
+    {
+        var query = _context.Resorts.Where(r => r.IsActive);
+
+        if (!string.IsNullOrWhiteSpace(search))
+            query = query.Where(r => r.Name.Contains(search) || (r.Address != null && r.Address.Contains(search)));
+
+        if (stars.HasValue)
+            query = query.Where(r => r.StarRating == stars.Value);
+
+        query = sortBy?.ToLower() switch
+        {
+            "price" => query.OrderBy(r => r.MinPrice),
+            "price_desc" => query.OrderByDescending(r => r.MinPrice),
+            "rating" => query.OrderByDescending(r => r.Rating),
+            "name" => query.OrderBy(r => r.Name),
+            _ => query.OrderByDescending(r => r.IsFeatured).ThenByDescending(r => r.Rating)
+        };
+
+        var totalCount = await query.CountAsync();
+        var resorts = await query
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .Select(r => new SearchItemDto
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Description = r.Description,
+                Type = "resort",
+                ImageUrl = r.Images,
+                Price = r.MinPrice ?? 0,
+                Rating = r.Rating,
+                ReviewCount = r.ReviewCount,
+                Location = r.City,
+                AdditionalInfo = r.StarRating.ToString()
+            })
+            .ToListAsync();
+
+        return Ok(new ApiResponse<List<SearchItemDto>> 
+        { 
+            Success = true, 
+            Data = resorts,
+            Pagination = new PaginationInfo { PageIndex = pageIndex, PageSize = pageSize, TotalCount = totalCount }
+        });
+    }
+
+    /// <summary>
+    /// Get popular search terms
+    /// </summary>
+    [HttpGet("popular")]
+    public async Task<ActionResult<ApiResponse<List<string>>>> GetPopularSearches()
+    {
+        var popular = new List<string>
+        {
+            "Đà Nẵng", "Phú Quốc", "Nha Trang", "Hà Nội", "TP. Hồ Chí Minh",
+            "Khách sạn", "Resort", "Tour du lịch", "Nhà hàng", "Biển"
+        };
+        
+        return Ok(new ApiResponse<List<string>> { Success = true, Data = popular });
+    }
 }
 
 // DTOs
@@ -268,6 +562,7 @@ public class SearchItemDto
     public int ReviewCount { get; set; }
     public string? Location { get; set; }
     public int? Stars { get; set; }
+    public string? AdditionalInfo { get; set; }
 }
 
 public class SuggestionDto

@@ -8,7 +8,6 @@ namespace KarnelTravels.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
 public class RestaurantsController : ControllerBase
 {
     private readonly IRestaurantService _restaurantService;
@@ -21,17 +20,59 @@ public class RestaurantsController : ControllerBase
     // ==================== Restaurant CRUD ====================
 
     /// <summary>
-    /// Lấy danh sách tất cả nhà hàng (F259)
+    /// Lấy danh sách tất cả nhà hàng với phân trang (F259)
     /// </summary>
     [HttpGet]
     [AllowAnonymous]
-    public async Task<ActionResult<ApiResponse<List<RestaurantDto>>>> GetRestaurants()
+    public async Task<ActionResult<ApiResponse<List<RestaurantDto>>>> GetRestaurants(
+        [FromQuery] string? search = "",
+        [FromQuery] int pageIndex = 1,
+        [FromQuery] int pageSize = 12,
+        [FromQuery] string? sortBy = "",
+        [FromQuery] string? city = null,
+        [FromQuery] string? cuisineType = null,
+        [FromQuery] string? priceRange = null)
     {
         var restaurants = await _restaurantService.GetAllAsync();
+        
+        // Filter by search
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            restaurants = restaurants.Where(r => 
+                r.Name.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                (r.Description != null && r.Description.Contains(search, StringComparison.OrdinalIgnoreCase))
+            ).ToList();
+        }
+
+        // Filter by city
+        if (!string.IsNullOrWhiteSpace(city))
+        {
+            restaurants = restaurants.Where(r => r.City == city).ToList();
+        }
+
+        // Sorting
+        restaurants = sortBy?.ToLower() switch
+        {
+            "price" => restaurants.OrderBy(r => r.PriceLevel).ToList(),
+            "price_desc" => restaurants.OrderByDescending(r => r.PriceLevel).ToList(),
+            "rating" => restaurants.OrderByDescending(r => r.Rating).ToList(),
+            "name" => restaurants.OrderBy(r => r.Name).ToList(),
+            _ => restaurants.OrderByDescending(r => r.IsFeatured).ThenByDescending(r => r.Rating).ToList()
+        };
+
+        var totalCount = restaurants.Count;
+        var pagedData = restaurants.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+
         return Ok(new ApiResponse<List<RestaurantDto>>
         {
-            Data = restaurants,
-            Message = "Lấy danh sách nhà hàng thành công"
+            Success = true,
+            Data = pagedData,
+            Pagination = new PaginationInfo
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            }
         });
     }
 
