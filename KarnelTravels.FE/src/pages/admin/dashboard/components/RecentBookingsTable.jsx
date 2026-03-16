@@ -79,8 +79,8 @@ const RecentBookingsTable = ({ data, loading }) => {
       <div className="p-6 border-b border-gray-100">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-gray-800">Đơn hàng gần đây</h3>
-            <p className="text-sm text-gray-500">5 đơn hàng mới nhất</p>
+            <h3 className="text-lg font-semibold text-gray-800">Recent Bookings</h3>
+            <p className="text-sm text-gray-500">5 latest bookings</p>
           </div>
           <a 
             href="/admin/bookings" 

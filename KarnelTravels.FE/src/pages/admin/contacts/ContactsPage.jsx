@@ -184,8 +184,8 @@ const ContactsPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Quản lý liên hệ</h1>
-          <p className="text-gray-600 mt-1">F211 - F218: Quản lý tin nhắn liên hệ</p>
+          <h1 className="text-2xl font-bold text-gray-900">Contact Management</h1>
+          <p className="text-gray-600 mt-1">F211 - F218: Manage contact messages</p>
         </div>
         <button
           onClick={handleExport}

@@ -89,7 +89,7 @@ const DashboardPage = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
-            <p className="text-sm text-gray-500">Tổng quan hệ thống quản lý du lịch</p>
+            <p className="text-sm text-gray-500">Travel Management System Overview</p>
           </div>
           
           <div className="flex items-center gap-3">
@@ -199,7 +199,7 @@ const DashboardPage = () => {
                 href="/admin/contacts" 
                 className="text-sm font-medium text-teal-600 hover:text-teal-700"
               >
-                Xem tất cả liên hệ →
+                View all contacts →
               </a>
             </div>
           </motion.div>

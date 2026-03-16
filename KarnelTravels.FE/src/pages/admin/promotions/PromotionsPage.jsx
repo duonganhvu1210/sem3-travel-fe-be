@@ -130,8 +130,8 @@ const PromotionsPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Quản lý khuyến mãi</h1>
-          <p className="text-gray-600 mt-1">F201 - F210: Quản lý khuyến mãi và giảm giá</p>
+          <h1 className="text-2xl font-bold text-gray-900">Promotion Management</h1>
+          <p className="text-gray-600 mt-1">F201 - F210: Manage promotions and discounts</p>
         </div>
         <button
           onClick={handleAddNew}

@@ -82,7 +82,7 @@ const SearchAndFilter = ({
             className="px-4 py-2.5 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors flex items-center gap-2"
           >
             <X size={18} />
-            <span>Xóa lọc</span>
+            <span>Clear filters</span>
           </button>
         )}
       </div>

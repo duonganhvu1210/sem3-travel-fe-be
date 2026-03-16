@@ -83,7 +83,7 @@ export default function UsersManagement() {
       }
     } catch (error) {
       console.error('Error fetching users:', error);
-      toast.error('Không thể tải danh sách người dùng');
+      toast.error('Cannot load user list');
     } finally {
       setLoading(false);
     }
@@ -134,11 +134,11 @@ export default function UsersManagement() {
         setUserFormOpen(false);
         fetchUsers();
       } else {
-        toast.error(response.message || 'Không thể tạo người dùng');
+        toast.error(response.message || 'Cannot create user');
       }
     } catch (error) {
       console.error('Error creating user:', error);
-      toast.error(error.response?.data?.message || 'Không thể tạo người dùng');
+      toast.error(error.response?.data?.message || 'Cannot create user');
     } finally {
       setFormLoading(false);
     }
@@ -153,11 +153,11 @@ export default function UsersManagement() {
         setUserFormOpen(false);
         fetchUsers();
       } else {
-        toast.error(response.message || 'Không thể cập nhật người dùng');
+        toast.error(response.message || 'Cannot update user');
       }
     } catch (error) {
       console.error('Error updating user:', error);
-      toast.error(error.response?.data?.message || 'Không thể cập nhật người dùng');
+        toast.error(error.response?.data?.message || 'Cannot update user');
     } finally {
       setFormLoading(false);
     }
@@ -175,14 +175,14 @@ export default function UsersManagement() {
     try {
       const response = await userService.deleteUser(selectedUser.userId);
       if (response.success) {
-        toast.success('Xóa người dùng thành công');
+        toast.success('User deleted successfully');
         fetchUsers();
       } else {
-        toast.error(response.message || 'Không thể xóa người dùng');
+        toast.error(response.message || 'Cannot delete user');
       }
     } catch (error) {
       console.error('Error deleting user:', error);
-      toast.error('Không thể xóa người dùng');
+      toast.error('Cannot delete user');
     } finally {
       setDeleteDialogOpen(false);
       setSelectedUser(null);
@@ -203,11 +203,11 @@ export default function UsersManagement() {
         );
         fetchUsers();
       } else {
-        toast.error(response.message || 'Không thể thay đổi trạng thái');
+        toast.error(response.message || 'Cannot change status');
       }
     } catch (error) {
       console.error('Error toggling user status:', error);
-      toast.error('Không thể thay đổi trạng thái');
+      toast.error('Cannot change status');
     } finally {
       setStatusDialogOpen(false);
       setSelectedUser(null);
@@ -221,11 +221,11 @@ export default function UsersManagement() {
         toast.success('Đặt lại mật khẩu thành công');
         setPasswordModalOpen(false);
       } else {
-        toast.error(response.message || 'Không thể đặt lại mật khẩu');
+        toast.error(response.message || 'Cannot reset password');
       }
     } catch (error) {
       console.error('Error resetting password:', error);
-      toast.error('Không thể đặt lại mật khẩu');
+      toast.error('Cannot reset password');
     }
   };
 
@@ -234,14 +234,14 @@ export default function UsersManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Quản lý người dùng</h1>
+          <h1 className="text-2xl font-bold">User Management</h1>
           <p className="text-muted-foreground">
-            Quản lý tài khoản và phân quyền người dùng
+            Manage user accounts and permissions
           </p>
         </div>
         <Button onClick={() => { setSelectedUser(null); setUserFormOpen(true); }}>
           <Plus className="w-4 h-4 mr-2" />
-          Thêm người dùng
+          Thêm user
         </Button>
       </div>
 
@@ -259,7 +259,7 @@ export default function UsersManagement() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Tìm theo tên, email, số điện thoại..."
+                  placeholder="Search by name, email, phone..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -269,24 +269,24 @@ export default function UsersManagement() {
             </div>
             <Select value={roleFilter} onValueChange={(value) => { setRoleFilter(value === 'all' ? '' : value); setPagination({ ...pagination, pageNumber: 1 }); }}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Lọc theo vai trò" />
+                <SelectValue placeholder="Filter by role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tất cả vai trò</SelectItem>
-                <SelectItem value="Admin">Quản trị viên</SelectItem>
-                <SelectItem value="Moderator">Điều hành</SelectItem>
-                <SelectItem value="Staff">Nhân viên</SelectItem>
-                <SelectItem value="User">Người dùng</SelectItem>
+                <SelectItem value="all">All Roles</SelectItem>
+                <SelectItem value="Admin">Administrator</SelectItem>
+                <SelectItem value="Moderator">Moderator</SelectItem>
+                <SelectItem value="Staff">Staff</SelectItem>
+                <SelectItem value="User">User</SelectItem>
               </SelectContent>
             </Select>
             <Select value={statusFilter} onValueChange={(value) => { setStatusFilter(value === 'all' ? '' : value); setPagination({ ...pagination, pageNumber: 1 }); }}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Lọc theo trạng thái" />
+                <SelectValue placeholder="Filter by status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tất cả trạng thái</SelectItem>
-                <SelectItem value="active">Hoạt động</SelectItem>
-                <SelectItem value="locked">Bị khóa</SelectItem>
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="locked">Locked</SelectItem>
               </SelectContent>
             </Select>
             <Button variant="secondary" onClick={handleSearch}>

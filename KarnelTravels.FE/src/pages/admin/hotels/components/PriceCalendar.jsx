@@ -217,7 +217,7 @@ const PriceCalendar = ({
         <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
           <div className="flex items-center justify-between px-6 py-4 border-b">
             <div>
-              <h2 className="text-xl font-semibold">Quản lý giá & availability (F186, F187)</h2>
+              <h2 className="text-xl font-semibold">Price & Availability Management (F186, F187)</h2>
               <p className="text-sm text-gray-500">{room?.roomType} - {room?.hotelName || ''}</p>
             </div>
             <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded" type="button">

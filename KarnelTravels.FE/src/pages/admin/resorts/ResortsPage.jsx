@@ -254,8 +254,8 @@ const ResortsPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Quản lý Resort</h1>
-          <p className="text-gray-500 mt-1">Quản lý thông tin resort, phòng và tiện nghi</p>
+          <h1 className="text-2xl font-bold text-gray-900">Resort Management</h1>
+          <p className="text-gray-500 mt-1">Manage resort information, rooms and amenities</p>
         </div>
         <button
           onClick={() => { resetForm(); setShowModal(true); }}

@@ -149,7 +149,7 @@ const HotelList = ({
           <button
             onClick={() => navigate(`/admin/hotels/${row.original.hotelId}/rooms`)}
             className="p-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
-            title="Quản lý phòng"
+            title="Room Management"
           >
             <Bed size={18} />
           </button>

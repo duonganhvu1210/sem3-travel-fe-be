@@ -156,7 +156,7 @@ const InclusionManager = ({ tourId, tourName, onClose }) => {
       <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
-            <h2 className="text-xl font-semibold text-gray-900">Quản lý dịch vụ</h2>
+            <h2 className="text-xl font-semibold text-gray-900">Service Management</h2>
             <p className="text-sm text-gray-500 mt-1">{tourName}</p>
           </div>
           <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">

@@ -20,16 +20,16 @@ import {
 } from '@/components/ui/select';
 
 const roleOptions = [
-  { value: 'Admin', label: 'Quản trị viên', description: 'Toàn quyền quản lý hệ thống' },
-  { value: 'Moderator', label: 'Điều hành', description: 'Quản lý nội dung và người dùng' },
-  { value: 'Staff', label: 'Nhân viên', description: 'Hỗ trợ và xử lý yêu cầu' },
-  { value: 'User', label: 'Người dùng', description: 'Tài khoản khách hàng' },
+  { value: 'Admin', label: 'Administrator', description: 'Full system access' },
+  { value: 'Moderator', label: 'Moderator', description: 'Manage content and users' },
+  { value: 'Staff', label: 'Staff', description: 'Support and process requests' },
+  { value: 'User', label: 'User', description: 'Customer account' },
 ];
 
 const genderOptions = [
-  { value: 'Male', label: 'Nam' },
-  { value: 'Female', label: 'Nữ' },
-  { value: 'Other', label: 'Khác' },
+  { value: 'Male', label: 'Male' },
+  { value: 'Female', label: 'Female' },
+  { value: 'Other', label: 'Other' },
 ];
 
 export default function UserForm({
@@ -106,7 +106,7 @@ export default function UserForm({
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>
-            {isEdit ? 'Chỉnh sửa người dùng' : 'Thêm mới người dùng'}
+            {isEdit ? 'Edit User' : 'Add New User'}
           </DialogTitle>
           <DialogDescription>
             {isEdit

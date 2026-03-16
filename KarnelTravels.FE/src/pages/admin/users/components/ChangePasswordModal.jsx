@@ -60,22 +60,22 @@ export default function ChangePasswordModal({
             <div className="flex items-start gap-2">
               <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5" />
               <div className="text-sm text-amber-800">
-                <p className="font-medium">Lưu ý quan trọng</p>
+                <p className="font-medium">Important Notice</p>
                 <p className="mt-1">
-                  Người dùng sẽ bị đăng xuất khỏi tất cả thiết bị và phải đăng nhập lại bằng mật khẩu mới.
+                  User will be logged out from all devices and must log in again with the new password.
                 </p>
               </div>
             </div>
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="newPassword">Mật khẩu mới</Label>
+            <Label htmlFor="newPassword">New Password</Label>
             <Input
               id="newPassword"
               type="password"
-              placeholder="Nhập mật khẩu mới"
+              placeholder="Enter new password"
               {...register('newPassword', {
-                required: 'Mật khẩu mới là bắt buộc',
+                required: 'New password is required',
                 minLength: {
                   value: 6,
                   message: 'Mật khẩu phải có ít nhất 6 ký tự',
@@ -110,10 +110,10 @@ export default function ChangePasswordModal({
               variant="outline"
               onClick={() => handleClose(false)}
             >
-              Hủy
+              Cancel
             </Button>
             <Button type="submit" disabled={loading} className="bg-amber-600 hover:bg-amber-700">
-              {loading ? 'Đang xử lý...' : 'Đặt lại mật khẩu'}
+              {loading ? 'Processing...' : 'Reset Password'}
             </Button>
           </DialogFooter>
         </form>

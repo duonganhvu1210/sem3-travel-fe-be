@@ -66,7 +66,7 @@ const ContactDetailModal = ({
             <div>
               <h2 className="text-xl font-semibold text-gray-900">Chi tiết liên hệ</h2>
               <p className="text-sm text-gray-500">
-                Ngày gửi: {formatDate(contact.createdAt)}
+                Sent Date: {formatDate(contact.createdAt)}
               </p>
             </div>
             <div className="flex items-center gap-2">

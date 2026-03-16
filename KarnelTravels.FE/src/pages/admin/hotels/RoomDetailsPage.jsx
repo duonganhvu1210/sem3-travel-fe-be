@@ -342,7 +342,7 @@ const RoomDetailsPage = () => {
         </button>
         <div className="flex-1">
           <h1 className="text-2xl font-bold text-gray-900">{hotel?.name}</h1>
-          <p className="text-gray-600">Quản lý phòng - F185, F186, F187</p>
+          <p className="text-gray-600">Room Management - F185, F186, F187</p>
         </div>
         <div className="flex items-center gap-2">
           <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">

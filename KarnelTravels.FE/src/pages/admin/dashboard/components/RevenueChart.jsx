@@ -47,7 +47,7 @@ const RevenueChart = ({ data, loading }) => {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="text-lg font-semibold text-gray-800">Doanh thu 12 tháng</h3>
-          <p className="text-sm text-gray-500">Thống kê doanh thu theo từng tháng</p>
+          <p className="text-sm text-gray-500">Monthly revenue statistics</p>
         </div>
         <div className="flex items-center gap-2 bg-green-50 px-3 py-2 rounded-lg">
           <TrendingUp className="w-4 h-4 text-green-600" />

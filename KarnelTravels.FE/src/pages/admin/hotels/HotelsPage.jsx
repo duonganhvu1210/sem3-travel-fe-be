@@ -70,7 +70,7 @@ const HotelsPage = () => {
       }
     } catch (error) {
       console.error('Error fetching hotels:', error);
-      toast.error('Không thể tải danh sách khách sạn');
+      toast.error('Cannot load hotel list');
     } finally {
       setIsLoading(false);
     }
@@ -126,7 +126,7 @@ const HotelsPage = () => {
       }
     } catch (error) {
       console.error('Error fetching hotel details:', error);
-      toast.error('Không thể tải chi tiết khách sạn');
+      toast.error('Cannot load hotel details');
     }
   };
 
@@ -160,7 +160,7 @@ const HotelsPage = () => {
       try {
         const response = await hotelService.delete(hotel.hotelId);
         if (response.success) {
-          toast.success('Xóa khách sạn thành công');
+          toast.success('Hotel deleted successfully');
           fetchHotels();
         }
       } catch (error) {
@@ -213,7 +213,7 @@ const HotelsPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Quản lý khách sạn</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Hotel Management</h1>
           <p className="text-gray-600 mt-1">F181 - F190: Manage hotels, rooms and reviews</p>
         </div>
         <button
@@ -221,7 +221,7 @@ const HotelsPage = () => {
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
         >
           <Plus size={20} />
-          <span>Thêm khách sạn mới</span>
+            <span>Add New Hotel</span>
         </button>
       </div>
 
@@ -326,7 +326,7 @@ const HotelsPage = () => {
                     <span className={`inline-flex px-2 py-1 rounded-full text-sm font-medium ${
                       selectedHotel.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                     }`}>
-                      {selectedHotel.isActive ? 'Hoạt động' : 'Không hoạt động'}
+                      {selectedHotel.isActive ? 'Active' : 'Inactive'}
                     </span>
                   </div>
                 </div>
@@ -363,7 +363,7 @@ const HotelsPage = () => {
                     className="flex-1 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 flex items-center justify-center gap-2"
                   >
                     <Bed size={18} />
-                    <span>Quản lý phòng</span>
+                    <span>Room Management</span>
                   </button>
                   <button
                     onClick={() => {
@@ -390,7 +390,7 @@ const HotelsPage = () => {
             <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
               <div className="flex items-center justify-between px-6 py-4 border-b">
                 <div>
-                  <h2 className="text-xl font-semibold">Quản lý phòng</h2>
+                  <h2 className="text-xl font-semibold">Room Management</h2>
                   <p className="text-sm text-gray-500">{selectedHotel.name}</p>
                 </div>
                 <button onClick={() => setIsRoomManagerOpen(false)} className="p-2 hover:bg-gray-100 rounded">

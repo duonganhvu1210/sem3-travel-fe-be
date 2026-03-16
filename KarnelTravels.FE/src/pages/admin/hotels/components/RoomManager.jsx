@@ -160,7 +160,7 @@ const RoomManager = ({
   return (
     <div className="bg-white rounded-xl border border-gray-200">
       <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900">Quản lý loại phòng (F185)</h3>
+        <h3 className="text-lg font-semibold text-gray-900">Room Type Management (F185)</h3>
         <button
           onClick={() => {
             setEditingRoom(null);
@@ -238,7 +238,7 @@ const RoomManager = ({
                     <button
                       onClick={() => handleOpenPriceCalendar(room)}
                       className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
-                      title="Quản lý giá & availability"
+                      title="Manage Prices & Availability"
                     >
                       <Calendar size={18} />
                     </button>

@@ -202,8 +202,8 @@ const BookingsPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Quản lý đơn đặt</h1>
-          <p className="text-gray-600 mt-1">F191 - F200: Quản lý đơn đặt và thống kê</p>
+          <h1 className="text-2xl font-bold text-gray-900">Booking Management</h1>
+          <p className="text-gray-600 mt-1">F191 - F200: Manage bookings and statistics</p>
         </div>
         <div className="flex gap-2">
           <button

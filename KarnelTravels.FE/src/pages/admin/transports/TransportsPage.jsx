@@ -339,8 +339,8 @@ const TransportsPage = () => {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Quản lý Phương tiện</h1>
-          <p className="text-sm text-gray-500 mt-1">Quản lý phương tiện vận chuyển, nhà xe, tuyến đường và lịch trình</p>
+          <h1 className="text-2xl font-bold text-gray-900">Transport Management</h1>
+          <p className="text-sm text-gray-500 mt-1">Manage transport vehicles, providers, routes and schedules</p>
         </div>
       </div>
 
