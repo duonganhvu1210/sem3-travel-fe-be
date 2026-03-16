@@ -365,7 +365,7 @@ public class UpdateContactRequest
 
 public class ReplyContactRequest
 {
-    public string ReplyContent { get; set; } = string.Empty;
+    public string ReplyMessage { get; set; } = string.Empty;
 }
 
 // Review DTOs

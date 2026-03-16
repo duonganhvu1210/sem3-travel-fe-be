@@ -349,9 +349,9 @@ public class FavoritesController : ControllerBase
         return f.ItemType switch
         {
             FavoriteType.TouristSpot => _context.TouristSpots.FirstOrDefault(t => t.Id == f.TouristSpotId)?.TicketPrice,
-            FavoriteType.Hotel => _context.Hotels.FirstOrDefault(h => h.Id == f.HotelId)?.PricePerNight,
-            FavoriteType.Restaurant => _context.Restaurants.FirstOrDefault(r => r.Id == f.RestaurantId)?.PriceRange,
-            FavoriteType.Resort => _context.Resorts.FirstOrDefault(r => r.Id == f.ResortId)?.PricePerNight,
+            FavoriteType.Hotel => _context.Hotels.FirstOrDefault(h => h.Id == f.HotelId)?.MinPrice,
+            FavoriteType.Restaurant => null, // PriceLevel is string, not decimal
+            FavoriteType.Resort => _context.Resorts.FirstOrDefault(r => r.Id == f.ResortId)?.MinPrice,
             FavoriteType.Tour => _context.TourPackages.FirstOrDefault(t => t.Id == f.TourPackageId)?.Price,
             _ => null
         };

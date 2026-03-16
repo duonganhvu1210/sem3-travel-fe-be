@@ -200,7 +200,7 @@ public class ContactController : ControllerBase
                 MessageContent = contact.MessageContent,
                 Rating = contact.Rating,
                 Status = contact.Status.ToString(),
-                ReplyContent = contact.ReplyContent,
+                ReplyContent = contact.ReplyMessage,
                 RepliedAt = contact.RepliedAt,
                 CreatedAt = contact.CreatedAt
             }
@@ -238,7 +238,7 @@ public class ContactController : ControllerBase
             MessageContent = c.MessageContent,
             Rating = c.Rating,
             Status = c.Status.ToString(),
-            ReplyContent = c.ReplyContent,
+            ReplyContent = c.ReplyMessage,
             RepliedAt = c.RepliedAt,
             CreatedAt = c.CreatedAt
         }).ToList();
@@ -263,7 +263,7 @@ public class ContactController : ControllerBase
                 Message = "Contact not found"
             });
 
-        contact.ReplyMessage = request.ReplyContent;
+        contact.ReplyMessage = request.ReplyMessage;
         contact.RepliedAt = DateTime.UtcNow;
         contact.Status = ContactStatus.Replied;
 
