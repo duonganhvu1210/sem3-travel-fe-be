@@ -115,13 +115,24 @@ const ResortsPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
+      // Amenities đã là số từ form (value: 0, 1, 2...)
       const submitData = {
-        ...formData,
-        locationType: parseInt(formData.locationType),
-        starRating: parseInt(formData.starRating)
+        Name: formData.name || '',
+        Description: formData.description || null,
+        Address: formData.address || null,
+        City: formData.city || '',
+        LocationType: parseInt(formData.locationType) || 0,
+        StarRating: parseInt(formData.starRating) || 3,
+        Images: formData.images && formData.images.length > 0 ? formData.images : null,
+        MinPrice: formData.minPrice ? parseFloat(formData.minPrice) : null,
+        MaxPrice: formData.maxPrice ? parseFloat(formData.maxPrice) : null,
+        Amenities: formData.amenities && formData.amenities.length > 0 ? formData.amenities : null,
+        IsFeatured: Boolean(formData.isFeatured)
       };
+
+      console.log('Submitting resort data:', submitData);
 
       let res;
       if (editingResort) {

@@ -133,16 +133,21 @@ const HomePage = () => {
               <>
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-6">
                   <Plane className="w-4 h-4" />
-                  <span className="text-sm font-medium">{homeData?.banner?.title || "Explore Vietnam with KarnelTravels"}</span>
+                  <span className="text-sm font-medium">
+                    {homeData?.banner?.title || "Discover Vietnam with KarnelTravels"}
+                  </span>
                 </div>
 
                 <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                  {homeData?.banner?.subtitle?.split(' - ')[0] || "Your journey"}
-                  <span className="block text-teal-400">{homeData?.banner?.subtitle?.split(' - ')[1] || "starts here"}</span>
+                  {homeData?.banner?.subtitle?.split(' - ')[0] || "Your next adventure"}
+                  <span className="block text-teal-400">
+                    {homeData?.banner?.subtitle?.split(' - ')[1] || "begins here"}
+                  </span>
                 </h1>
 
                 <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-                  {homeData?.banner?.subtitle || "Explore the best destinations in Vietnam and around the world. Experience professional service, reasonable prices"}
+                  {homeData?.banner?.subtitle ||
+                    "Explore Vietnam’s most remarkable destinations and enjoy professional service at the right price."}
                 </p>
               </>
             )}
@@ -154,7 +159,7 @@ const HomePage = () => {
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <input
                     type="text"
-                    placeholder="Where do you want to go?"
+                    placeholder="Where would you like to go?"
                     className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-0 focus:outline-none focus:ring-2 focus:ring-primary"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -207,18 +212,18 @@ const HomePage = () => {
                   to={category.link}
                   className="group p-6 rounded-2xl border border-gray-100 hover:border-teal-200 hover:bg-teal-50/50 transition-all duration-300 text-center"
                 >
-                  <div 
+                  <div
                     className="w-14 h-14 mx-auto mb-4 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform"
                     style={{ backgroundColor: `${category.color}20` }}
                   >
                     {getIconComponent(category.icon)}
-                    <MapPin 
-                      className="w-6 h-6" 
+                    <MapPin
+                      className="w-6 h-6"
                       style={{ color: category.color }}
                     />
                   </div>
                   <h3 className="font-semibold text-gray-800 mb-1">{category.name}</h3>
-                  <p className="text-sm text-muted-foreground">{category.itemCount} places</p>
+                  <p className="text-sm text-muted-foreground">{category.itemCount} destinations</p>
                 </Link>
               ))
             )}
@@ -241,7 +246,7 @@ const HomePage = () => {
                   Popular Destinations
                 </h2>
                 <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                  Explore the most attractive tourist destinations chosen by many travelers
+                  Discover top-rated places loved by travelers from around the world
                 </p>
               </>
             )}
@@ -276,7 +281,7 @@ const HomePage = () => {
                     <CardContent className="p-4">
                       <h3 className="font-bold text-lg text-gray-800 mb-1">{spot.name}</h3>
                       <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
-                        {spot.description || `Tourist spot ${spot.type}`}
+                        {spot.description || `A featured ${spot.type} destination`}
                       </p>
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -324,7 +329,7 @@ const HomePage = () => {
                     <CardContent className="p-4">
                       <h3 className="font-bold text-lg text-gray-800 mb-1">{spot.name}</h3>
                       <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
-                        {spot.description || `Tourist spot ${spot.type}`}
+                        {spot.description || `A featured ${spot.type} destination`}
                       </p>
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -375,7 +380,8 @@ const HomePage = () => {
                     {homeData?.companyInfo?.aboutTitle || "About Us"}
                   </h2>
                   <p className="text-lg text-muted-foreground mb-6">
-                    {homeData?.companyInfo?.description || "Karnel Travels is proud to be a leading travel and tourism company in Vietnam."}
+                    {homeData?.companyInfo?.description ||
+                      "Karnel Travels is proud to be one of Vietnam’s trusted travel brands, delivering memorable journeys with care and professionalism."}
                   </p>
                   <ul className="space-y-3 mb-8">
                     {homeData?.companyInfo?.aboutPoints?.map((point, index) => (
@@ -385,7 +391,6 @@ const HomePage = () => {
                       </li>
                     ))}
                   </ul>
-                  
                 </div>
               </>
             )}
@@ -405,10 +410,10 @@ const HomePage = () => {
             ) : (
               <>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Tại sao chọn KarnelTravels?
+                  Why Choose KarnelTravels?
                 </h2>
                 <p className="text-white/80 text-lg max-w-2xl mx-auto">
-                  Chúng tôi cam kết mang đến cho bạn trải nghiệm du lịch tốt nhất
+                  We are committed to making every trip smooth, memorable, and worth every moment
                 </p>
               </>
             )}
@@ -443,10 +448,10 @@ const HomePage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              Trải nghiệm đa dạng
+              Diverse Travel Experiences
             </h2>
             <p className="text-muted-foreground text-lg">
-              Explore Various Types of Tourism
+              Explore Different Styles of Travel
             </p>
           </div>
 
@@ -455,14 +460,14 @@ const HomePage = () => {
               <div className="relative h-64">
                 <img
                   src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80"
-                  alt="Biển đảo"
+                  alt="Beach destinations"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <Waves className="w-8 h-8 mb-2" />
-                  <h3 className="font-bold text-xl">Du lịch biển đảo</h3>
-                  <p className="text-white/80 text-sm">Discover the most beautiful beaches</p>
+                  <h3 className="font-bold text-xl">Beach Escapes</h3>
+                  <p className="text-white/80 text-sm">Discover breathtaking coastlines and island getaways</p>
                 </div>
               </div>
             </Card>
@@ -471,14 +476,14 @@ const HomePage = () => {
               <div className="relative h-64">
                 <img
                   src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80"
-                  alt="Núi rừng"
+                  alt="Mountain adventures"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <Mountain className="w-8 h-8 mb-2" />
-                  <h3 className="font-bold text-xl">Du lịch núi rừng</h3>
-                  <p className="text-white/80 text-sm">Chinh phục đỉnh cao hùng vĩ</p>
+                  <h3 className="font-bold text-xl">Mountain Adventures</h3>
+                  <p className="text-white/80 text-sm">Reach majestic peaks and reconnect with nature</p>
                 </div>
               </div>
             </Card>
@@ -487,14 +492,14 @@ const HomePage = () => {
               <div className="relative h-64">
                 <img
                   src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80"
-                  alt="Văn hóa"
+                  alt="Cultural experiences"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <Sun className="w-8 h-8 mb-2" />
-                  <h3 className="font-bold text-xl">Du lịch văn hóa</h3>
-                  <p className="text-white/80 text-sm">Trải nghiệm bản sắc văn hóa</p>
+                  <h3 className="font-bold text-xl">Cultural Journeys</h3>
+                  <p className="text-white/80 text-sm">Experience local heritage, traditions, and stories</p>
                 </div>
               </div>
             </Card>
@@ -510,28 +515,27 @@ const HomePage = () => {
               <div className="relative h-64 md:h-auto">
                 <img
                   src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80"
-                  alt="Bắt đầu hành trình"
+                  alt="Start your journey"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               </div>
               <div className="p-8 md:p-12 flex flex-col justify-center">
                 <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                  Sẵn sàng cho chuyến đi?
+                  Ready for Your Next Trip?
                 </h2>
                 <p className="text-muted-foreground mb-6">
-                  Hãy để chúng tôi giúp bạn lên kế hoạch cho chuyến du lịch hoàn hảo.
-                  Liên hệ ngay để được tư vấn miễn phí!
+                  Let us help you design the perfect getaway. Contact us today for expert advice and personalized support.
                 </p>
                 <div className="flex gap-4">
                   <Button size="lg" asChild>
                     <Link to="/contact">
-                      Liên hệ ngay
+                      Contact Us
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </Link>
                   </Button>
                   <Button variant="outline" size="lg" asChild>
                     <Link to="/search">
-                      Tìm kiếm tour
+                      Explore Tours
                     </Link>
                   </Button>
                 </div>

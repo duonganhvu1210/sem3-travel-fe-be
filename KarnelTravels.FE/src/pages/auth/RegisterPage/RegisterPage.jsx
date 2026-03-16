@@ -11,10 +11,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ArrowLeft, Loader2, Eye, EyeOff } from 'lucide-react';
 
 const schema = yup.object().shape({
-  fullName: yup.string().required('Họ tên là bắt buộc').min(2, 'Họ tên phải có ít nhất 2 ký tự'),
-  email: yup.string().required('Email là bắt buộc').email('Email không hợp lệ'),
-  password: yup.string().required('Mật khẩu là bắt buộc').min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
-  confirmPassword: yup.string().required('Xác nhận mật khẩu là bắt buộc').oneOf([yup.ref('password')], 'Mật khẩu không khớp'),
+  fullName: yup.string().required('Full name is required').min(2, 'Full name must contain at least 2 characters'),
+  email: yup.string().required('Email is required').email('Please enter a valid email address'),
+  password: yup.string().required('Password is required').min(6, 'Password must contain at least 6 characters'),
+  confirmPassword: yup.string().required('Please confirm your password').oneOf([yup.ref('password')], 'Passwords do not match'),
 });
 
 const RegisterPage = () => {
@@ -48,7 +48,7 @@ const RegisterPage = () => {
     if (result.success) {
       navigate('/', { replace: true });
     } else {
-      setError(result.message || 'Đăng ký thất bại. Vui lòng thử lại.');
+      setError(result.message || 'Registration was unsuccessful. Please try again.');
     }
 
     setIsLoading(false);
@@ -56,36 +56,42 @@ const RegisterPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      {/* Register Card */}
       <div className="relative z-10 w-full max-w-md mx-4">
         <Card className="border-0 shadow-xl">
           <CardHeader className="space-y-1 text-center pb-2">
+
             <div className="flex justify-center mb-4">
               <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg">
                 <ArrowLeft className="w-8 h-8 text-white" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold">Tạo tài khoản</CardTitle>
+
+            <CardTitle className="text-2xl font-bold">
+              Create Your Account
+            </CardTitle>
+
             <CardDescription className="text-muted-foreground">
-              Đăng ký để bắt đầu hành trình của bạn
+              Join KarnelTravels and start exploring unforgettable destinations around the world.
             </CardDescription>
+
           </CardHeader>
+
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {/* Error Message */}
+
               {error && (
                 <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-destructive text-sm">
                   {error}
                 </div>
               )}
 
-              {/* Full Name Field */}
+              {/* Full Name */}
               <div className="space-y-2">
-                <Label htmlFor="fullName">Họ và tên</Label>
+                <Label htmlFor="fullName">Full Name</Label>
                 <Input
                   id="fullName"
                   type="text"
-                  placeholder="Nhập họ và tên"
+                  placeholder="Enter your full name"
                   {...register('fullName')}
                   className={errors.fullName ? 'border-destructive focus-visible:ring-destructive' : ''}
                 />
@@ -94,13 +100,13 @@ const RegisterPage = () => {
                 )}
               </div>
 
-              {/* Email Field */}
+              {/* Email */}
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Nhập email của bạn"
+                  placeholder="Enter your email address"
                   {...register('email')}
                   className={errors.email ? 'border-destructive focus-visible:ring-destructive' : ''}
                 />
@@ -109,17 +115,19 @@ const RegisterPage = () => {
                 )}
               </div>
 
-              {/* Password Field */}
+              {/* Password */}
               <div className="space-y-2">
-                <Label htmlFor="password">Mật khẩu</Label>
+                <Label htmlFor="password">Password</Label>
+
                 <div className="relative">
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Tạo mật khẩu"
+                    placeholder="Create a secure password"
                     {...register('password')}
                     className={errors.password ? 'border-destructive focus-visible:ring-destructive pr-10' : 'pr-10'}
                   />
+
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -127,23 +135,27 @@ const RegisterPage = () => {
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
+
                 </div>
+
                 {errors.password && (
                   <p className="text-sm text-destructive">{errors.password.message}</p>
                 )}
               </div>
 
-              {/* Confirm Password Field */}
+              {/* Confirm Password */}
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+
                 <div className="relative">
                   <Input
                     id="confirmPassword"
                     type={showConfirmPassword ? 'text' : 'password'}
-                    placeholder="Nhập lại mật khẩu"
+                    placeholder="Re-enter your password"
                     {...register('confirmPassword')}
                     className={errors.confirmPassword ? 'border-destructive focus-visible:ring-destructive pr-10' : 'pr-10'}
                   />
+
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -151,7 +163,9 @@ const RegisterPage = () => {
                   >
                     {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
+
                 </div>
+
                 {errors.confirmPassword && (
                   <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
                 )}
@@ -165,42 +179,58 @@ const RegisterPage = () => {
                   required
                   className="mt-1 w-4 h-4 rounded border-input text-primary focus:ring-primary"
                 />
+
                 <Label htmlFor="terms" className="text-sm font-normal cursor-pointer">
-                  Tôi đồng ý với{' '}
-                  <Link to="/terms" className="text-primary hover:underline">Điều khoản</Link>
-                  {' '}và{' '}
-                  <Link to="/privacy" className="text-primary hover:underline">Chính sách bảo mật</Link>
+                  I agree to the{' '}
+                  <Link to="/terms" className="text-primary hover:underline">
+                    Terms of Service
+                  </Link>{' '}
+                  and{' '}
+                  <Link to="/privacy" className="text-primary hover:underline">
+                    Privacy Policy
+                  </Link>
                 </Label>
+
               </div>
 
-              {/* Submit Button */}
+              {/* Submit */}
               <Button type="submit" className="w-full" disabled={isLoading}>
+
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Đang đăng ký...
+                    Creating your account...
                   </>
                 ) : (
-                  'Tạo tài khoản'
+                  'Create Account'
                 )}
+
               </Button>
+
             </form>
           </CardContent>
+
           <CardFooter className="flex flex-col gap-4">
+
             <div className="relative w-full">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t"></div>
               </div>
+
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card text-muted-foreground px-2">hoặc</span>
+                <span className="bg-card text-muted-foreground px-2">
+                  or
+                </span>
               </div>
             </div>
+
             <p className="text-center text-sm text-muted-foreground">
-              Đã có tài khoản?{' '}
+              Already have an account?{' '}
               <Link to="/login" className="text-primary font-semibold hover:underline">
-                Đăng nhập ngay
+                Sign in
               </Link>
             </p>
+
           </CardFooter>
         </Card>
       </div>

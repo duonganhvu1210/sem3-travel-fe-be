@@ -11,8 +11,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ArrowLeft, Loader2, Eye, EyeOff } from 'lucide-react';
 
 const schema = yup.object().shape({
-  email: yup.string().required('Email là bắt buộc').email('Email không hợp lệ'),
-  password: yup.string().required('Mật khẩu là bắt buộc').min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
+  email: yup.string().required('Email is required').email('Invalid email address'),
+  password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
 });
 
 const LoginPage = () => {
@@ -42,7 +42,7 @@ const LoginPage = () => {
     if (result.success) {
       navigate(from, { replace: true });
     } else {
-      setError(result.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+      setError(result.message || 'Login failed. Please try again.');
     }
 
     setIsLoading(false);
@@ -59,9 +59,9 @@ const LoginPage = () => {
                 <ArrowLeft className="w-8 h-8 text-white" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold">Chào mừng trở lại!</CardTitle>
+            <CardTitle className="text-2xl font-bold">Welcome Back!</CardTitle>
             <CardDescription className="text-muted-foreground">
-              Đăng nhập để tiếp tục hành trình của bạn
+              Sign in to continue your journey
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -79,7 +79,7 @@ const LoginPage = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Nhập email của bạn"
+                  placeholder="Enter your email"
                   {...register('email')}
                   className={errors.email ? 'border-destructive focus-visible:ring-destructive' : ''}
                 />
@@ -91,16 +91,16 @@ const LoginPage = () => {
               {/* Password Field */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Mật khẩu</Label>
+                  <Label htmlFor="password">Password</Label>
                   <Link to="/forgot-password" className="text-sm text-primary hover:underline">
-                    Quên mật khẩu?
+                    Forgot password?
                   </Link>
                 </div>
                 <div className="relative">
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Nhập mật khẩu"
+                    placeholder="Enter your password"
                     {...register('password')}
                     className={errors.password ? 'border-destructive focus-visible:ring-destructive pr-10' : 'pr-10'}
                   />
@@ -125,7 +125,7 @@ const LoginPage = () => {
                   className="w-4 h-4 rounded border-input text-primary focus:ring-primary"
                 />
                 <Label htmlFor="remember" className="text-sm font-normal cursor-pointer">
-                  Ghi nhớ đăng nhập
+                  Remember me
                 </Label>
               </div>
 
@@ -134,10 +134,10 @@ const LoginPage = () => {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Đang đăng nhập...
+                    Signing in...
                   </>
                 ) : (
-                  'Đăng nhập'
+                  'Sign In'
                 )}
               </Button>
             </form>
@@ -148,13 +148,13 @@ const LoginPage = () => {
                 <div className="w-full border-t"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card text-muted-foreground px-2">hoặc</span>
+                <span className="bg-card text-muted-foreground px-2">or</span>
               </div>
             </div>
             <p className="text-center text-sm text-muted-foreground">
-              Chưa có tài khoản?{' '}
+              Don’t have an account?{' '}
               <Link to="/register" className="text-primary font-semibold hover:underline">
-                Đăng ký ngay
+                Sign up now
               </Link>
             </p>
           </CardFooter>

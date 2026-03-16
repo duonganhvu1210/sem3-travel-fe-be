@@ -80,7 +80,7 @@ public class ResortService : IResortService
             Description = request.Description,
             Address = request.Address,
             City = request.City,
-            LocationType = request.LocationType.ToString(),
+            LocationType = ((ResortType)request.LocationType).ToString(),
             StarRating = request.StarRating,
             Images = request.Images != null ? System.Text.Json.JsonSerializer.Serialize(request.Images) : null,
             MinPrice = request.MinPrice,
@@ -109,7 +109,7 @@ public class ResortService : IResortService
         if (request.Description != null) resort.Description = request.Description;
         if (request.Address != null) resort.Address = request.Address;
         if (request.City != null) resort.City = request.City;
-        if (request.LocationType.HasValue) resort.LocationType = request.LocationType.Value.ToString();
+        if (request.LocationType.HasValue) resort.LocationType = ((ResortType)request.LocationType.Value).ToString();
         if (request.StarRating.HasValue) resort.StarRating = request.StarRating.Value;
         if (request.Images != null) resort.Images = System.Text.Json.JsonSerializer.Serialize(request.Images);
         if (request.MinPrice.HasValue) resort.MinPrice = request.MinPrice;
@@ -590,13 +590,55 @@ public class ResortService : IResortService
         List<string>? amenities = null;
         if (!string.IsNullOrEmpty(resort.Amenities))
         {
-            amenities = System.Text.Json.JsonSerializer.Deserialize<List<string>>(resort.Amenities);
+            try
+            {
+                // Thử parse dạng List<int> trước (dữ liệu mới)
+                var amenityInts = System.Text.Json.JsonSerializer.Deserialize<List<int>>(resort.Amenities);
+                if (amenityInts != null)
+                {
+                    amenities = amenityInts.Select(a => a.ToString()).ToList();
+                }
+            }
+            catch
+            {
+                try
+                {
+                    // Nếu lỗi thì thử dạng List<string> (dữ liệu cũ)
+                    amenities = System.Text.Json.JsonSerializer.Deserialize<List<string>>(resort.Amenities);
+                }
+                catch
+                {
+                    // Nếu vẫn lỗi thì bỏ qua
+                    amenities = null;
+                }
+            }
         }
 
         List<string>? activities = null;
         if (!string.IsNullOrEmpty(resort.Activities))
         {
-            activities = System.Text.Json.JsonSerializer.Deserialize<List<string>>(resort.Activities);
+            try
+            {
+                // Thử parse dạng List<int> trước (dữ liệu mới)
+                var activityInts = System.Text.Json.JsonSerializer.Deserialize<List<int>>(resort.Activities);
+                if (activityInts != null)
+                {
+                    activities = activityInts.Select(a => a.ToString()).ToList();
+                }
+            }
+            catch
+            {
+                try
+                {
+                    // Nếu lỗi thì thử dạng List<string> (dữ liệu cũ)
+                    activities = System.Text.Json.JsonSerializer.Deserialize<List<string>>(resort.Activities);
+                }
+                catch
+                {
+                    // Nếu vẫn lỗi thì bỏ qua
+                    activities = null;
+                }
+            }
         }
 
         List<ComboPackageDto>? packages = null;
@@ -605,14 +647,25 @@ public class ResortService : IResortService
             packages = System.Text.Json.JsonSerializer.Deserialize<List<ComboPackageDto>>(resort.Packages);
         }
 
-        return new ResortDto
-        {
-            ResortId = resort.Id,
-            Name = resort.Name,
-            Description = resort.Description,
-            Address = resort.Address,
-            City = resort.City,
-            LocationType = resort.LocationType,
+            // Convert LocationType: nếu là số thì chuyển sang tên enum, giữ nguyên nếu là string
+            string locationTypeValue;
+            if (int.TryParse(resort.LocationType, out var lt))
+            {
+                locationTypeValue = lt < 8 ? ((ResortType)lt).ToString() : lt.ToString();
+            }
+            else
+            {
+                locationTypeValue = resort.LocationType;
+            }
+
+            return new ResortDto
+            {
+                ResortId = resort.Id,
+                Name = resort.Name,
+                Description = resort.Description,
+                Address = resort.Address,
+                City = resort.City,
+                LocationType = locationTypeValue,
             StarRating = resort.StarRating,
             Images = images,
             MinPrice = resort.MinPrice,

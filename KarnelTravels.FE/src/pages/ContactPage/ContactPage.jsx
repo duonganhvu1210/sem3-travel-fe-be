@@ -1,52 +1,68 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSearchParams, Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {
-  MapPin, Phone, Mail, Clock, Send, Star, CheckCircle,
-  Loader2, Facebook, Youtube, MessageCircle, Instagram
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Send,
+  CheckCircle,
+  Loader2,
+  Facebook,
+  Youtube,
+  MessageCircle,
+  Instagram
 } from 'lucide-react';
 import api from '@/services/api';
 
 // Validation Schema
 const schema = yup.object().shape({
-  fullName: yup.string().required('Họ tên là bắt buộc'),
-  email: yup.string().required('Email là bắt buộc').email('Email không hợp lệ'),
-  phoneNumber: yup.string()
-    .matches(/^[0-9+\-\s()]*$/, 'Số điện thoại không hợp lệ')
-    .min(10, 'Số điện thoại phải có ít nhất 10 chữ số'),
+  fullName: yup.string().required('Full name is required'),
+  email: yup.string().required('Email is required').email('Invalid email address'),
+  phoneNumber: yup
+    .string()
+    .matches(/^[0-9+\-\s()]*$/, 'Invalid phone number')
+    .min(10, 'Phone number must have at least 10 digits'),
   address: yup.string(),
   subject: yup.string().when('requestType', {
     is: 'Feedback',
-    then: (schema) => schema.required('Tiêu đề là bắt buộc cho phản hồi'),
+    then: (schema) => schema.required('Subject is required for feedback'),
     otherwise: (schema) => schema
   }),
-  requestType: yup.string().required('Vui lòng chọn loại yêu cầu'),
+  requestType: yup.string().required('Please select a request type'),
   serviceType: yup.string(),
   expectedDate: yup.date().nullable(),
-  participantCount: yup.number().min(1, 'Số người phải lớn hơn 0').positive(),
-  messageContent: yup.string().required('Nội dung tin nhắn là bắt buộc').min(10, 'Nội dung phải có ít nhất 10 ký tự'),
-  rating: yup.number().min(1, 'Vui lòng chọn đánh giá').max(5)
+  participantCount: yup
+    .number()
+    .min(1, 'Participant count must be greater than 0')
+    .positive(),
+  messageContent: yup
+    .string()
+    .required('Message content is required')
+    .min(10, 'Message must contain at least 10 characters'),
+  rating: yup.number().min(1, 'Please select a rating').max(5)
 });
 
-// Request Type Labels
+// Request Type Options
 const requestTypeOptions = [
-  { value: 'General', label: 'Chung' },
+  { value: 'General', label: 'General' },
   { value: 'Booking', label: 'Booking' },
-  { value: 'Consulting', label: 'Tư vấn' },
-  { value: 'Feedback', label: 'Phản hồi' },
-  { value: 'Callback', label: 'Yêu cầu gọi lại' }
+  { value: 'Consulting', label: 'Consulting' },
+  { value: 'Feedback', label: 'Feedback' },
+  { value: 'Callback', label: 'Callback Request' }
 ];
 
 // Service Type Options
 const serviceTypeOptions = [
-  { value: '', label: 'Chọn dịch vụ' },
-  { value: 'Tour', label: 'Tour du lịch' },
-  { value: 'Hotel', label: 'Khách sạn' },
+  { value: '', label: 'Select a service' },
+  { value: 'Tour', label: 'Tour' },
+  { value: 'Hotel', label: 'Hotel' },
   { value: 'Resort', label: 'Resort' },
-  { value: 'Transport', label: 'Vận chuyển' },
-  { value: 'Restaurant', label: 'Nhà hàng' }
+  { value: 'Transport', label: 'Transport' },
+  { value: 'Restaurant', label: 'Restaurant' }
 ];
 
 // Star Rating Component
@@ -63,9 +79,9 @@ const StarRating = ({ value, onChange, readonly = false }) => {
           onClick={() => onChange(star)}
           onMouseEnter={() => !readonly && setHoverValue(star)}
           onMouseLeave={() => !readonly && setHoverValue(0)}
-          className={`text-2xl transition-colors ${readonly ? 'cursor-default' : 'cursor-pointer'} ${
-            star <= (hoverValue || value) ? 'text-yellow-400' : 'text-gray-300'
-          }`}
+          className={`text-2xl transition-colors ${
+            readonly ? 'cursor-default' : 'cursor-pointer'
+          } ${star <= (hoverValue || value) ? 'text-yellow-400' : 'text-gray-300'}`}
         >
           ★
         </button>
@@ -88,12 +104,12 @@ const ContactPage = () => {
   const getServiceTypeFromItemType = (type) => {
     if (!type) return '';
     const typeMap = {
-      'touristspot': 'Tour',
-      'tour': 'Tour',
-      'hotel': 'Hotel',
-      'resort': 'Resort',
-      'restaurant': 'Restaurant',
-      'transport': 'Transport'
+      touristspot: 'Tour',
+      tour: 'Tour',
+      hotel: 'Hotel',
+      resort: 'Resort',
+      restaurant: 'Restaurant',
+      transport: 'Transport'
     };
     return typeMap[type.toLowerCase()] || '';
   };
@@ -111,7 +127,7 @@ const ContactPage = () => {
       requestType: 'Consulting',
       rating: 0,
       serviceType: getServiceTypeFromItemType(itemType),
-      messageContent: itemName ? `Tôi quan tâm đến dịch vụ: ${itemName}` : ''
+      messageContent: itemName ? `I am interested in the service: ${itemName}` : ''
     }
   });
 
@@ -138,7 +154,6 @@ const ContactPage = () => {
       const response = await api.post('/contacts', requestData);
 
       if (response.data.success && response.data.data) {
-        // Save contact ID for viewing later
         const contactId = response.data.data.contactId || response.data.data.id;
         localStorage.setItem('lastContactId', contactId);
         setSubmittedContactId(contactId);
@@ -159,16 +174,16 @@ const ContactPage = () => {
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-10 h-10 text-green-500" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Gửi yêu cầu thành công!</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Request Sent Successfully!</h2>
           <p className="text-gray-600 mb-6">
-            Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi trong thời gian sớm nhất.
+            Thank you for contacting us. We will get back to you as soon as possible.
           </p>
           <div className="space-y-3">
             <Link
               to="/my-messages"
               className="block w-full px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-teal-700 transition-colors"
             >
-              Xem tin nhắn của bạn
+              View Your Messages
             </Link>
             <button
               onClick={() => {
@@ -177,7 +192,7 @@ const ContactPage = () => {
               }}
               className="block w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-colors"
             >
-              Gửi yêu cầu khác
+              Send Another Request
             </button>
           </div>
         </div>
@@ -190,8 +205,8 @@ const ContactPage = () => {
       {/* Header Banner */}
       <div className="bg-gradient-to-r from-teal-600 to-cyan-700 text-white py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold mb-4">Liên hệ với chúng tôi</h1>
-          <p className="text-xl text-white/80">Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7</p>
+          <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
+          <p className="text-xl text-white/80">We are always ready to support you 24/7</p>
         </div>
       </div>
 
@@ -200,13 +215,13 @@ const ContactPage = () => {
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold mb-6">Gửi yêu cầu</h2>
-              
+              <h2 className="text-2xl font-bold mb-6">Send a Request</h2>
+
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Request Type */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Loại yêu cầu <span className="text-red-500">*</span>
+                    Request Type <span className="text-red-500">*</span>
                   </label>
                   <select
                     {...register('requestType')}
@@ -223,11 +238,11 @@ const ContactPage = () => {
                   )}
                 </div>
 
-                {/* Service Type (show for Booking/Consulting) */}
+                {/* Service Type */}
                 {(requestType === 'Booking' || requestType === 'Consulting') && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Dịch vụ quan tâm
+                      Service of Interest
                     </label>
                     <select
                       {...register('serviceType')}
@@ -242,16 +257,16 @@ const ContactPage = () => {
                   </div>
                 )}
 
-                {/* Name & Email Row */}
+                {/* Name & Email */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Họ tên <span className="text-red-500">*</span>
+                      Full Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       {...register('fullName')}
                       type="text"
-                      placeholder="Nhập họ tên của bạn"
+                      placeholder="Enter your full name"
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
                     />
                     {errors.fullName && (
@@ -275,11 +290,11 @@ const ContactPage = () => {
                   </div>
                 </div>
 
-                {/* Phone & Address Row */}
+                {/* Phone & Address */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Số điện thoại
+                      Phone Number
                     </label>
                     <input
                       {...register('phoneNumber')}
@@ -294,27 +309,27 @@ const ContactPage = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Địa chỉ
+                      Address
                     </label>
                     <input
                       {...register('address')}
                       type="text"
-                      placeholder="Địa chỉ của bạn"
+                      placeholder="Your address"
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
                     />
                   </div>
                 </div>
 
-                {/* Subject (only for Feedback) */}
+                {/* Subject */}
                 {showSubject && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Tiêu đề <span className="text-red-500">*</span>
+                      Subject <span className="text-red-500">*</span>
                     </label>
                     <input
                       {...register('subject')}
                       type="text"
-                      placeholder="Nhập tiêu đề phản hồi"
+                      placeholder="Enter feedback subject"
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
                     />
                     {errors.subject && (
@@ -323,12 +338,12 @@ const ContactPage = () => {
                   </div>
                 )}
 
-                {/* Date & Participants (for Booking) */}
+                {/* Date & Participants */}
                 {(requestType === 'Booking' || requestType === 'Consulting') && (
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Ngày dự kiến
+                        Expected Date
                       </label>
                       <input
                         {...register('expectedDate')}
@@ -339,27 +354,29 @@ const ContactPage = () => {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Số người tham gia
+                        Number of Participants
                       </label>
                       <input
                         {...register('participantCount', { valueAsNumber: true })}
                         type="number"
                         min="1"
-                        placeholder="Số người"
+                        placeholder="Number of participants"
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                       {errors.participantCount && (
-                        <p className="mt-1 text-sm text-red-500">{errors.participantCount.message}</p>
+                        <p className="mt-1 text-sm text-red-500">
+                          {errors.participantCount.message}
+                        </p>
                       )}
                     </div>
                   </div>
                 )}
 
-                {/* Rating (only for Feedback) */}
+                {/* Rating */}
                 {showRating && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Đánh giá của bạn <span className="text-red-500">*</span>
+                      Your Rating <span className="text-red-500">*</span>
                     </label>
                     <StarRating
                       value={watch('rating') || 0}
@@ -374,12 +391,12 @@ const ContactPage = () => {
                 {/* Message */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nội dung <span className="text-red-500">*</span>
+                    Message <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     {...register('messageContent')}
                     rows={6}
-                    placeholder="Nhập nội dung yêu cầu của bạn..."
+                    placeholder="Enter your request details..."
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                   />
                   {errors.messageContent && (
@@ -396,19 +413,19 @@ const ContactPage = () => {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      Đang gửi...
+                      Sending...
                     </>
                   ) : (
                     <>
                       <Send className="w-5 h-5" />
-                      Gửi yêu cầu
+                      Send Request
                     </>
                   )}
                 </button>
 
                 {submitStatus === 'error' && (
                   <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-center">
-                    Có lỗi xảy ra. Vui lòng thử lại sau.
+                    An error occurred. Please try again later.
                   </div>
                 )}
               </form>
@@ -419,16 +436,18 @@ const ContactPage = () => {
           <div className="space-y-6">
             {/* Contact Details */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h3 className="text-xl font-bold mb-6">Thông tin liên hệ</h3>
-              
+              <h3 className="text-xl font-bold mb-6">Contact Information</h3>
+
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
                     <MapPin className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-800">Địa chỉ</p>
-                    <p className="text-gray-600 text-sm">123 Đường Nguyễn Trãi, Quận 1, TP. Hồ Chí Minh</p>
+                    <p className="font-medium text-gray-800">Address</p>
+                    <p className="text-gray-600 text-sm">
+                      123 Nguyen Trai Street, District 1, Ho Chi Minh City
+                    </p>
                   </div>
                 </div>
 
@@ -438,8 +457,10 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <p className="font-medium text-gray-800">Hotline</p>
-                    <p className="text-gray-600 text-sm">1900 xxxx</p>
-                    <p className="text-gray-500 text-xs">Từ 8:00 - 20:00 (Miễn phí)</p>
+                    <p className="text-gray-600 text-sm">1900 6677</p>
+                    <p className="text-gray-500 text-xs">
+                      From 8:00 AM - 8:00 PM (Free of charge)
+                    </p>
                   </div>
                 </div>
 
@@ -458,8 +479,8 @@ const ContactPage = () => {
                     <Clock className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-800">Giờ làm việc</p>
-                    <p className="text-gray-600 text-sm">Thứ 2 - Chủ nhật: 8:00 - 20:00</p>
+                    <p className="font-medium text-gray-800">Working Hours</p>
+                    <p className="text-gray-600 text-sm">Monday - Sunday: 8:00 AM - 8:00 PM</p>
                   </div>
                 </div>
               </div>
@@ -467,7 +488,7 @@ const ContactPage = () => {
 
             {/* Map */}
             <div className="bg-white rounded-2xl shadow-lg p-4">
-              <h3 className="text-lg font-bold mb-4">Bản đồ</h3>
+              <h3 className="text-lg font-bold mb-4">Map</h3>
               <div className="h-64 rounded-xl overflow-hidden bg-gray-100">
                 <iframe
                   title="Location Map"
@@ -484,18 +505,38 @@ const ContactPage = () => {
 
             {/* Social Media */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h3 className="text-lg font-bold mb-4">Kết nối với chúng tôi</h3>
+              <h3 className="text-lg font-bold mb-4">Connect With Us</h3>
               <div className="flex gap-4">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors"
+                >
                   <Facebook className="w-5 h-5" />
                 </a>
-                <a href="https://zalo.me" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                <a
+                  href="https://zalo.me"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
+                >
                   <MessageCircle className="w-5 h-5" />
                 </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
+                <a
+                  href="https://youtube.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors"
+                >
                   <Youtube className="w-5 h-5" />
                 </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-gradient-to-tr from-purple-600 via-pink-500 to-orange-500 text-white rounded-full flex items-center justify-center hover:opacity-80 transition-opacity">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-gradient-to-tr from-purple-600 via-pink-500 to-orange-500 text-white rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
+                >
                   <Instagram className="w-5 h-5" />
                 </a>
               </div>

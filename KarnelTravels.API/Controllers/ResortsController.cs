@@ -85,30 +85,41 @@ public class ResortsController : ControllerBase
     [Authorize(Roles = "Admin,Manager")]
     public async Task<ActionResult<ApiResponse<ResortDto>>> CreateResort([FromBody] CreateResortRequest request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(new ApiResponse<ResortDto>
-            {
-                Success = false,
-                Message = "Dữ liệu không hợp lệ"
-            });
-        }
-
         try
         {
+            // Manual validation
+            if (string.IsNullOrWhiteSpace(request.Name))
+            {
+                return BadRequest(new ApiResponse<ResortDto>
+                {
+                    Success = false,
+                    Message = "Tên resort là bắt buộc"
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(request.City))
+            {
+                return BadRequest(new ApiResponse<ResortDto>
+                {
+                    Success = false,
+                    Message = "Thành phố là bắt buộc"
+                });
+            }
+
             var resort = await _resortService.CreateAsync(request);
             return CreatedAtAction(nameof(GetResort), new { id = resort.ResortId }, new ApiResponse<ResortDto>
             {
+                Success = true,
                 Data = resort,
                 Message = "Tạo resort thành công"
             });
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
             return BadRequest(new ApiResponse<ResortDto>
             {
                 Success = false,
-                Message = ex.Message
+                Message = $"Lỗi: {ex.Message}"
             });
         }
     }
@@ -134,16 +145,17 @@ public class ResortsController : ControllerBase
 
             return Ok(new ApiResponse<ResortDto>
             {
+                Success = true,
                 Data = resort,
                 Message = "Cập nhật resort thành công"
             });
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
             return BadRequest(new ApiResponse<ResortDto>
             {
                 Success = false,
-                Message = ex.Message
+                Message = $"Lỗi: {ex.Message}"
             });
         }
     }

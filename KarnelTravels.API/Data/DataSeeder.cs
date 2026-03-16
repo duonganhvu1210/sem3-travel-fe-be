@@ -1172,8 +1172,8 @@ public static class DataSeeder
             new Promotion
             {
                 Code = "WELCOME100",
-                Title = "Giảm 100K Cho Đơn Hàng Đầu Tiên",
-                Description = "Giảm ngay 100K cho khách hàng mới",
+                Title = "Up to $100 Off Your First Order",
+                Description = "Get $100 off immediately for new customers",
                 DiscountType = DiscountType.FixedAmount,
                 DiscountValue = 100000,
                 MinOrderAmount = 500000,

@@ -6,11 +6,8 @@ const uploadService = {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await api.post('/Upload/image', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    // Do NOT set Content-Type header - axios will do it automatically with boundary
+    const response = await api.post('/Upload/image', formData);
     return response.data;
   },
 
@@ -21,11 +18,8 @@ const uploadService = {
       formData.append('files', file);
     });
 
-    const response = await api.post('/Upload/images', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    // Do NOT set Content-Type header - axios will do it automatically with boundary
+    const response = await api.post('/Upload/images', formData);
     return response.data;
   },
 };

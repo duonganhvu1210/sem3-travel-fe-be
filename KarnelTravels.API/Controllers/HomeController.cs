@@ -23,22 +23,22 @@ public class HomeController : ControllerBase
     {
         try
         {
-            // 1. Get Banner data
+            // 1. Get banner data
             var banner = await GetBannerAsync();
 
-            // 2. Get Company Info
+            // 2. Get company info
             var companyInfo = await GetCompanyInfoAsync();
 
-            // 3. Get Featured Tourist Spots (at least 6)
+            // 3. Get featured tourist spots (at least 6)
             var featuredSpots = await GetFeaturedSpotsAsync(6);
 
-            // 4. Get Service Categories with counts
+            // 4. Get service categories with counts
             var serviceCategories = await GetServiceCategoriesAsync();
 
-            // 5. Get Contact Info
+            // 5. Get contact info
             var contactInfo = await GetContactInfoAsync();
 
-            // 6. Get Social Links
+            // 6. Get social links
             var socialLinks = await GetSocialLinksAsync();
 
             var homeData = new HomeDataDto
@@ -71,7 +71,7 @@ public class HomeController : ControllerBase
 
     private async Task<BannerDto> GetBannerAsync()
     {
-        // Get active promotions that could be used as banners
+        // Get active promotions that can be used as banners
         var activePromotion = await _context.Promotions
             .Where(p => p.IsActive && p.StartDate <= DateTime.UtcNow && p.EndDate >= DateTime.UtcNow)
             .OrderByDescending(p => p.DiscountValue)
@@ -83,9 +83,9 @@ public class HomeController : ControllerBase
             {
                 Id = activePromotion.Id.ToString(),
                 Title = activePromotion.Title,
-                Subtitle = activePromotion.Description ?? "Ưu đãi hấp dẫn đang chờ bạn",
+                Subtitle = activePromotion.Description ?? "Exclusive offers are waiting for you",
                 ImageUrl = "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1920&q=80",
-                CtaText = "Xem ngay",
+                CtaText = "View now",
                 CtaLink = $"/info/promotions/{activePromotion.Id}",
                 IsActive = true
             };
@@ -95,10 +95,10 @@ public class HomeController : ControllerBase
         return new BannerDto
         {
             Id = "default-banner",
-            Title = "Khám phá Việt Nam cùng KarnelTravels",
-            Subtitle = "Hành trình của bạn bắt đầu tại đây - Trải nghiệm dịch vụ chuyên nghiệp, giá cả hợp lý",
+            Title = "Discover Vietnam with KarnelTravels",
+            Subtitle = "Your journey starts here - Experience professional service at a reasonable price",
             ImageUrl = "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1920&q=80",
-            CtaText = "Khám phá ngay",
+            CtaText = "Explore now",
             CtaLink = "/search",
             IsActive = true
         };
@@ -117,24 +117,24 @@ public class HomeController : ControllerBase
         {
             Id = "company-info",
             CompanyName = "Karnel Travels",
-            Tagline = "Đồng hành cùng bạn trên mọi nẻo đường",
-            Description = "Karnel Travels tự hào là công ty du lịch và lữ hành hàng đầu Việt Nam, cung cấp các dịch vụ chuyên nghiệp từ vận chuyển, lưu trú đến tour trọn gói.",
-            AboutTitle = "Tại sao chọn KarnelTravels?",
+            Tagline = "Your trusted companion on every journey",
+            Description = "Karnel Travels is proud to be one of Vietnam’s leading travel and tourism companies, offering professional services from transportation and accommodation to full-package tours.",
+            AboutTitle = "Why Choose KarnelTravels?",
             AboutPoints = new List<string>
             {
-                "Hơn 10 năm kinh nghiệm trong ngành du lịch",
-                "Đội ngũ hướng dẫn viên chuyên nghiệp, tận tâm",
-                "Đối tác của hàng trăm khách sạn, resort cao cấp",
-                "Cam kết giá tốt nhất thị trường",
-                "Hỗ trợ 24/7 trong suốt chuyến đi"
+                "More than 10 years of experience in the travel industry",
+                "A professional and dedicated team of tour guides",
+                "Partnerships with hundreds of premium hotels and resorts",
+                "Commitment to the best prices on the market",
+                "24/7 support throughout your entire journey"
             },
             AboutImage = "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80",
             Features = new List<FeatureDto>
             {
-                new() { Icon = "CheckCircle", Title = "Giá tốt nhất", Description = "Cam kết giá tốt nhất thị trường" },
-                new() { Icon = "Users", Title = "Hỗ trợ 24/7", Description = "Đội ngũ hỗ trợ nhiệt tình" },
-                new() { Icon = "Star", Title = "Đánh giá cao", Description = "Hơn 10,000+ đánh giá 5 sao" },
-                new() { Icon = "Heart", Title = "Uy tín", Description = "Nhiều năm kinh nghiệm" }
+                new() { Icon = "CheckCircle", Title = "Best Prices", Description = "Committed to offering the most competitive prices" },
+                new() { Icon = "Users", Title = "24/7 Support", Description = "Friendly and dedicated support team" },
+                new() { Icon = "Star", Title = "Highly Rated", Description = "More than 10,000+ five-star reviews" },
+                new() { Icon = "Heart", Title = "Trusted Brand", Description = "Years of experience and customer trust" }
             }
         };
     }
@@ -150,7 +150,7 @@ public class HomeController : ControllerBase
 
         if (spots.Count < count)
         {
-            // Fill with remaining spots if not enough featured
+            // Fill with remaining spots if there are not enough featured ones
             var remainingCount = count - spots.Count;
             var remainingSpots = await _context.TouristSpots
                 .Where(s => s.IsActive && !spots.Any(sp => sp.Id == s.Id))
@@ -178,9 +178,9 @@ public class HomeController : ControllerBase
             new()
             {
                 Id = "cat-1",
-                Name = "Điểm du lịch",
+                Name = "Tourist Attractions",
                 Icon = "MapPin",
-                Description = "Khám phá các địa điểm du lịch nổi tiếng",
+                Description = "Explore famous tourist destinations",
                 ItemCount = spotCount,
                 Link = "/info/destinations",
                 Color = "#0d9488"
@@ -188,9 +188,9 @@ public class HomeController : ControllerBase
             new()
             {
                 Id = "cat-2",
-                Name = "Tour du lịch",
+                Name = "Tours",
                 Icon = "Palmtree",
-                Description = "Các gói tour trọn gói hấp dẫn",
+                Description = "Exciting all-inclusive tour packages",
                 ItemCount = tourCount,
                 Link = "/info/tours",
                 Color = "#0891b2"
@@ -198,9 +198,9 @@ public class HomeController : ControllerBase
             new()
             {
                 Id = "cat-3",
-                Name = "Khách sạn",
+                Name = "Hotels",
                 Icon = "Building2",
-                Description = "Lưu trú tại các khách sạn cao cấp",
+                Description = "Stay at premium hotels",
                 ItemCount = hotelCount,
                 Link = "/info/hotels",
                 Color = "#6366f1"
@@ -208,9 +208,9 @@ public class HomeController : ControllerBase
             new()
             {
                 Id = "cat-4",
-                Name = "Nhà hàng",
+                Name = "Restaurants",
                 Icon = "Utensils",
-                Description = "Trải nghiệm ẩm thực đa dạng",
+                Description = "Enjoy a wide range of culinary experiences",
                 ItemCount = restaurantCount,
                 Link = "/info/restaurants",
                 Color = "#f59e0b"
@@ -218,9 +218,9 @@ public class HomeController : ControllerBase
             new()
             {
                 Id = "cat-5",
-                Name = "Resort",
+                Name = "Resorts",
                 Icon = "Sun",
-                Description = "Nghỉ dưỡng tại các resort cao cấp",
+                Description = "Relax at luxury resorts",
                 ItemCount = resortCount,
                 Link = "/info/resorts",
                 Color = "#ec4899"
@@ -228,9 +228,9 @@ public class HomeController : ControllerBase
             new()
             {
                 Id = "cat-6",
-                Name = "Vận chuyển",
+                Name = "Transportation",
                 Icon = "Bus",
-                Description = "Dịch vụ vận chuyển tiện lợi",
+                Description = "Convenient transportation services",
                 ItemCount = transportCount,
                 Link = "/info/transports",
                 Color = "#8b5cf6"
@@ -251,9 +251,9 @@ public class HomeController : ControllerBase
             Hotline = "1900 xxxx",
             Phone = "+84 28 1234 5678",
             Email = "info@karneltravels.com",
-            Address = "123 Đường Nguyễn Trãi, Quận 1, TP. Hồ Chí Minh",
+            Address = "123 Nguyen Trai Street, District 1, Ho Chi Minh City",
             Website = "www.karneltravels.com",
-            WorkingHours = "08:00 - 20:00 (Thứ 2 - Chủ nhật)"
+            WorkingHours = "08:00 - 20:00 (Monday - Sunday)"
         };
     }
 

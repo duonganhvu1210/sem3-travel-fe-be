@@ -173,7 +173,7 @@ public class ProfileService : IProfileService
             };
         }
 
-        var uploadsFolder = Path.Combine(_environment.WebRootPath ?? "wwwroot", "uploads", "avatars");
+        var uploadsFolder = Path.Combine(_environment.ContentRootPath, "wwwroot", "uploads", "avatars");
         Directory.CreateDirectory(uploadsFolder);
 
         var fileName = $"{userId}_{DateTime.UtcNow:yyyyMMddHHmmss}{extension}";
@@ -188,7 +188,7 @@ public class ProfileService : IProfileService
 
         if (!string.IsNullOrEmpty(user.Avatar))
         {
-            var oldFilePath = Path.Combine(_environment.WebRootPath ?? "wwwroot", user.Avatar.TrimStart('/'));
+            var oldFilePath = Path.Combine(_environment.ContentRootPath, "wwwroot", user.Avatar.TrimStart('/'));
             if (File.Exists(oldFilePath))
             {
                 try

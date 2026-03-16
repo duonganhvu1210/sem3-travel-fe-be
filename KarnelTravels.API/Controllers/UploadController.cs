@@ -20,10 +20,15 @@ public class UploadController : ControllerBase
     /// Upload single image for admin use (Tourist Spots, Tours, Hotels, etc.)
     /// </summary>
     [HttpPost("image")]
-    public async Task<ActionResult<ApiResponse<UploadResult>>> UploadImage(IFormFile file)
+    [DisableRequestSizeLimit]
+    [RequestFormLimits(MultipartBodyLengthLimit = 10485760)]
+    public async Task<ActionResult<ApiResponse<UploadResult>>> UploadImage()
     {
         try
         {
+            var form = await Request.ReadFormAsync();
+            var file = form.Files.FirstOrDefault();
+
             if (file == null || file.Length == 0)
             {
                 return BadRequest(new ApiResponse<UploadResult>
@@ -33,7 +38,7 @@ public class UploadController : ControllerBase
                 });
             }
 
-            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg" };
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".bmp" };
             var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
 
             if (!allowedExtensions.Contains(extension))
@@ -41,7 +46,7 @@ public class UploadController : ControllerBase
                 return BadRequest(new ApiResponse<UploadResult>
                 {
                     Success = false,
-                    Message = "Only image files (jpg, jpeg, png, gif, webp, svg) are allowed"
+                    Message = $"Only image files are allowed. Got: {extension}"
                 });
             }
 
@@ -54,7 +59,7 @@ public class UploadController : ControllerBase
                 });
             }
 
-            var uploadsFolder = Path.Combine(_environment.WebRootPath ?? "wwwroot", "uploads", "images");
+            var uploadsFolder = Path.Combine(_environment.ContentRootPath, "wwwroot", "uploads", "images");
             Directory.CreateDirectory(uploadsFolder);
 
             var fileName = $"{Guid.NewGuid()}{extension}";
@@ -92,10 +97,14 @@ public class UploadController : ControllerBase
     /// Upload multiple images for admin use
     /// </summary>
     [HttpPost("images")]
-    public async Task<ActionResult<ApiResponse<List<UploadResult>>>> UploadImages(IFormFileCollection files)
+    [DisableRequestSizeLimit]
+    [RequestFormLimits(MultipartBodyLengthLimit = 10485760)]
+    public async Task<ActionResult<ApiResponse<List<UploadResult>>>> UploadImages()
     {
         try
         {
+            var form = await Request.ReadFormAsync();
+            var files = form.Files;
             if (files == null || files.Count == 0)
             {
                 return BadRequest(new ApiResponse<List<UploadResult>>
@@ -106,7 +115,7 @@ public class UploadController : ControllerBase
             }
 
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg" };
-            var uploadsFolder = Path.Combine(_environment.WebRootPath ?? "wwwroot", "uploads", "images");
+            var uploadsFolder = Path.Combine(_environment.ContentRootPath, "wwwroot", "uploads", "images");
             Directory.CreateDirectory(uploadsFolder);
 
             var results = new List<UploadResult>();
