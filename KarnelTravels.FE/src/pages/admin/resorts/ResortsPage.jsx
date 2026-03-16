@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Plus, Edit, Trash2, Star, MapPin, Home, Palmtree, Waves, Dumbbell, X, Upload, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import resortService from '@/services/resortService';
+import uploadService from '@/services/uploadService';
 import SearchAndFilter from '@/components/common/SearchAndFilter/SearchAndFilter';
 import CitySelect from '@/components/common/CitySelect/CitySelect';
 
@@ -207,25 +208,17 @@ const ResortsPage = () => {
 
     setIsUploading(true);
     try {
-      const formDataImg = new FormData();
-      formDataImg.append('file', file);
+      const result = await uploadService.uploadImage(file);
 
-      const token = localStorage.getItem('token');
-      const res = await fetch('https://localhost:5000/api/upload', {
-        method: 'POST',
-        body: formDataImg,
-        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
-      });
-
-      if (!res.ok) throw new Error('Upload failed');
-
-      const data = await res.json();
-      const imageUrl = data.url || data.data?.url;
-      
-      setFormData({
-        ...formData,
-        images: [...formData.images, imageUrl]
-      });
+      if (result.success && result.data?.url) {
+        setFormData({
+          ...formData,
+          images: [...formData.images, result.data.url]
+        });
+        toast.success('Tải ảnh thành công');
+      } else {
+        throw new Error(result.message || 'Upload failed');
+      }
       toast.success('Tải ảnh thành công');
     } catch (error) {
       console.error('Upload error:', error);

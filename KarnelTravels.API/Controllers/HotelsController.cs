@@ -191,7 +191,7 @@ public class HotelsController : ControllerBase
     }
 
     /// <summary>
-    /// L?y danh sách phòng c?a khách s?n
+    /// L?y danh sï¿½ch phï¿½ng c?a khï¿½ch s?n
     /// </summary>
     [HttpGet("{id}/rooms")]
     public async Task<ActionResult<ApiResponse<List<HotelRoomDto>>>> GetHotelRooms(Guid id)
@@ -204,7 +204,7 @@ public class HotelsController : ControllerBase
             return NotFound(new ApiResponse<List<HotelRoomDto>>
             {
                 Success = false,
-                Message = "Không tìm th?y khách s?n"
+                Message = "Khï¿½ng tï¿½m th?y khï¿½ch s?n"
             });
         }
 

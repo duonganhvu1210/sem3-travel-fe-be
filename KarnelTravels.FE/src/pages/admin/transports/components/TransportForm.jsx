@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { X, Upload, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
+import uploadService from '@/services/uploadService';
 
 const TransportForm = ({ isOpen, onClose, onSave, mode, data, vehicleTypes, providers }) => {
   const fileInputRef = useRef(null);
@@ -51,22 +53,17 @@ const TransportForm = ({ isOpen, onClose, onSave, mode, data, vehicleTypes, prov
 
     setIsUploading(true);
     try {
-      const formDataImg = new FormData();
-      formDataImg.append('file', file);
+      const result = await uploadService.uploadImage(file);
 
-      const token = localStorage.getItem('token');
-      const res = await fetch('https://localhost:5000/api/upload', {
-        method: 'POST',
-        body: formDataImg,
-        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
-      });
-
-      if (!res.ok) throw new Error('Upload failed');
-
-      const data = await res.json();
-      setFormData({ ...formData, imageUrl: data.url || data.data?.url });
+      if (result.success && result.data?.url) {
+        setFormData({ ...formData, imageUrl: result.data.url });
+        toast.success('Tải ảnh thành công');
+      } else {
+        throw new Error(result.message || 'Upload failed');
+      }
     } catch (error) {
       console.error('Upload error:', error);
+      toast.error('Lỗi khi tải ảnh');
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';

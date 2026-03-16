@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { X, Save, Upload, Image as ImageIcon, Plus, Trash2, MapPin, Star, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import tourService from '@/services/tourService';
+import uploadService from '@/services/uploadService';
 
 const TourEditor = ({ tour, onClose, onSaved }) => {
   const fileInputRef = useRef(null);
@@ -121,30 +122,21 @@ const TourEditor = ({ tour, onClose, onSaved }) => {
 
     setIsUploading(true);
     try {
-      const formDataImg = new FormData();
-      formDataImg.append('file', file);
+      const result = await uploadService.uploadImage(file);
 
-      const uploadRes = await fetch('https://localhost:5000/api/upload', {
-        method: 'POST',
-        body: formDataImg,
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+      if (result.success && result.data?.url) {
+        const imageUrl = result.data.url;
+        const res = await tourService.addImage(tour.tourId, {
+          imageUrl,
+          displayOrder: images.length,
+          isPrimary: images.length === 0
+        });
+        if (res.success) {
+          setImages([...images, res.data]);
+          toast.success('Thêm hình ảnh thành công');
         }
-      });
-
-      if (!uploadRes.ok) throw new Error('Upload failed');
-
-      const uploadData = await uploadRes.json();
-      const imageUrl = uploadData.url || uploadData.data?.url;
-
-      const res = await tourService.addImage(tour.tourId, {
-        imageUrl,
-        displayOrder: images.length,
-        isPrimary: images.length === 0
-      });
-      if (res.success) {
-        setImages([...images, res.data]);
-        toast.success('Thêm hình ảnh thành công');
+      } else {
+        throw new Error(result.message || 'Upload failed');
       }
     } catch (error) {
       console.error('Upload error:', error);
@@ -175,24 +167,14 @@ const TourEditor = ({ tour, onClose, onSaved }) => {
 
     setIsUploading(true);
     try {
-      const formDataImg = new FormData();
-      formDataImg.append('file', file);
+      const result = await uploadService.uploadImage(file);
 
-      const uploadRes = await fetch('https://localhost:5000/api/upload', {
-        method: 'POST',
-        body: formDataImg,
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-
-      if (!uploadRes.ok) throw new Error('Upload failed');
-
-      const uploadData = await uploadRes.json();
-      const imageUrl = uploadData.url || uploadData.data?.url;
-
-      setFormData({ ...formData, thumbnailUrl: imageUrl });
-      toast.success('Tải ảnh bìa thành công');
+      if (result.success && result.data?.url) {
+        setFormData({ ...formData, thumbnailUrl: result.data.url });
+        toast.success('Tải ảnh bìa thành công');
+      } else {
+        throw new Error(result.message || 'Upload failed');
+      }
     } catch (error) {
       console.error('Upload error:', error);
       toast.error('Lỗi khi tải ảnh bìa');

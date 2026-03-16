@@ -6,9 +6,12 @@ import {
   Loader2,
   MapPin,
   Star,
-  CloudUpload
+  CloudUpload,
+  DollarSign,
+  Calendar
 } from 'lucide-react';
 import touristSpotService from '@/services/touristSpotService';
+import uploadService from '@/services/uploadService';
 import toast from 'react-hot-toast';
 import CitySelect from '@/components/common/CitySelect/CitySelect';
 
@@ -95,14 +98,14 @@ const TouristSpotForm = ({
 
     setIsUploading(true);
     try {
-      const uploadPromises = files.map(file => touristSpotService.uploadImage(file));
+      const uploadPromises = files.map(file => uploadService.uploadImage(file));
       const results = await Promise.all(uploadPromises);
-      
+
       // Lọc và chỉ lấy các upload thành công (HTTP 2xx và success=true)
       const uploadedUrls = results
         .filter(r => r && r.success === true && r.data?.url)
         .map(r => r.data.url);
-      
+
       if (uploadedUrls.length > 0) {
         const newImages = [...images, ...uploadedUrls];
         setImages(newImages);
