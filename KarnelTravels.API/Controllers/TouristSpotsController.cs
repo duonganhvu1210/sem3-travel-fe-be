@@ -171,4 +171,173 @@ public class TouristSpotsController : ControllerBase
             Data = types
         });
     }
+
+    // Admin: Create new tourist spot
+    [HttpPost]
+    public async Task<ActionResult<ApiResponse<TouristSpotDto>>> CreateTouristSpot([FromBody] CreateTouristSpotRequest dto)
+    {
+        try
+        {
+            var spot = new TouristSpot
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                Region = dto.Region,
+                Type = dto.Type,
+                Address = dto.Address,
+                City = dto.City,
+                Latitude = dto.Latitude,
+                Longitude = dto.Longitude,
+                Images = dto.Images != null ? System.Text.Json.JsonSerializer.Serialize(dto.Images) : null,
+                TicketPrice = dto.TicketPrice,
+                BestTime = dto.BestTime,
+                IsFeatured = dto.IsFeatured,
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.TouristSpots.Add(spot);
+            await _context.SaveChangesAsync();
+
+            var result = new TouristSpotDto
+            {
+                SpotId = spot.Id,
+                Name = spot.Name,
+                Description = spot.Description,
+                Region = spot.Region,
+                Type = spot.Type,
+                Address = spot.Address,
+                City = spot.City,
+                Latitude = spot.Latitude,
+                Longitude = spot.Longitude,
+                Images = string.IsNullOrEmpty(spot.Images) ? new List<string>() : System.Text.Json.JsonSerializer.Deserialize<List<string>>(spot.Images),
+                TicketPrice = spot.TicketPrice,
+                BestTime = spot.BestTime,
+                Rating = spot.Rating,
+                ReviewCount = spot.ReviewCount,
+                IsFeatured = spot.IsFeatured
+            };
+
+            return Ok(new ApiResponse<TouristSpotDto>
+            {
+                Success = true,
+                Message = "Tạo điểm du lịch thành công",
+                Data = result
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new ApiResponse<TouristSpotDto>
+            {
+                Success = false,
+                Message = $"Lỗi: {ex.Message}"
+            });
+        }
+    }
+
+    // Admin: Update tourist spot
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ApiResponse<TouristSpotDto>>> UpdateTouristSpot(Guid id, [FromBody] CreateTouristSpotRequest dto)
+    {
+        try
+        {
+            var spot = await _context.TouristSpots.FindAsync(id);
+            if (spot == null)
+            {
+                return NotFound(new ApiResponse<TouristSpotDto>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy điểm du lịch"
+                });
+            }
+
+            spot.Name = dto.Name;
+            spot.Description = dto.Description;
+            spot.Region = dto.Region;
+            spot.Type = dto.Type;
+            spot.Address = dto.Address;
+            spot.City = dto.City;
+            spot.Latitude = dto.Latitude;
+            spot.Longitude = dto.Longitude;
+            spot.Images = dto.Images != null ? System.Text.Json.JsonSerializer.Serialize(dto.Images) : null;
+            spot.TicketPrice = dto.TicketPrice;
+            spot.BestTime = dto.BestTime;
+            spot.IsFeatured = dto.IsFeatured;
+            spot.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            var result = new TouristSpotDto
+            {
+                SpotId = spot.Id,
+                Name = spot.Name,
+                Description = spot.Description,
+                Region = spot.Region,
+                Type = spot.Type,
+                Address = spot.Address,
+                City = spot.City,
+                Latitude = spot.Latitude,
+                Longitude = spot.Longitude,
+                Images = string.IsNullOrEmpty(spot.Images) ? new List<string>() : System.Text.Json.JsonSerializer.Deserialize<List<string>>(spot.Images),
+                TicketPrice = spot.TicketPrice,
+                BestTime = spot.BestTime,
+                Rating = spot.Rating,
+                ReviewCount = spot.ReviewCount,
+                IsFeatured = spot.IsFeatured
+            };
+
+            return Ok(new ApiResponse<TouristSpotDto>
+            {
+                Success = true,
+                Message = "Cập nhật điểm du lịch thành công",
+                Data = result
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new ApiResponse<TouristSpotDto>
+            {
+                Success = false,
+                Message = $"Lỗi: {ex.Message}"
+            });
+        }
+    }
+
+    // Admin: Delete tourist spot (soft delete)
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<ApiResponse<bool>>> DeleteTouristSpot(Guid id)
+    {
+        try
+        {
+            var spot = await _context.TouristSpots.FindAsync(id);
+            if (spot == null)
+            {
+                return NotFound(new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Không tìm thấy điểm du lịch"
+                });
+            }
+
+            spot.IsActive = false;
+            spot.IsDeleted = true;
+            spot.DeletedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            return Ok(new ApiResponse<bool>
+            {
+                Success = true,
+                Message = "Xóa điểm du lịch thành công",
+                Data = true
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new ApiResponse<bool>
+            {
+                Success = false,
+                Message = $"Lỗi: {ex.Message}"
+            });
+        }
+    }
 }
