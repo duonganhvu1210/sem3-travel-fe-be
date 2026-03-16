@@ -5,6 +5,7 @@ import {
   ChevronDown, ArrowLeftRight
 } from 'lucide-react';
 import api from '@/services/api';
+import favoriteService from '@/services/favoriteService';
 
 // Price Range Slider Component
 const PriceRangeSlider = ({ min, max, onChange }) => {
@@ -59,6 +60,25 @@ const PriceRangeSlider = ({ min, max, onChange }) => {
 // Hotel Card Component
 const HotelCard = ({ hotel }) => {
   const navigate = useNavigate();
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
+
+  const handleFavoriteClick = async (e) => {
+    e.stopPropagation();
+    setFavoriteLoading(true);
+    try {
+      if (isFavorite) {
+        await favoriteService.removeByItem('Hotel', hotel.hotelId);
+      } else {
+        await favoriteService.addFavorite('Hotel', hotel.hotelId);
+      }
+      setIsFavorite(!isFavorite);
+    } catch (err) {
+      console.error('Error toggling favorite:', err);
+    } finally {
+      setFavoriteLoading(false);
+    }
+  };
 
   return (
     <div 
@@ -73,10 +93,13 @@ const HotelCard = ({ hotel }) => {
         />
         <div className="absolute top-3 right-3">
           <button 
-            onClick={(e) => e.stopPropagation()}
-            className="w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors"
+            onClick={handleFavoriteClick}
+            disabled={favoriteLoading}
+            className={`w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center transition-colors ${
+              isFavorite ? 'text-red-500' : 'text-gray-400 hover:text-red-500'
+            }`}
           >
-            <Heart className="w-4 h-4" />
+            <Heart className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />
           </button>
         </div>
         <div className="absolute bottom-3 left-3">
@@ -101,7 +124,7 @@ const HotelCard = ({ hotel }) => {
         <div className="flex items-center gap-2 mb-3">
           <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
           <span className="font-medium">{hotel.rating?.toFixed(1) || '0.0'}</span>
-          <span className="text-gray-400 text-sm">({hotel.reviewCount || 0} đánh giá)</span>
+          <span className="text-gray-400 text-sm">({hotel.reviewCount || 0} reviews)</span>
         </div>
 
         {hotel.amenities && hotel.amenities.length > 0 && (

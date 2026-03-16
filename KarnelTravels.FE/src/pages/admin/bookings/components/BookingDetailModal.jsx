@@ -2,9 +2,9 @@ import { X, Calendar, DollarSign, User, Mail, Phone, Building, Clock, Check, XCi
 
 const STATUS_CONFIG = {
   0: { label: 'Chờ xác nhận', color: 'bg-yellow-100 text-yellow-700 border-yellow-200' },
-  1: { label: 'Đã xác nhận', color: 'bg-blue-100 text-blue-700 border-blue-200' },
-  2: { label: 'Hoàn thành', color: 'bg-green-100 text-green-700 border-green-200' },
-  3: { label: 'Đã hủy', color: 'bg-red-100 text-red-700 border-red-200' },
+  1: { label: 'Confirmed', color: 'bg-blue-100 text-blue-700 border-blue-200' },
+  2: { label: 'Completed', color: 'bg-green-100 text-green-700 border-green-200' },
+  3: { label: 'Cancelled', color: 'bg-red-100 text-red-700 border-red-200' },
   4: { label: 'Đã hoàn tiền', color: 'bg-purple-100 text-purple-700 border-purple-200' }
 };
 

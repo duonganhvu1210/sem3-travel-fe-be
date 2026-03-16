@@ -408,7 +408,7 @@ const RoomDetailsPage = () => {
           {rooms.length === 0 ? (
             <div className="text-center py-12 text-gray-500">
               <Bed size={48} className="mx-auto mb-4 text-gray-300" />
-              <p>Chưa có phòng nào. Thêm phòng để bắt đầu.</p>
+              <p>No rooms available. Add rooms to get started.</p>
             </div>
           ) : (
             <div className="grid gap-4">
@@ -915,19 +915,19 @@ const BookingsTab = ({
       )}
 
       <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-        <h4 className="font-medium mb-2">Chú thích</h4>
+        <h4 className="font-medium mb-2">Legend</h4>
         <div className="flex gap-4 text-sm">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-green-50 border border-green-300 rounded"></div>
-            <span>Đã đặt</span>
+            <span>Booked</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-white border border-gray-200 rounded"></div>
-            <span>Còn trống</span>
+            <span>Available</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-amber-50 border border-amber-200 rounded"></div>
-            <span>Cuối tuần</span>
+            <span>Weekend</span>
           </div>
         </div>
       </div>

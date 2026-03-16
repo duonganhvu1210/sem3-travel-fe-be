@@ -48,7 +48,7 @@ const ReviewList = ({
     return (
       <div className="text-center py-8">
         <Star className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-        <p className="text-gray-500">Chưa có đánh giá nào</p>
+        <p className="text-gray-500">No reviews yet</p>
       </div>
     );
   }

@@ -10,14 +10,14 @@ const SearchAndFilter = ({
   onReset 
 }) => {
   const regions = [
-    { value: '', label: 'Tất cả vùng miền' },
+    { value: '', label: 'All Regions' },
     { value: 'North', label: 'Miền Bắc' },
     { value: 'Central', label: 'Miền Trung' },
     { value: 'South', label: 'Miền Nam' }
   ];
 
   const types = [
-    { value: '', label: 'Tất cả loại hình' },
+    { value: '', label: 'All Types' },
     { value: 'Beach', label: 'Biển' },
     { value: 'Mountain', label: 'Núi' },
     { value: 'Historical', label: 'Lịch sử' },
@@ -40,7 +40,7 @@ const SearchAndFilter = ({
             type="text"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Tìm kiếm theo tên hoặc địa điểm..."
+            placeholder="Search by name or location..."
             className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
           />
           {search && (

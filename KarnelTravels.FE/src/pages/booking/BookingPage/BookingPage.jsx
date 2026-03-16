@@ -503,7 +503,7 @@ const ConfirmationStep = ({ booking }) => (
       <div className="space-y-1 text-sm">
         <p><span className="text-gray-500">Tổng tiền:</span> {booking?.finalAmount?.toLocaleString()}đ</p>
         <p><span className="text-gray-500">Phương thức:</span> {booking?.paymentMethod === 'online' ? 'Thanh toán online' : 'Thanh toán khi nhận dịch vụ'}</p>
-        <p><span className="text-gray-500">Trạng thái:</span> {booking?.status === 'Confirmed' ? 'Đã xác nhận' : 'Chờ thanh toán'}</p>
+        <p><span className="text-gray-500">Status:</span> {booking?.status === 'Confirmed' ? 'Confirmed' : 'Pending Payment'}</p>
       </div>
     </div>
 

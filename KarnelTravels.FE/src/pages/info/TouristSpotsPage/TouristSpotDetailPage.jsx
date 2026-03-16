@@ -255,7 +255,7 @@ const TouristSpotDetailPage = () => {
                     </span>
                     <span className="flex items-center gap-1">
                       <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      {spot.rating?.toFixed(1)} ({spot.reviewCount} đánh giá)
+                      {spot.rating?.toFixed(1)} ({spot.reviewCount} reviews)
                     </span>
                   </div>
                 </div>

@@ -352,7 +352,7 @@ const SearchPage = () => {
           {/* Active Filters Display */}
           {(priceRange || starRating || selectedAmenities.length > 0 || showOnlyDiscount) && (
             <div className="flex flex-wrap items-center gap-2 mt-4">
-              <span className="text-white/80 text-sm">Lọc:</span>
+              <span className="text-white/80 text-sm">Filter:</span>
               {priceRange && (
                 <span className="px-3 py-1 bg-white/20 rounded-full text-sm flex items-center gap-1">
                   Giá: {PRICE_RANGES.find(p => p.value === priceRange)?.label}

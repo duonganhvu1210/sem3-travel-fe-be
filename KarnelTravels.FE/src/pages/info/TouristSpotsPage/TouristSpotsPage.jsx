@@ -22,29 +22,29 @@ import api from '@/services/api';
 
 // Region options
 const regions = [
-  { value: '', label: 'Tất cả vùng' },
-  { value: 'North', label: 'Miền Bắc' },
-  { value: 'Central', label: 'Miền Trung' },
-  { value: 'South', label: 'Miền Nam' },
+  { value: '', label: 'All Regions' },
+  { value: 'North', label: 'Northern' },
+  { value: 'Central', label: 'Central' },
+  { value: 'South', label: 'Southern' },
 ];
 
 // Spot type options
 const spotTypes = [
-  { value: '', label: 'Tất cả loại hình' },
-  { value: 'Beach', label: 'Biển đảo', icon: Waves },
-  { value: 'Mountain', label: 'Núi rừng', icon: Mountain },
-  { value: 'Historical', label: 'Di tích lịch sử', icon: Landmark },
-  { value: 'Waterfall', label: 'Thác nước', icon: Palmtree },
-  { value: 'Cultural', label: 'Văn hóa', icon: Sparkles },
+  { value: '', label: 'All Types' },
+  { value: 'Beach', label: 'Beach & Islands', icon: Waves },
+  { value: 'Mountain', label: 'Mountains & Forests', icon: Mountain },
+  { value: 'Historical', label: 'Historical Sites', icon: Landmark },
+  { value: 'Waterfall', label: 'Waterfalls', icon: Palmtree },
+  { value: 'Cultural', label: 'Cultural', icon: Sparkles },
 ];
 
 // Sort options
 const sortOptions = [
-  { value: 'rating', label: 'Đánh giá cao nhất' },
-  { value: 'name', label: 'Tên A-Z' },
-  { value: 'name-desc', label: 'Tên Z-A' },
-  { value: 'price-asc', label: 'Giá tăng dần' },
-  { value: 'price-desc', label: 'Giá giảm dần' },
+  { value: 'rating', label: 'Highest Rated' },
+  { value: 'name', label: 'Name A-Z' },
+  { value: 'name-desc', label: 'Name Z-A' },
+  { value: 'price-asc', label: 'Price: Low to High' },
+  { value: 'price-desc', label: 'Price: High to Low' },
 ];
 
 const TouristSpotsPage = () => {

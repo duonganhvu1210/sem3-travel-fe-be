@@ -87,7 +87,7 @@ const HomePage = () => {
         }
       } catch (err) {
         console.error('Error fetching home data:', err);
-        setError('Không thể tải dữ liệu. Vui lòng thử lại sau.');
+        setError('Unable to load data. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -133,16 +133,16 @@ const HomePage = () => {
               <>
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-6">
                   <Plane className="w-4 h-4" />
-                  <span className="text-sm font-medium">{homeData?.banner?.title || "Khám phá Việt Nam cùng KarnelTravels"}</span>
+                  <span className="text-sm font-medium">{homeData?.banner?.title || "Explore Vietnam with KarnelTravels"}</span>
                 </div>
 
                 <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                  {homeData?.banner?.subtitle?.split(' - ')[0] || "Hành trình của bạn"}
-                  <span className="block text-teal-400">{homeData?.banner?.subtitle?.split(' - ')[1] || "bắt đầu tại đây"}</span>
+                  {homeData?.banner?.subtitle?.split(' - ')[0] || "Your journey"}
+                  <span className="block text-teal-400">{homeData?.banner?.subtitle?.split(' - ')[1] || "starts here"}</span>
                 </h1>
 
                 <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-                  {homeData?.banner?.subtitle || "Khám phá những điểm đến tuyệt vời nhất Việt Nam và thế giới. Trải nghiệm dịch vụ chuyên nghiệp, giá cả hợp lý"}
+                  {homeData?.banner?.subtitle || "Explore the best destinations in Vietnam and around the world. Experience professional service, reasonable prices"}
                 </p>
               </>
             )}
@@ -154,7 +154,7 @@ const HomePage = () => {
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <input
                     type="text"
-                    placeholder="Bạn muốn đi đâu?"
+                    placeholder="Where do you want to go?"
                     className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-0 focus:outline-none focus:ring-2 focus:ring-primary"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -165,7 +165,7 @@ const HomePage = () => {
                   <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <input
                     type="date"
-                    placeholder="Ngày khởi hành"
+                    placeholder="Departure date"
                     className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-0 focus:outline-none focus:ring-2 focus:ring-primary"
                     value={searchDate}
                     onChange={(e) => setSearchDate(e.target.value)}
@@ -173,7 +173,7 @@ const HomePage = () => {
                 </div>
                 <Button size="lg" className="w-full h-full min-h-[52px]" onClick={handleSearch}>
                   <Search className="w-5 h-5 mr-2" />
-                  Tìm kiếm
+                  Search
                 </Button>
               </div>
             </div>
@@ -218,7 +218,7 @@ const HomePage = () => {
                     />
                   </div>
                   <h3 className="font-semibold text-gray-800 mb-1">{category.name}</h3>
-                  <p className="text-sm text-muted-foreground">{category.itemCount} địa điểm</p>
+                  <p className="text-sm text-muted-foreground">{category.itemCount} places</p>
                 </Link>
               ))
             )}
@@ -238,10 +238,10 @@ const HomePage = () => {
             ) : (
               <>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-                  Điểm đến phổ biến
+                  Popular Destinations
                 </h2>
                 <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                  Khám phá những địa điểm du lịch hấp dẫn nhất được nhiều du khách lựa chọn
+                  Explore the most attractive tourist destinations chosen by many travelers
                 </p>
               </>
             )}
@@ -276,7 +276,7 @@ const HomePage = () => {
                     <CardContent className="p-4">
                       <h3 className="font-bold text-lg text-gray-800 mb-1">{spot.name}</h3>
                       <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
-                        {spot.description || `Địa điểm du lịch ${spot.type}`}
+                        {spot.description || `Tourist spot ${spot.type}`}
                       </p>
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -295,7 +295,7 @@ const HomePage = () => {
           <div className="text-center mt-10">
             <Button variant="outline" size="lg" asChild>
               <Link to="/info/destinations">
-                Xem tất cả điểm đến
+                View all destinations
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Link>
             </Button>
@@ -324,7 +324,7 @@ const HomePage = () => {
                     <CardContent className="p-4">
                       <h3 className="font-bold text-lg text-gray-800 mb-1">{spot.name}</h3>
                       <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
-                        {spot.description || `Địa điểm du lịch ${spot.type}`}
+                        {spot.description || `Tourist spot ${spot.type}`}
                       </p>
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -362,20 +362,20 @@ const HomePage = () => {
                 <div className="relative">
                   <img
                     src={homeData?.companyInfo?.aboutImage || "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80"}
-                    alt="Về Karnel Travels"
+                    alt="About Karnel Travels"
                     className="rounded-2xl shadow-xl"
                   />
                   <div className="absolute -bottom-6 -right-6 bg-teal-600 text-white p-6 rounded-xl shadow-lg">
                     <div className="text-4xl font-bold">10+</div>
-                    <div className="text-sm">Năm kinh nghiệm</div>
+                    <div className="text-sm">Years of experience</div>
                   </div>
                 </div>
                 <div>
                   <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-                    {homeData?.companyInfo?.aboutTitle || "Về chúng tôi"}
+                    {homeData?.companyInfo?.aboutTitle || "About Us"}
                   </h2>
                   <p className="text-lg text-muted-foreground mb-6">
-                    {homeData?.companyInfo?.description || "Karnel Travels tự hào là công ty du lịch và lữ hành hàng đầu Việt Nam."}
+                    {homeData?.companyInfo?.description || "Karnel Travels is proud to be a leading travel and tourism company in Vietnam."}
                   </p>
                   <ul className="space-y-3 mb-8">
                     {homeData?.companyInfo?.aboutPoints?.map((point, index) => (
@@ -385,12 +385,7 @@ const HomePage = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button size="lg" asChild>
-                    <Link to="/about">
-                      Tìm hiểu thêm
-                      <ArrowRight className="ml-2 w-4 h-4" />
-                    </Link>
-                  </Button>
+                  
                 </div>
               </>
             )}
@@ -451,7 +446,7 @@ const HomePage = () => {
               Trải nghiệm đa dạng
             </h2>
             <p className="text-muted-foreground text-lg">
-              Khám phá nhiều loại hình du lịch phong phú
+              Explore Various Types of Tourism
             </p>
           </div>
 
@@ -467,7 +462,7 @@ const HomePage = () => {
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <Waves className="w-8 h-8 mb-2" />
                   <h3 className="font-bold text-xl">Du lịch biển đảo</h3>
-                  <p className="text-white/80 text-sm">Khám phá những bờ biển đẹp nhất</p>
+                  <p className="text-white/80 text-sm">Discover the most beautiful beaches</p>
                 </div>
               </div>
             </Card>

@@ -3,7 +3,7 @@ import { X, Send, Loader2, Mail, Phone, Calendar, Clock, MessageSquare } from 'l
 import toast from 'react-hot-toast';
 
 const STATUS_CONFIG = {
-  0: { label: 'Chưa đọc', color: 'bg-yellow-100 text-yellow-700' },
+  0: { label: 'Unread', color: 'bg-yellow-100 text-yellow-700' },
   1: { label: 'Đã đọc', color: 'bg-blue-100 text-blue-700' },
   2: { label: 'Đã phản hồi', color: 'bg-green-100 text-green-700' },
   3: { label: 'Đã đóng', color: 'bg-gray-100 text-gray-700' }
@@ -71,7 +71,7 @@ const ContactDetailModal = ({
             </div>
             <div className="flex items-center gap-2">
               <span className={`px-3 py-1 rounded-full text-sm font-medium ${STATUS_CONFIG[contact.status]?.color || ''}`}>
-                {STATUS_CONFIG[contact.status]?.label || 'Chưa đọc'}
+                {STATUS_CONFIG[contact.status]?.label || 'Unread'}
               </span>
               <button onClick={onClose} className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                 <X size={20} />

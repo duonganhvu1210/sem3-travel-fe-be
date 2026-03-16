@@ -15,7 +15,7 @@ const ScheduleList = ({ schedules, vehicles, routes, isLoading, onCreate, onEdit
     const statusConfig = {
       Active: { label: 'Hoạt động', className: 'bg-green-100 text-green-800' },
       Inactive: { label: 'Không hoạt động', className: 'bg-gray-100 text-gray-800' },
-      Cancelled: { label: 'Đã hủy', className: 'bg-red-100 text-red-800' },
+      Cancelled: { label: 'Cancelled', className: 'bg-red-100 text-red-800' },
     };
     const config = statusConfig[status] || { label: status, className: 'bg-gray-100 text-gray-800' };
     return (

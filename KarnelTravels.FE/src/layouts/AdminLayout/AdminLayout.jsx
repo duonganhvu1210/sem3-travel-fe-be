@@ -43,59 +43,59 @@ const AdminLayout = () => {
 
   const adminNavItems = [
     {
-      title: 'Tổng quan',
+      title: 'Dashboard',
       path: '/admin',
       icon: Home,
       exact: true
     },
     
     {
-      title: 'Quản lý đặt tour',
+      title: 'Bookings',
       path: '/admin/bookings',
       icon: Calendar,
     },
     {
-      title: 'Quản lý khuyến mãi',
+      title: 'Promotions',
       path: '/admin/promotions',
       icon: Tag,
     },
     {
-      title: 'Quản lý liên hệ',
+      title: 'Contacts',
       path: '/admin/contacts',
       icon: MessageSquare,
     },
     {
-      title: 'Điểm du lịch',
+      title: 'Tourist Spots',
       path: '/admin/destinations',
       icon: MapPin,
     },
     {
-      title: 'Tour du lịch',
+      title: 'Tours',
       path: '/admin/tours',
       icon: Palmtree,
     },
     {
-      title: 'Khách sạn',
+      title: 'Hotels',
       path: '/admin/hotels',
       icon: Building2,
     },
     {
-      title: 'Nhà hàng',
+      title: 'Restaurants',
       path: '/admin/restaurants',
       icon: Utensils,
     },
     {
-      title: 'Resort',
+      title: 'Resorts',
       path: '/admin/resorts',
       icon: Palmtree,
     },
     {
-      title: 'Phương tiện',
+      title: 'Transports',
       path: '/admin/transports',
       icon: Bus,
     },
     {
-      title: 'Quản lý người dùng',
+      title: 'Users',
       path: '/admin/users',
       icon: Users,
     },
@@ -238,7 +238,7 @@ const AdminLayout = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Tìm kiếm..."
+                  placeholder="Search..."
                   className="pl-10 pr-4 py-2 w-64 bg-gray-100 border-0 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                 />
               </div>

@@ -145,7 +145,7 @@ const ItineraryBuilder = ({ tourId, itineraries: initialItineraries, onClose, on
           ) : itineraries.length === 0 ? (
             <div className="text-center py-8 border-2 border-dashed border-gray-200 rounded-lg">
               <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500 mb-4">Chưa có lịch trình nào</p>
+              <p className="text-gray-500 mb-4">No itinerary yet</p>
               <button
                 onClick={handleAddDay}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600"

@@ -98,7 +98,7 @@ const DashboardPage = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Tìm kiếm..."
+                placeholder="Search..."
                 className="pl-10 pr-4 py-2 w-64 bg-gray-100 border-0 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
             </div>
@@ -151,7 +151,7 @@ const DashboardPage = () => {
             <div className="p-6 border-b border-gray-100">
               <div className="flex items-center gap-2">
                 <Mail className="w-5 h-5 text-red-500" />
-                <h3 className="text-lg font-semibold text-gray-800">Liên hệ chưa đọc</h3>
+                <h3 className="text-lg font-semibold text-gray-800">Unread Contacts</h3>
                 <span className="bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full">
                   {unreadContacts.length}
                 </span>

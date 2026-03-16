@@ -222,7 +222,7 @@ const TourEditor = ({ tour, onClose, onSaved }) => {
       <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white">
           <h2 className="text-xl font-semibold text-gray-900">
-            {tour ? 'Chỉnh sửa Tour' : 'Tạo Tour Mới'}
+            {tour ? 'Edit Tour' : 'Create New Tour'}
           </h2>
           <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
             <X className="w-5 h-5" />

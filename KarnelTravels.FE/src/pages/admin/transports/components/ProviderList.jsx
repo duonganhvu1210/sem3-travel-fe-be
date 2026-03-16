@@ -26,7 +26,7 @@ const ProviderList = ({ providers, isLoading, onCreate, onEdit, onDelete }) => {
       {providers.length === 0 ? (
         <div className="text-center py-12">
           <Building2 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500">Chưa có nhà vận chuyển nào</p>
+          <p className="text-gray-500">No providers found</p>
         </div>
       ) : (
         <div className="overflow-x-auto">

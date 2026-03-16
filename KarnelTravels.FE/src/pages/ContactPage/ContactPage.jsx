@@ -33,7 +33,7 @@ const schema = yup.object().shape({
 // Request Type Labels
 const requestTypeOptions = [
   { value: 'General', label: 'Chung' },
-  { value: 'Booking', label: 'Đặt tour' },
+  { value: 'Booking', label: 'Booking' },
   { value: 'Consulting', label: 'Tư vấn' },
   { value: 'Feedback', label: 'Phản hồi' },
   { value: 'Callback', label: 'Yêu cầu gọi lại' }

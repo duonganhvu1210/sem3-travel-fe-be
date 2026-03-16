@@ -147,7 +147,7 @@ const TourCard = ({ tour, onCompare, isInCompare, onWishlist }) => {
             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
             <span className="font-medium">{tour.rating?.toFixed(1) || '0.0'}</span>
           </div>
-          <span className="text-gray-400 text-sm">({tour.reviewCount || 0} đánh giá)</span>
+          <span className="text-gray-400 text-sm">({tour.reviewCount || 0} reviews)</span>
         </div>
 
         {/* Price */}

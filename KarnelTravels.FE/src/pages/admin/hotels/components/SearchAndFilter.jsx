@@ -23,7 +23,7 @@ const SearchAndFilter = ({
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
             <input
               type="text"
-              placeholder="Tìm kiếm khách sạn..."
+              placeholder="Search hotels..."
               value={search}
               onChange={(e) => onSearchChange?.(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
@@ -38,7 +38,7 @@ const SearchAndFilter = ({
             onChange={(e) => onCityChange?.(e.target.value)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
           >
-            <option value="">Tất cả thành phố</option>
+            <option value="">All Cities</option>
             {cities.map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
@@ -52,7 +52,7 @@ const SearchAndFilter = ({
             onChange={(e) => onStarRatingChange?.(e.target.value ? parseInt(e.target.value) : null)}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
           >
-            <option value="">Tất cả sao</option>
+            <option value="">All Stars</option>
             {starRatings.map((star) => (
               <option key={star} value={star}>{star} sao</option>
             ))}
@@ -69,7 +69,7 @@ const SearchAndFilter = ({
             }}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
           >
-            <option value="">Tất cả trạng thái</option>
+            <option value="">All Status</option>
             <option value="true">Hoạt động</option>
             <option value="false">Không hoạt động</option>
           </select>

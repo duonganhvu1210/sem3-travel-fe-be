@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { Star, MapPin, Calendar, Ticket, Heart } from 'lucide-react';
+import favoriteService from '@/services/favoriteService';
 
 /**
  * SpotCard - Card component for displaying tourist spot
  * Use in grid layouts for consistent card appearance
  */
-const SpotCard = ({ spot, onFavorite }) => {
+const SpotCard = ({ spot, isFavorite: externalIsFavorite, onFavoriteToggle }) => {
   const {
     spotId,
     name,
@@ -20,17 +22,40 @@ const SpotCard = ({ spot, onFavorite }) => {
     bestTime,
   } = spot;
 
+  const [isFavorite, setIsFavorite] = useState(externalIsFavorite || false);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
+
   const imageUrl = images?.[0] || "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=800&q=80";
 
   const formatPrice = (price) => {
-    if (!price || price === 0) return 'Miễn phí';
-    return `${price.toLocaleString('vi-VN')}₫`;
+    if (!price || price === 0) return 'Free';
+    return `${price.toLocaleString('en-US')}₫`;
   };
 
   const regionColors = {
     North: 'bg-blue-100 text-blue-700',
     Central: 'bg-amber-100 text-amber-700',
     South: 'bg-green-100 text-green-700',
+  };
+
+  const handleFavoriteClick = async (e) => {
+    e.preventDefault();
+    setFavoriteLoading(true);
+    try {
+      if (isFavorite) {
+        await favoriteService.removeByItem('TouristSpot', spotId);
+      } else {
+        await favoriteService.addFavorite('TouristSpot', spotId);
+      }
+      setIsFavorite(!isFavorite);
+      if (onFavoriteToggle) {
+        onFavoriteToggle(spotId, !isFavorite);
+      }
+    } catch (err) {
+      console.error('Error toggling favorite:', err);
+    } finally {
+      setFavoriteLoading(false);
+    }
   };
 
   return (
@@ -55,13 +80,13 @@ const SpotCard = ({ spot, onFavorite }) => {
 
         {/* Favorite Button */}
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            onFavorite?.(spotId);
-          }}
-          className="absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors"
+          onClick={handleFavoriteClick}
+          disabled={favoriteLoading}
+          className={`absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center transition-colors ${
+            isFavorite ? 'text-red-500' : 'text-gray-400 hover:text-red-500'
+          }`}
         >
-          <Heart className="w-5 h-5" />
+          <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
         </button>
       </div>
 
@@ -112,13 +137,13 @@ const SpotCard = ({ spot, onFavorite }) => {
             to={`/info/tourist-spots/${spotId}`}
             className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 text-center rounded-lg font-medium hover:bg-gray-200 transition-colors"
           >
-            Xem chi tiết
+            View Details
           </Link>
           <Link
             to={`/search?spot=${spotId}`}
             className="flex-1 px-4 py-2 bg-primary text-white text-center rounded-lg font-medium hover:bg-primary/90 transition-colors"
           >
-            Đặt tour
+            Book Now
           </Link>
         </div>
       </div>

@@ -50,24 +50,24 @@ const MainLayout = () => {
   }, [location.pathname]);
 
   const navItems = [
-    { name: 'Trang chủ', path: '/', icon: Home },
-    
-    { name: 'Tìm kiếm', path: '/search', icon: Search },
+    { name: 'Home', path: '/', icon: Home },
+
+    { name: 'Search', path: '/search', icon: Search },
     {
-      name: 'Thông tin',
+      name: 'Information',
       path: '/info',
       icon: Info,
       hasDropdown: true,
       dropdownItems: [
-        { name: 'Điểm du lịch', path: '/info/destinations', icon: MapPin },
-        { name: 'Tour Du lịch', path: '/info/tours', icon: Palmtree },
-        { name: 'Phương tiện', path: '/info/transports', icon: Bus },
-        { name: 'Khách sạn', path: '/info/hotels', icon: Building2 },
-        { name: 'Nhà hàng', path: '/info/restaurants', icon: Utensils },
-        { name: 'Resort', path: '/info/resorts', icon: Palmtree },
+        { name: 'Tourist Spots', path: '/info/destinations', icon: MapPin },
+        { name: 'Tours', path: '/info/tours', icon: Palmtree },
+        { name: 'Transports', path: '/info/transports', icon: Bus },
+        { name: 'Hotels', path: '/info/hotels', icon: Building2 },
+        { name: 'Restaurants', path: '/info/restaurants', icon: Utensils },
+        { name: 'Resorts', path: '/info/resorts', icon: Palmtree },
       ]
     },
-    { name: 'Liên hệ', path: '/contact', icon: Phone },
+    { name: 'Contact', path: '/contact', icon: Phone },
   ];
 
   const handleDropdownToggle = (index) => {
@@ -78,7 +78,7 @@ const MainLayout = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Header */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md shadow-lg py-3`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md shadow-lg py-1`}
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
@@ -130,7 +130,7 @@ const MainLayout = () => {
                             </div>
                             <div>
                               <p className="font-semibold text-gray-800">{dropdownItem.name}</p>
-                              <p className="text-xs text-gray-500">Khám phá ngay</p>
+                              
                             </div>
                           </Link>
                         ))}
@@ -299,7 +299,7 @@ const MainLayout = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 pt-20">
+      <main className="flex-1 pt-16">
         <Outlet />
       </main>
 
@@ -322,9 +322,9 @@ const MainLayout = () => {
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-semibold text-lg mb-6">Liên kết nhanh</h4>
+              <h4 className="font-semibold text-lg mb-6">Quick Links</h4>
               <ul className="space-y-3">
-                {['Trang chủ',  'Tìm kiếm', 'Liên hệ'].map((item) => (
+                {['Home', 'Search', 'Contact'].map((item) => (
                   <li key={item}>
                     <Link to="/" className="text-gray-400 hover:text-white transition-colors">
                       {item}
@@ -350,7 +350,7 @@ const MainLayout = () => {
 
             {/* Contact */}
             <div>
-              <h4 className="font-semibold text-lg mb-6">Liên hệ</h4>
+              <h4 className="font-semibold text-lg mb-6">Contact</h4>
               <ul className="space-y-4 text-gray-400">
                 <li className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 mt-0.5" />

@@ -174,7 +174,7 @@ const HotelDetailPage = () => {
           
           <div className="flex flex-wrap gap-4 text-white/90">
             <span className="flex items-center gap-2"><MapPin className="w-5 h-5" />{hotel.city}</span>
-            <span className="flex items-center gap-2"><Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />{hotel.rating?.toFixed(1)} ({hotel.reviewCount} đánh giá)</span>
+            <span className="flex items-center gap-2"><Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />{hotel.rating?.toFixed(1)} ({hotel.reviewCount} reviews)</span>
           </div>
         </div>
       </div>
@@ -186,7 +186,7 @@ const HotelDetailPage = () => {
 
             <div className="bg-white rounded-2xl shadow-md p-6">
               <h2 className="text-xl font-bold mb-4">Giới thiệu</h2>
-              <p className="text-gray-600 leading-relaxed">{hotel.description || 'Chưa có mô tả'}</p>
+              <p className="text-gray-600 leading-relaxed">{hotel.description || 'No description available'}</p>
             </div>
 
             <div className="bg-white rounded-2xl shadow-md p-6">
@@ -224,11 +224,11 @@ const HotelDetailPage = () => {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-8 text-gray-500">Chưa có thông tin phòng</div>
+                    <div className="text-center py-8 text-gray-500">No room information available</div>
                   )
                 )}
                 {activeTab === 'reviews' && (
-                  <div className="text-center py-8 text-gray-500">Chức năng đánh giá đang phát triển</div>
+                  <div className="text-center py-8 text-gray-500">Review feature under development</div>
                 )}
               </div>
             </div>

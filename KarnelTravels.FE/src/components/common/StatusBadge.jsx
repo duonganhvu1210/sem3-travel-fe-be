@@ -25,18 +25,18 @@ const StatusBadge = ({
   };
 
   const statusLabels = {
-    active: 'Hoạt động',
-    inactive: 'Không hoạt động',
-    featured: 'Nổi bật',
-    new: 'Mới',
-    popular: 'Phổ biến',
-    recommended: 'Đề xuất',
-    expired: 'Hết hạn',
-    available: 'Còn trống',
-    booked: 'Đã đặt',
-    pending: 'Chờ xử lý',
-    confirmed: 'Đã xác nhận',
-    cancelled: 'Đã hủy',
+    active: 'Active',
+    inactive: 'Inactive',
+    featured: 'Featured',
+    new: 'New',
+    popular: 'Popular',
+    recommended: 'Recommended',
+    expired: 'Expired',
+    available: 'Available',
+    booked: 'Booked',
+    pending: 'Pending',
+    confirmed: 'Confirmed',
+    cancelled: 'Cancelled',
   };
 
   return (

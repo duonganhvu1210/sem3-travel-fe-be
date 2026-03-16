@@ -4,10 +4,30 @@ import {
   Search, MapPin, Star, Filter, Loader2, Heart
 } from 'lucide-react';
 import api from '@/services/api';
+import favoriteService from '@/services/favoriteService';
 
 // Resort Card Component
 const ResortCard = ({ resort }) => {
   const navigate = useNavigate();
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
+
+  const handleFavoriteClick = async (e) => {
+    e.stopPropagation();
+    setFavoriteLoading(true);
+    try {
+      if (isFavorite) {
+        await favoriteService.removeByItem('Resort', resort.resortId);
+      } else {
+        await favoriteService.addFavorite('Resort', resort.resortId);
+      }
+      setIsFavorite(!isFavorite);
+    } catch (err) {
+      console.error('Error toggling favorite:', err);
+    } finally {
+      setFavoriteLoading(false);
+    }
+  };
 
   return (
     <div 
@@ -22,10 +42,13 @@ const ResortCard = ({ resort }) => {
         />
         <div className="absolute top-3 right-3">
           <button 
-            onClick={(e) => e.stopPropagation()}
-            className="w-9 h-9 bg-white/90 rounded-full flex items-center justify-center text-gray-400 hover:text-red-500"
+            onClick={handleFavoriteClick}
+            disabled={favoriteLoading}
+            className={`w-9 h-9 bg-white/90 rounded-full flex items-center justify-center transition-colors ${
+              isFavorite ? 'text-red-500' : 'text-gray-400 hover:text-red-500'
+            }`}
           >
-            <Heart className="w-4 h-4" />
+            <Heart className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />
           </button>
         </div>
         {resort.resortType && (
@@ -50,7 +73,7 @@ const ResortCard = ({ resort }) => {
         <div className="flex items-center gap-2 mb-3">
           <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
           <span className="font-medium">{resort.rating?.toFixed(1) || '0.0'}</span>
-          <span className="text-gray-400 text-sm">({resort.reviewCount || 0} đánh giá)</span>
+          <span className="text-gray-400 text-sm">({resort.reviewCount || 0} reviews)</span>
         </div>
 
         <p className="text-gray-600 text-sm line-clamp-2">{resort.description}</p>

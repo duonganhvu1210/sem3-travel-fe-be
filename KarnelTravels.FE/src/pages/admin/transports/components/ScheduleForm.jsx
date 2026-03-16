@@ -187,7 +187,7 @@ const ScheduleForm = ({ isOpen, onClose, onSave, mode, data, vehicles, routes })
             >
               <option value="Active">Hoạt động</option>
               <option value="Inactive">Không hoạt động</option>
-              <option value="Cancelled">Đã hủy</option>
+              <option value="Cancelled">Cancelled</option>
             </select>
           </div>
 

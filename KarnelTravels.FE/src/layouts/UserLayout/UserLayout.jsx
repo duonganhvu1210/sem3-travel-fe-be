@@ -49,24 +49,24 @@ const UserLayout = () => {
   }, [location.pathname]);
 
   const navItems = [
-    { name: 'Trang chủ', path: '/', icon: Home },
+    { name: 'Home', path: '/', icon: Home },
     
-    { name: 'Tìm kiếm', path: '/search', icon: Search },
+    { name: 'Search', path: '/search', icon: Search },
     {
-      name: 'Thông tin',
+      name: 'Information',
       path: '/info',
       icon: Info,
       hasDropdown: true,
       dropdownItems: [
-        { name: 'Điểm du lịch', path: '/info/destinations', icon: MapPin },
-        { name: 'Tour Du lịch', path: '/info/tours', icon: Palmtree },
-        { name: 'Phương tiện', path: '/info/transports', icon: Bus },
-        { name: 'Khách sạn', path: '/info/hotels', icon: Building2 },
-        { name: 'Nhà hàng', path: '/info/restaurants', icon: Utensils },
-        { name: 'Resort', path: '/info/resorts', icon: Palmtree },
+        { name: 'Tourist Spots', path: '/info/destinations', icon: MapPin },
+        { name: 'Tours', path: '/info/tours', icon: Palmtree },
+        { name: 'Transports', path: '/info/transports', icon: Bus },
+        { name: 'Hotels', path: '/info/hotels', icon: Building2 },
+        { name: 'Restaurants', path: '/info/restaurants', icon: Utensils },
+        { name: 'Resorts', path: '/info/resorts', icon: Palmtree },
       ]
     },
-    { name: 'Liên hệ', path: '/contact', icon: Phone },
+    { name: 'Contact', path: '/contact', icon: Phone },
   ];
 
   const handleDropdownToggle = (index) => {
@@ -78,7 +78,7 @@ const UserLayout = () => {
       {/* Header */}
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white shadow-sm ${
-          isScrolled ? 'py-3' : 'py-4'
+          isScrolled ? 'py-1' : 'py-2'
         }`}
       >
         <div className="container mx-auto px-4">
@@ -135,7 +135,7 @@ const UserLayout = () => {
                             </div>
                             <div>
                               <p className="font-semibold text-gray-800">{dropdownItem.name}</p>
-                              <p className="text-xs text-gray-500">Khám phá ngay</p>
+                              
                             </div>
                           </Link>
                         ))}
@@ -195,19 +195,19 @@ const UserLayout = () => {
                       <DropdownMenuItem asChild>
                         <Link to="/profile" className="flex items-center">
                           <User className="mr-2 h-4 w-4" />
-                          Hồ sơ
+                          Profile
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         <Link to="/bookings" className="flex items-center">
                           <Calendar className="mr-2 h-4 w-4" />
-                          Đơn đặt
+                          My Bookings
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={logout} className="text-red-600 cursor-pointer">
                         <LogOut className="mr-2 h-4 w-4" />
-                        Đăng xuất
+                        Logout
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -218,13 +218,13 @@ const UserLayout = () => {
                     to="/login"
                     className="px-5 py-2.5 rounded-full font-medium text-gray-700 hover:bg-gray-100 transition-all"
                   >
-                    Đăng nhập
+                    Login
                   </Link>
                   <Link
                     to="/register"
                     className="px-5 py-2.5 bg-teal-500 hover:bg-teal-600 text-white font-medium rounded-full transition-all hover:shadow-lg hover:shadow-teal-500/30"
                   >
-                    Đăng ký
+                    Register
                   </Link>
                 </div>
               )}
@@ -298,7 +298,7 @@ const UserLayout = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 pt-20 pb-16">
+      <main className="flex-1 pt-16 pb-16">
         <Outlet />
       </main>
 

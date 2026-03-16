@@ -306,7 +306,7 @@ const TourDetailPage = () => {
             </span>
             <span className="flex items-center gap-2">
               <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-              {tour.rating?.toFixed(1)} ({tour.reviewCount} đánh giá)
+              {tour.rating?.toFixed(1)} ({tour.reviewCount} reviews)
             </span>
             <span className="flex items-center gap-2">
               <Users className="w-5 h-5" />
@@ -364,7 +364,7 @@ const TourDetailPage = () => {
                 )}
                 {activeTab === 'reviews' && (
                   <div className="text-center py-8 text-gray-500">
-                    Chức năng đánh giá đang được phát triển
+                    Review feature under development
                   </div>
                 )}
               </div>

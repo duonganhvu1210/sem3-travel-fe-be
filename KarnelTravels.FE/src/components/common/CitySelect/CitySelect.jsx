@@ -77,7 +77,7 @@ const CitySelect = ({
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Tìm kiếm..."
+                placeholder="Search..."
                 className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-teal-500"
                 onClick={(e) => e.stopPropagation()}
               />

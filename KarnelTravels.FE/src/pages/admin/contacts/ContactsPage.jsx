@@ -217,7 +217,7 @@ const ContactsPage = () => {
                 <Mail size={24} className="text-yellow-600" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">Chưa đọc</p>
+                <p className="text-sm text-gray-500">Unread</p>
                 <p className="text-xl font-bold text-gray-900">{statistics.unreadCount}</p>
               </div>
             </div>
@@ -274,7 +274,7 @@ const ContactsPage = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Tất cả trạng thái</option>
-              <option value="false">Chưa đọc</option>
+              <option value="false">Unread</option>
               <option value="true">Đã đọc</option>
             </select>
           </div>

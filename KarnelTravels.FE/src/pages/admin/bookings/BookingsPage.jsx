@@ -261,7 +261,7 @@ const BookingsPage = () => {
                 <CheckCircle size={24} className="text-green-600" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">Hoàn thành</p>
+                <p className="text-sm text-gray-500">Completed</p>
                 <p className="text-xl font-bold text-gray-900">{statistics.completedCount}</p>
               </div>
             </div>
@@ -305,12 +305,12 @@ const BookingsPage = () => {
               onChange={(e) => setStatus(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value="">Tất cả trạng thái</option>
-              <option value="0">Chờ xác nhận</option>
-              <option value="1">Đã xác nhận</option>
-              <option value="2">Hoàn thành</option>
-              <option value="3">Đã hủy</option>
-              <option value="4">Đã hoàn tiền</option>
+              <option value="">All Status</option>
+              <option value="0">Pending</option>
+              <option value="1">Confirmed</option>
+              <option value="2">Completed</option>
+              <option value="3">Cancelled</option>
+              <option value="4">Refunded</option>
             </select>
           </div>
 
@@ -321,12 +321,12 @@ const BookingsPage = () => {
               onChange={(e) => setType(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value="">Tất cả loại</option>
+              <option value="">All Types</option>
               <option value="0">Tour</option>
-              <option value="1">Khách sạn</option>
+              <option value="1">Hotel</option>
               <option value="2">Resort</option>
-              <option value="3">Phương tiện</option>
-              <option value="4">Nhà hàng</option>
+              <option value="3">Transport</option>
+              <option value="4">Restaurant</option>
             </select>
           </div>
 

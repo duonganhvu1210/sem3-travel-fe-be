@@ -203,11 +203,11 @@ const ReportsPage = () => {
 
   const getStatusLabel = (status) => {
     const labels = {
-      'Pending': 'Chờ xác nhận',
-      'Confirmed': 'Đã xác nhận',
-      'Completed': 'Hoàn thành',
-      'Cancelled': 'Đã hủy',
-      'InProgress': 'Đang thực hiện'
+      'Pending': 'Pending',
+      'Confirmed': 'Confirmed',
+      'Completed': 'Completed',
+      'Cancelled': 'Cancelled',
+      'InProgress': 'In Progress'
     };
     return labels[status] || status;
   };

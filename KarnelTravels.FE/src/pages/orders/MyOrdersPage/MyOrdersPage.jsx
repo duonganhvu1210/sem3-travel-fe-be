@@ -5,21 +5,21 @@ import OrderDetailModal from './components/OrderDetailModal';
 
 // Tab configuration
 const TABS = [
-  { id: 'all', label: 'Tất cả', status: null },
-  { id: 'pending', label: 'Chờ xác nhận', status: 1 },
-  { id: 'confirmed', label: 'Đã xác nhận', status: 2 },
-  { id: 'completed', label: 'Đã hoàn thành', status: 3 },
-  { id: 'cancelled', label: 'Đã hủy', status: 4 }
+  { id: 'all', label: 'All', status: null },
+  { id: 'pending', label: 'Pending', status: 1 },
+  { id: 'confirmed', label: 'Confirmed', status: 2 },
+  { id: 'completed', label: 'Completed', status: 3 },
+  { id: 'cancelled', label: 'Cancelled', status: 4 }
 ];
 
 // Service type options
 const SERVICE_TYPES = [
-  { value: '', label: 'Tất cả loại dịch vụ' },
+  { value: '', label: 'All Service Types' },
   { value: 1, label: 'Tour' },
-  { value: 2, label: 'Khách sạn' },
+  { value: 2, label: 'Hotel' },
   { value: 3, label: 'Resort' },
-  { value: 4, label: 'Xe' },
-  { value: 5, label: 'Nhà hàng' }
+  { value: 4, label: 'Transport' },
+  { value: 5, label: 'Restaurant' }
 ];
 
 const MyOrdersPage = () => {
@@ -146,7 +146,7 @@ const MyOrdersPage = () => {
   const handleReview = (order) => {
     // Navigate to review page or open review modal
     console.log('Review order:', order);
-    alert('Chức năng đánh giá sẽ được phát triển');
+    alert('Review feature will be available soon');
   };
 
   return (
@@ -202,7 +202,7 @@ const MyOrdersPage = () => {
                 type="submit"
                 className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
-                Tìm kiếm
+                Search
               </button>
             </form>
             

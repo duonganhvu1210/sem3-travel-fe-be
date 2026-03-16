@@ -214,7 +214,7 @@ const HotelsPage = () => {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Quản lý khách sạn</h1>
-          <p className="text-gray-600 mt-1">F181 - F190: Quản lý khách sạn, phòng và đánh giá</p>
+          <p className="text-gray-600 mt-1">F181 - F190: Manage hotels, rooms and reviews</p>
         </div>
         <button
           onClick={handleAddNew}
@@ -295,7 +295,7 @@ const HotelsPage = () => {
                   </div>
                   <div>
                     <label className="text-sm text-gray-500">Địa chỉ</label>
-                    <p className="font-medium">{selectedHotel.address || 'Chưa cập nhật'}</p>
+                    <p className="font-medium">{selectedHotel.address || 'Not updated'}</p>
                   </div>
                   <div>
                     <label className="text-sm text-gray-500">Hạng sao</label>
@@ -318,7 +318,7 @@ const HotelsPage = () => {
                     <div className="flex items-center gap-2">
                       <span className="font-medium">{selectedHotel.rating?.toFixed(1) || '0.0'}</span>
                       <Star size={16} className="text-yellow-400 fill-yellow-400" />
-                      <span className="text-sm text-gray-500">({selectedHotel.reviewCount} đánh giá)</span>
+                      <span className="text-sm text-gray-500">({selectedHotel.reviewCount} reviews)</span>
                     </div>
                   </div>
                   <div>
@@ -373,7 +373,7 @@ const HotelsPage = () => {
                     className="flex-1 px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 flex items-center justify-center gap-2"
                   >
                     <MessageSquare size={18} />
-                    <span>Xem đánh giá</span>
+                    <span>View Reviews</span>
                   </button>
                 </div>
               </div>

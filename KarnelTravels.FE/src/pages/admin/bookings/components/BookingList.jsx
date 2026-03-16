@@ -14,11 +14,11 @@ import {
 
 // Status badge configuration
 const STATUS_CONFIG = {
-  0: { label: 'Chờ xác nhận', color: 'bg-yellow-100 text-yellow-700 border-yellow-200', icon: Clock },
-  1: { label: 'Đã xác nhận', color: 'bg-blue-100 text-blue-700 border-blue-200', icon: Check },
-  2: { label: 'Hoàn thành', color: 'bg-green-100 text-green-700 border-green-200', icon: Check },
-  3: { label: 'Đã hủy', color: 'bg-red-100 text-red-700 border-red-200', icon: X },
-  4: { label: 'Đã hoàn tiền', color: 'bg-purple-100 text-purple-700 border-purple-200', icon: DollarSign }
+  0: { label: 'Pending', color: 'bg-yellow-100 text-yellow-700 border-yellow-200', icon: Clock },
+  1: { label: 'Confirmed', color: 'bg-blue-100 text-blue-700 border-blue-200', icon: Check },
+  2: { label: 'Completed', color: 'bg-green-100 text-green-700 border-green-200', icon: Check },
+  3: { label: 'Cancelled', color: 'bg-red-100 text-red-700 border-red-200', icon: X },
+  4: { label: 'Refunded', color: 'bg-purple-100 text-purple-700 border-purple-200', icon: DollarSign }
 };
 
 const TYPE_CONFIG = {

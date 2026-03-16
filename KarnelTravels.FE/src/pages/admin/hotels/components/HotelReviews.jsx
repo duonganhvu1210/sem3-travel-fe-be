@@ -77,12 +77,12 @@ const HotelReviews = ({
             {isLoadingReviews ? (
               <div className="text-center py-8">
                 <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-                <p className="mt-2 text-gray-500">Đang tải đánh giá...</p>
+                <p className="mt-2 text-gray-500">Loading reviews...</p>
               </div>
             ) : reviews.length === 0 ? (
               <div className="text-center py-8">
                 <MessageSquare size={48} className="mx-auto text-gray-300 mb-2" />
-                <p className="text-gray-500">Chưa có đánh giá nào</p>
+                <p className="text-gray-500">No reviews yet</p>
               </div>
             ) : (
               <div className="space-y-4">

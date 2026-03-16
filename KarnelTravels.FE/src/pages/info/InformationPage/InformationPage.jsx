@@ -263,7 +263,7 @@ const InformationPage = () => {
                         <MapPin className="w-7 h-7 text-teal-600" />
                       </div>
                       <h3 className="font-semibold text-gray-800">Điểm du lịch</h3>
-                      <p className="text-sm text-gray-500 mt-1">Khám phá ngay</p>
+                      <p className="text-sm text-gray-500 mt-1">Explore Now</p>
                     </CardContent>
                   </Card>
                 </Link>
@@ -275,7 +275,7 @@ const InformationPage = () => {
                         <Palmtree className="w-7 h-7 text-cyan-600" />
                       </div>
                       <h3 className="font-semibold text-gray-800">Tour du lịch</h3>
-                      <p className="text-sm text-gray-500 mt-1">Xem chi tiết</p>
+                      <p className="text-sm text-gray-500 mt-1">View Details</p>
                     </CardContent>
                   </Card>
                 </Link>

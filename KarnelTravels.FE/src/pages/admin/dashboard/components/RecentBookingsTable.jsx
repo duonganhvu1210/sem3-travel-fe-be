@@ -17,25 +17,25 @@ const StatusBadge = ({ status }) => {
       bg: 'bg-yellow-100', 
       text: 'text-yellow-700',
       icon: AlertCircle,
-      label: 'Chờ xác nhận'
+      label: 'Pending'
     },
     'Confirmed': { 
       bg: 'bg-blue-100', 
       text: 'text-blue-700',
       icon: CheckCircle2,
-      label: 'Đã xác nhận'
+      label: 'Confirmed'
     },
     'Completed': { 
       bg: 'bg-green-100', 
       text: 'text-green-700',
       icon: CheckCircle2,
-      label: 'Hoàn thành'
+      label: 'Completed'
     },
     'Cancelled': { 
       bg: 'bg-red-100', 
       text: 'text-red-700',
       icon: XCircle,
-      label: 'Đã hủy'
+      label: 'Cancelled'
     }
   };
 
@@ -182,7 +182,7 @@ const RecentBookingsTable = ({ data, loading }) => {
             ) : (
               <tr>
                 <td colSpan={7} className="px-6 py-8 text-center text-gray-500">
-                  Chưa có đơn hàng nào
+                  No bookings yet
                 </td>
               </tr>
             )}

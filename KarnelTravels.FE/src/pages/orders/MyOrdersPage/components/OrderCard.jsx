@@ -3,9 +3,9 @@ import React from 'react';
 // Status badge configuration
 const STATUS_CONFIG = {
   Pending: { label: 'Chờ xác nhận', color: 'bg-yellow-100 text-yellow-800', icon: '⏳' },
-  Confirmed: { label: 'Đã xác nhận', color: 'bg-blue-100 text-blue-800', icon: '✓' },
-  Completed: { label: 'Đã hoàn thành', color: 'bg-green-100 text-green-800', icon: '★' },
-  Cancelled: { label: 'Đã hủy', color: 'bg-red-100 text-red-800', icon: '✕' },
+  Confirmed: { label: 'Confirmed', color: 'bg-blue-100 text-blue-800', icon: '✓' },
+  Completed: { label: 'Completed', color: 'bg-green-100 text-green-800', icon: '★' },
+  Cancelled: { label: 'Cancelled', color: 'bg-red-100 text-red-800', icon: '✕' },
   Refunded: { label: 'Đã hoàn tiền', color: 'bg-gray-100 text-gray-800', icon: '↩' }
 };
 

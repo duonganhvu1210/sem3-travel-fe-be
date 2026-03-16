@@ -75,12 +75,12 @@ const WishlistPage = () => {
 
   const getItemTypeLabel = (itemType) => {
     switch (itemType) {
-      case 'Hotel': return 'Khách sạn';
-      case 'TouristSpot': return 'Địa điểm';
-      case 'Restaurant': return 'Nhà hàng';
+      case 'Hotel': return 'Hotel';
+      case 'TouristSpot': return 'Tourist Spot';
+      case 'Restaurant': return 'Restaurant';
       case 'Resort': return 'Resort';
       case 'Tour': return 'Tour';
-      case 'Transport': return 'Phương tiện';
+      case 'Transport': return 'Transport';
       default: return itemType;
     }
   };
@@ -98,8 +98,8 @@ const WishlistPage = () => {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Danh sách yêu thích</h1>
-          <p className="text-gray-600">Quản lý các địa điểm bạn đã lưu</p>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Wishlist</h1>
+          <p className="text-gray-600">Manage your saved places</p>
         </div>
 
         {/* Error */}
@@ -119,7 +119,7 @@ const WishlistPage = () => {
               to="/info/tourist-spots"
               className="inline-block px-6 py-3 bg-primary text-white rounded-lg hover:bg-teal-700"
             >
-              Khám phá ngay
+              Explore Now
             </Link>
           </div>
         )}
@@ -180,7 +180,7 @@ const WishlistPage = () => {
                     to={getItemLink(item)}
                     className="block w-full py-2 bg-gray-100 text-gray-700 text-center rounded-lg font-medium hover:bg-gray-200 transition-colors"
                   >
-                    Xem chi tiết
+                    View Details
                   </Link>
                 </div>
               </div>
