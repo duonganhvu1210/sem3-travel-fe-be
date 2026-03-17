@@ -83,24 +83,24 @@ const AddressManager = () => {
     }
 
     if (response.success) {
-      setMessage({ type: 'success', text: editingAddress ? 'Cập nhật địa chỉ thành công!' : 'Thêm địa chỉ thành công!' });
+      setMessage({ type: 'success', text: editingAddress ? 'Update address successfully!' : 'Add address successfully!' });
       await loadAddresses();
       setTimeout(handleCloseModal, 1000);
     } else {
-      setMessage({ type: 'error', text: response.message || 'Thao tác thất bại' });
+      setMessage({ type: 'error', text: response.message || 'Operation failed' });
     }
 
     setIsSaving(false);
   };
 
   const handleDelete = async (addressId) => {
-    if (!window.confirm('Bạn có chắc chắn muốn xóa địa chỉ này?')) return;
+    if (!window.confirm('Are you sure you want to delete this address?')) return;
 
     const response = await profileService.deleteAddress(addressId);
     if (response.success) {
       await loadAddresses();
     } else {
-      alert(response.message || 'Xóa thất bại');
+      alert(response.message || 'Delete failed');
     }
   };
 
@@ -122,10 +122,10 @@ const AddressManager = () => {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Địa chỉ của tôi</h2>
+        <h2 className="text-lg font-semibold text-gray-900">My addresses</h2>
         <Button onClick={() => handleOpenModal()} className="bg-teal-600 hover:bg-teal-700">
           <Plus className="w-4 h-4 mr-2" />
-          Thêm địa chỉ
+          Add address
         </Button>
       </div>
 
@@ -133,7 +133,7 @@ const AddressManager = () => {
         <div className="text-center py-8 text-gray-500">
           <MapPin className="w-12 h-12 mx-auto mb-3 text-gray-300" />
           <p>No address yet</p>
-          <p className="text-sm">Thêm địa chỉ để sử dụng khi đặt tour</p>
+          <p className="text-sm">Add an address to use when booking a tour</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -145,7 +145,7 @@ const AddressManager = () => {
                     {address.isDefault && (
                       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800 mb-2">
                         <Check className="w-3 h-3 mr-1" />
-                        Mặc định
+                        Default
                       </span>
                     )}
                     <p className="font-medium text-gray-900">{address.addressLine}</p>
@@ -155,14 +155,14 @@ const AddressManager = () => {
                   </div>
                   <div className="flex gap-1">
                     {!address.isDefault && (
-                      <Button variant="ghost" size="sm" onClick={() => handleSetDefault(address.addressId)} title="Đặt làm mặc định">
+                      <Button variant="ghost" size="sm" onClick={() => handleSetDefault(address.addressId)} title="Set as default">
                         <Check className="w-4 h-4 text-gray-400 hover:text-teal-600" />
                       </Button>
                     )}
-                    <Button variant="ghost" size="sm" onClick={() => handleOpenModal(address)} title="Chỉnh sửa">
+                    <Button variant="ghost" size="sm" onClick={() => handleOpenModal(address)} title="Edit">
                       <Pencil className="w-4 h-4 text-gray-400 hover:text-teal-600" />
                     </Button>
-                    <Button variant="ghost" size="sm" onClick={() => handleDelete(address.addressId)} title="Xóa">
+                    <Button variant="ghost" size="sm" onClick={() => handleDelete(address.addressId)} title="Delete">
                       <Trash2 className="w-4 h-4 text-gray-400 hover:text-red-600" />
                     </Button>
                   </div>
@@ -178,7 +178,7 @@ const AddressManager = () => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">{editingAddress ? 'Chỉnh sửa địa chỉ' : 'Thêm địa chỉ mới'}</h3>
+              <h3 className="text-lg font-semibold">{editingAddress ? 'Edit address' : 'Add new address'}</h3>
               <Button variant="ghost" size="sm" onClick={handleCloseModal}>
                 <X className="w-5 h-5" />
               </Button>
@@ -192,50 +192,50 @@ const AddressManager = () => {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="addressLine">Địa chỉ</Label>
+                  <Label htmlFor="addressLine">Address</Label>
                 <Input
                   id="addressLine"
                   value={formData.addressLine}
                   onChange={(e) => setFormData({ ...formData, addressLine: e.target.value })}
-                  placeholder="Số nhà, đường..."
+                  placeholder="House number, street..."
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="ward">Phường/Xã</Label>
+                    <Label htmlFor="ward">Ward/Commune</Label>
                   <Input
                     id="ward"
                     value={formData.ward}
                     onChange={(e) => setFormData({ ...formData, ward: e.target.value })}
-                    placeholder="Phường/Xã"
+                    placeholder="Ward/Commune"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="district">Quận/Huyện</Label>
+                  <Label htmlFor="district">District/County</Label>
                   <Input
                     id="district"
                     value={formData.district}
                     onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-                    placeholder="Quận/Huyện"
+                    placeholder="District/County"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="city">Thành phố/Tỉnh</Label>
+                    <Label htmlFor="city">City/Province</Label>
                   <Input
                     id="city"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    placeholder="Thành phố/Tỉnh"
+                    placeholder="City/Province"
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="country">Quốc gia</Label>
+                  <Label htmlFor="country">Country</Label>
                   <Input
                     id="country"
                     value={formData.country}
@@ -252,16 +252,16 @@ const AddressManager = () => {
                   onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
                   className="w-4 h-4 text-teal-600 rounded"
                 />
-                <Label htmlFor="isDefault" className="cursor-pointer">Đặt làm địa chỉ mặc định</Label>
+                <Label htmlFor="isDefault" className="cursor-pointer">Set as default address</Label>
               </div>
 
               <div className="flex gap-3 pt-4">
                 <Button type="submit" disabled={isSaving} className="bg-teal-600 hover:bg-teal-700">
                   {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                  {editingAddress ? 'Cập nhật' : 'Thêm mới'}
+                  {editingAddress ? 'Update' : 'Add new'}
                 </Button>
                 <Button type="button" variant="outline" onClick={handleCloseModal}>
-                  Hủy
+                  Cancel
                 </Button>
               </div>
             </form>

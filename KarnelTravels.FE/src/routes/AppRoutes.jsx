@@ -1,5 +1,8 @@
 import { Navigate, Routes, Route } from 'react-router-dom';
 
+// Components
+import ScrollToTop from '@/components/common/ScrollToTop';
+
 // Layouts
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import AdminLayout from '@/layouts/AdminLayout/AdminLayout';
@@ -26,6 +29,7 @@ import TransportDetailPage from '@/pages/info/TransportsPage/TransportDetailPage
 import HotelDetailPage from '@/pages/info/HotelsPage/HotelDetailPage';
 import SearchPage from '@/pages/search/SearchPage/SearchPage';
 import ContactPage from '@/pages/ContactPage/ContactPage';
+import AboutPage from '@/pages/about/AboutPage/AboutPage';
 import BookingPage from '@/pages/booking/BookingPage/BookingPage';
 import PaymentReturnPage from '@/pages/booking/PaymentReturnPage/PaymentReturnPage';
 import ProfilePage from '@/pages/profile/ProfilePage/ProfilePage';
@@ -35,12 +39,6 @@ import MyMessagesPage from '@/pages/messages/MyMessagesPage';
 
 // Admin Dashboard
 import DashboardPage from '@/pages/admin/dashboard/DashboardPage';
-
-const AboutPage = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-gray-800">Giới thiệu</h1>
-  </div>
-);
 
 const DestinationsPage = () => <TouristSpotsPage />;
 
@@ -87,7 +85,9 @@ const AdminSettings = () => (
 
 const AppRoutes = () => {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       {/* ==================== AUTH LAYOUT (Public - No Protection) ==================== */}
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginPage />} />
@@ -146,6 +146,7 @@ const AppRoutes = () => {
       <Route path="/403" element={<ForbiddenPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   );
 };
 

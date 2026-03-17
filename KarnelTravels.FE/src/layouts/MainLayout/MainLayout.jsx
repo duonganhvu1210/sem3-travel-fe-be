@@ -29,7 +29,8 @@ import {
   Phone,
   Calendar,
   MessageCircle,
-  Mail
+  Mail,
+  Settings
 } from 'lucide-react';
 
 const MainLayout = () => {
@@ -52,6 +53,7 @@ const MainLayout = () => {
 
   const navItems = [
     { name: 'Home', path: '/', icon: Home },
+    { name: 'About', path: '/about', icon: Info },
 
     { name: 'Search', path: '/search', icon: Search },
     {
@@ -68,6 +70,7 @@ const MainLayout = () => {
         { name: 'Resorts', path: '/info/resorts', icon: Palmtree },
       ]
     },
+    
     { name: 'Contact', path: '/contact', icon: Phone },
   ];
 
@@ -79,13 +82,17 @@ const MainLayout = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Header */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md shadow-lg py-1`}
-      >
+  className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    isScrolled
+      ? 'bg-white/90 backdrop-blur-xl shadow-lg border-b border-gray-200/60 py-1'
+      : 'bg-white/80 backdrop-blur-md py-2'
+  }`}
+>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                 <Plane className="w-5 h-5 text-white" />
               </div>
               <span className={`font-bold text-xl text-gray-800`}>
@@ -100,7 +107,9 @@ const MainLayout = () => {
                   {item.hasDropdown ? (
                     <button
                       onClick={() => handleDropdownToggle(index)}
-                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-lg font-medium transition-all text-gray-700 hover:bg-teal-50 hover:text-teal-600 ${location.pathname === item.path ? 'bg-teal-500/20 text-teal-600' : ''}`}
+                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-medium transition-all duration-300 text-gray-700 hover:bg-teal-50 hover:text-teal-600 ${
+                        location.pathname === item.path ? 'bg-teal-500/15 text-teal-600 shadow-sm' : ''
+                      }`}
                     >
                       {item.name}
                       <ChevronDown className={`w-4 h-4 transition-transform ${
@@ -152,6 +161,15 @@ const MainLayout = () => {
                 <Search className="w-5 h-5" />
               </Link>
 
+              {/* Admin Link */}
+              <Link
+                to="/admin"
+                className="p-2.5 rounded-full bg-gray-100 text-gray-700 hover:bg-teal-50 hover:text-teal-600 transition-all"
+                title="Admin Dashboard"
+              >
+                <Settings className="w-5 h-5" />
+              </Link>
+
               {isAuthenticated ? (
                 <div className="flex items-center gap-3">
                   {/* Wishlist */}
@@ -191,25 +209,19 @@ const MainLayout = () => {
                       <DropdownMenuItem asChild>
                         <Link to="/profile" className="flex items-center">
                           <User className="mr-2 h-4 w-4" />
-                          Hồ sơ
+                          Profile
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         <Link to="/bookings" className="flex items-center">
                           <Calendar className="mr-2 h-4 w-4" />
-                          Đơn đặt
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link to="/my-messages" className="flex items-center">
-                          <MessageCircle className="mr-2 h-4 w-4" />
-                          Tin nhắn
+                          Bookings
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={logout} className="text-red-600 cursor-pointer">
                         <LogOut className="mr-2 h-4 w-4" />
-                        Đăng xuất
+                        Logout
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -218,13 +230,13 @@ const MainLayout = () => {
                 <div className="flex items-center gap-2">
                   <Link
                     to="/login"
-                    className="px-5 py-2.5 rounded-full font-medium transition-all text-gray-700 hover:bg-gray-100"
+                    className="px-5 py-2.5 rounded-full font-medium transition-all text-gray-700 hover:bg-gray-100 hover:text-teal-600"
                   >
                     Login
                   </Link>
                   <Link
                     to="/register"
-                    className="px-5 py-2.5 bg-teal-500 hover:bg-teal-600 text-white font-medium rounded-full transition-all hover:shadow-lg hover:shadow-teal-500/30"
+                    className="px-5 py-2.5 bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-medium rounded-full transition-all hover:shadow-lg hover:shadow-teal-500/30 hover:-translate-y-0.5"
                   >
                     Register
                   </Link>
@@ -304,34 +316,79 @@ const MainLayout = () => {
         <Outlet />
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white">
-        <div className="container mx-auto px-4 py-16">
+      {/* Floating Phone Button */}
+      <a
+        href="tel:19006677"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all transform hover:scale-110 animate-bounce"
+        aria-label="Gọi hotline"
+      >
+        <Phone className="w-6 h-6" />
+      </a>
+
+            {/* Footer */}
+            <footer className="bg-gray-950 text-white relative overflow-hidden">
+        {/* Background effect */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-10 -left-10 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl" />
+          <div className="absolute -bottom-10 -right-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative container mx-auto px-4 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
             {/* Brand */}
             <div>
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-11 h-11 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg">
                   <Plane className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-bold text-xl">KarnelTravels</span>
+                <div>
+                  <span className="block font-bold text-xl">KarnelTravels</span>
+                  <span className="text-sm text-gray-400">Travel with confidence</span>
+                </div>
               </div>
-              <p className="text-gray-400 mb-6">
-                Your trusted partner for exploring Vietnam and the world.
+
+              <p className="text-gray-400 mb-6 leading-7">
+                Your trusted partner for exploring Vietnam and the world with
+                unforgettable journeys, top destinations, and premium travel services.
               </p>
+
+              <div className="flex items-center gap-3">
+                <a
+                  href="#"
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-teal-500 hover:border-teal-500 transition-all"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                </a>
+                <a
+                  href="#"
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-teal-500 hover:border-teal-500 transition-all"
+                >
+                  <Mail className="w-5 h-5" />
+                </a>
+                <a
+                  href="#"
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-teal-500 hover:border-teal-500 transition-all"
+                >
+                  <Phone className="w-5 h-5" />
+                </a>
+              </div>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-semibold text-lg mb-6">Quick Links</h4>
+              <h4 className="font-semibold text-lg mb-6 text-white">Quick Links</h4>
               <ul className="space-y-3">
                 {[
                   { name: 'Home', path: '/' },
+                  { name: 'About', path: '/about' },
                   { name: 'Search', path: '/search' },
                   { name: 'Contact', path: '/contact' }
                 ].map((item) => (
                   <li key={item.name}>
-                    <Link to={item.path} className="text-gray-400 hover:text-white transition-colors">
+                    <Link
+                      to={item.path}
+                      className="text-gray-400 hover:text-white transition-all duration-200 hover:pl-1 inline-block"
+                    >
                       {item.name}
                     </Link>
                   </li>
@@ -341,40 +398,79 @@ const MainLayout = () => {
 
             {/* Services */}
             <div>
-              <h4 className="font-semibold text-lg mb-6">Services</h4>
+              <h4 className="font-semibold text-lg mb-6 text-white">Services</h4>
               <ul className="space-y-3">
-                {['Tours', 'Hotels', 'Restaurants', 'Resorts', 'Transports'].map((item) => (
-                  <li key={item}>
-                    <Link to={`/info/${item.toLowerCase()}`} className="text-gray-400 hover:text-white transition-colors">
-                      {item}
+                {[
+                  { name: 'Tours', path: '/info/tours' },
+                  { name: 'Hotels', path: '/info/hotels' },
+                  { name: 'Restaurants', path: '/info/restaurants' },
+                  { name: 'Resorts', path: '/info/resorts' },
+                  { name: 'Transports', path: '/info/transports' }
+                ].map((item) => (
+                  <li key={item.name}>
+                    <Link
+                      to={item.path}
+                      className="text-gray-400 hover:text-white transition-all duration-200 hover:pl-1 inline-block"
+                    >
+                      {item.name}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Contact */}
+            {/* Contact + Map */}
             <div>
-              <h4 className="font-semibold text-lg mb-6">Contact</h4>
-              <ul className="space-y-4 text-gray-400">
-                <li className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 mt-0.5" />
-                  <span>123 Nguyen Trai Street, District 1, Ho Chi Minh City</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Phone className="w-5 h-5" />
-                  <span>+84 28 1234 5678</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Mail className="w-5 h-5" />
-                  <span>info@karneltravels.com</span>
-                </li>
-              </ul>
+              <h4 className="font-semibold text-lg mb-6 text-white">Contact</h4>
+
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start gap-3 p-3 rounded-2xl bg-white/5 border border-white/10">
+                  <MapPin className="w-5 h-5 mt-0.5 text-teal-400" />
+                  <span className="text-gray-300 text-sm leading-6">
+                    123 Nguyen Trai Street, District 1, Ho Chi Minh City
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10">
+                  <Phone className="w-5 h-5 text-teal-400" />
+                  <span className="text-gray-300 text-sm">+84 28 1234 5678</span>
+                </div>
+
+                <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10">
+                  <Mail className="w-5 h-5 text-teal-400" />
+                  <span className="text-gray-300 text-sm">info@karneltravels.com</span>
+                </div>
+              </div>
+
+              <div className="overflow-hidden rounded-2xl border border-white/10 shadow-lg">
+                <iframe
+                  title="KarnelTravels Location"
+                  src="https://www.google.com/maps?q=District+1,+Ho+Chi+Minh+City&z=14&output=embed"
+                  width="100%"
+                  height="180"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500">
+          <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-gray-500 text-sm">
             <p>&copy; 2026 KarnelTravels. All rights reserved.</p>
+
+            <div className="flex items-center gap-5">
+              <Link to="/" className="hover:text-white transition-colors">
+                Privacy
+              </Link>
+              <Link to="/" className="hover:text-white transition-colors">
+                Terms
+              </Link>
+              <Link to="/contact" className="hover:text-white transition-colors">
+                Support
+              </Link>
+            </div>
           </div>
         </div>
       </footer>

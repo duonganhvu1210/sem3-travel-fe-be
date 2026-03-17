@@ -188,7 +188,7 @@ const HotelEditor = ({
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
             <h2 className="text-xl font-semibold text-gray-900">
-              {mode === 'create' ? 'Thêm mới khách sạn' : 'Chỉnh sửa khách sạn'}
+              {mode === 'create' ? 'Add new hotel' : 'Edit hotel'}
             </h2>
             <button
               onClick={onClose}
@@ -208,9 +208,9 @@ const HotelEditor = ({
                     Tên khách sạn <span className="text-red-500">*</span>
                   </label>
                   <input
-                    {...register('name', { required: 'Tên khách sạn là bắt buộc' })}
+                    {...register('name', { required: 'Hotel name is required' })}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Nhập tên khách sạn"
+                    placeholder="Enter hotel name"
                   />
                   {errors.name && (
                     <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
@@ -219,56 +219,56 @@ const HotelEditor = ({
 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Mô tả
+                    Description
                   </label>
                   <textarea
                     {...register('description')}
                     rows={3}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Mô tả về khách sạn"
+                    placeholder="Describe the hotel"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Thành phố <span className="text-red-500">*</span>
+                    City <span className="text-red-500">*</span>
                   </label>
                   <CitySelect
                     value={watch('city') || ''}
                     onChange={(city) => setValue('city', city, { shouldValidate: true })}
-                    placeholder="Chọn thành phố"
+                    placeholder="Select city"
                     error={errors.city?.message}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Địa chỉ
+                    Address
                   </label>
                   <input
                     {...register('address')}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Địa chỉ chi tiết"
+                    placeholder="Enter address"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Hạng sao <span className="text-red-500">*</span>
+                    Star rating <span className="text-red-500">*</span>
                   </label>
                   <select
                     {...register('starRating', { required: true })}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     {[1, 2, 3, 4, 5].map(star => (
-                      <option key={star} value={star}>{star} sao</option>
+                      <option key={star} value={star}>{star} stars</option>
                     ))}
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nổi bật
+                    Featured
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -276,34 +276,34 @@ const HotelEditor = ({
                       {...register('isFeatured')}
                       className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
                     />
-                    <span className="text-gray-600">Hiển thị trên trang chủ</span>
+                    <span className="text-gray-600">Display on home page</span>
                   </label>
                 </div>
               </div>
 
               {/* Contact Info */}
               <div className="border-t border-gray-200 pt-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Thông tin liên hệ</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Contact information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Người liên hệ
+                        Contact name
                     </label>
                     <input
                       {...register('contactName')}
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Tên người liên hệ"
+                      placeholder="Enter contact name"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Số điện thoại
+                      Phone number
                     </label>
                     <input
                       {...register('contactPhone')}
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Số điện thoại"
+                      placeholder="Enter phone number"
                     />
                   </div>
 
@@ -323,11 +323,11 @@ const HotelEditor = ({
 
               {/* Pricing & Times */}
               <div className="border-t border-gray-200 pt-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Giá và thời gian</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Price and time</h3>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Giá từ (VND)
+                      Price from ($/night)
                     </label>
                     <input
                       {...register('minPrice')}
@@ -339,13 +339,13 @@ const HotelEditor = ({
                       className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                         priceError ? 'border-red-500 bg-red-50' : 'border-gray-300'
                       }`}
-                      placeholder="Giá tối thiểu"
+                      placeholder="Minimum price"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Giá đến (VND)
+                      Maximum price ($/night)
                     </label>
                     <input
                       {...register('maxPrice')}
@@ -357,7 +357,7 @@ const HotelEditor = ({
                       className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                         priceError ? 'border-red-500 bg-red-50' : 'border-gray-300'
                       }`}
-                      placeholder="Giá tối đa"
+                      placeholder="Maximum price"
                     />
                     {priceError && (
                       <p className="mt-1 text-sm text-red-600">{priceError}</p>
@@ -366,7 +366,7 @@ const HotelEditor = ({
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Check-in
+                        Check-in time
                     </label>
                     <input
                       {...register('checkInTime')}
@@ -377,7 +377,7 @@ const HotelEditor = ({
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Check-out
+                      Check-out time
                     </label>
                     <input
                       {...register('checkOutTime')}
@@ -390,7 +390,7 @@ const HotelEditor = ({
 
               {/* Amenities */}
               <div className="border-t border-gray-200 pt-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Tiện nghi</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Amenities</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {AMENITIES_OPTIONS.map(amenity => (
                     <label
@@ -420,7 +420,7 @@ const HotelEditor = ({
 
               {/* Gallery (F188) */}
               <div className="border-t border-gray-200 pt-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Hình ảnh (Gallery)</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Images (Gallery)</h3>
                 
                 {/* Drop zone */}
                 <div
@@ -443,14 +443,14 @@ const HotelEditor = ({
                     className="hidden" 
                   />
                   <Upload size={40} className="mx-auto text-gray-400 mb-2" />
-                  <p className="text-gray-600">Kéo thả hình ảnh vào đây hoặc click để chọn</p>
-                  <p className="text-sm text-gray-400 mt-1">Hỗ trợ JPG, PNG, GIF (tối đa 10MB mỗi file)</p>
+                  <p className="text-gray-600">Drag and drop images here or click to select</p>
+                  <p className="text-sm text-gray-400 mt-1">Supports JPG, PNG, GIF (maximum 10MB per file)</p>
                 </div>
 
                 {/* Uploading status */}
                 {uploadingImages.length > 0 && (
                   <div className="mt-4">
-                    <p className="text-sm font-medium text-gray-700 mb-2">Đang tải lên...</p>
+                    <p className="text-sm font-medium text-gray-700 mb-2">Uploading...</p>
                     <div className="flex flex-wrap gap-2">
                       {uploadingImages.map(upload => (
                         <div key={upload.id} className="flex items-center gap-2 px-3 py-2 bg-blue-50 rounded-lg">
@@ -475,7 +475,7 @@ const HotelEditor = ({
                     <div key={index} className="relative group">
                       <img
                         src={img}
-                        alt={`Hình ảnh ${index + 1}`}
+                        alt={`Image ${index + 1}`}
                         className="w-full h-32 object-cover rounded-lg"
                         onError={(e) => {
                           e.target.src = 'https://via.placeholder.com/300x200?text=Image+Error';
@@ -496,12 +496,12 @@ const HotelEditor = ({
 
               {/* Cancellation Policy */}
               <div className="border-t border-gray-200 pt-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Chính sách hủy phòng</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Cancellation policy</h3>
                 <textarea
                   {...register('cancellationPolicy')}
                   rows={3}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Nhập chính sách hủy phòng..."
+                  placeholder="Enter cancellation policy..."
                 />
               </div>
             </form>
@@ -514,7 +514,7 @@ const HotelEditor = ({
               onClick={onClose}
               className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
             >
-              Hủy
+              Cancel
             </button>
             <button
               onClick={handleSubmit(onFormSubmit)}
@@ -524,7 +524,7 @@ const HotelEditor = ({
               {isLoading ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Đang lưu...</span>
+                  <span>Saving...</span>
                 </>
               ) : (
                 <>

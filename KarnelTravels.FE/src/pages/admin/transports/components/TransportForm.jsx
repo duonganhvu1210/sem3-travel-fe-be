@@ -84,53 +84,53 @@ const TransportForm = ({ isOpen, onClose, onSave, mode, data, vehicleTypes, prov
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tên phương tiện *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Vehicle name *</label>
               <input
                 type="text"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                placeholder="Xe khách giường nằm 41 chỗ"
+                placeholder="Example: Bus 41 seats"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Biển số xe *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">License plate *</label>
               <input
                 type="text"
                 required
                 value={formData.licensePlate}
                 onChange={(e) => setFormData({ ...formData, licensePlate: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                placeholder="29B-12345"
+                placeholder="Example: 29B-12345"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Loại phương tiện *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Vehicle type *</label>
               <select
                 required
                 value={formData.vehicleTypeId}
                 onChange={(e) => setFormData({ ...formData, vehicleTypeId: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
-                <option value="">Chọn loại phương tiện</option>
+                  <option value="">Select vehicle type</option>
                 {vehicleTypes.map((type) => (
                   <option key={type.vehicleTypeId} value={type.vehicleTypeId}>{type.name}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nhà vận chuyển *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Transport provider *</label>
               <select
                 required
                 value={formData.providerId}
                 onChange={(e) => setFormData({ ...formData, providerId: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
-                <option value="">Chọn nhà vận chuyển</option>
+                <option value="">Select transport provider</option>
                 {providers.map((provider) => (
                   <option key={provider.providerId} value={provider.providerId}>{provider.name}</option>
                 ))}
@@ -140,7 +140,7 @@ const TransportForm = ({ isOpen, onClose, onSave, mode, data, vehicleTypes, prov
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Số ghế *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Seats *</label>
               <input
                 type="number"
                 required
@@ -151,22 +151,22 @@ const TransportForm = ({ isOpen, onClose, onSave, mode, data, vehicleTypes, prov
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Trạng thái</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
-                <option value="Available">Hoạt động</option>
-                <option value="InService">Đang chạy</option>
-                <option value="Maintenance">Bảo trì</option>
-                <option value="Retired">Ngưng hoạt động</option>
+                    <option value="Available">Available</option>
+                    <option value="InService">In service</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Retired">Retired</option>
               </select>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Hình ảnh</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Image</label>
             <input
               ref={fileInputRef}
               type="file"
@@ -186,7 +186,7 @@ const TransportForm = ({ isOpen, onClose, onSave, mode, data, vehicleTypes, prov
                 ) : (
                   <Upload className="w-4 h-4" />
                 )}
-                Tải ảnh lên
+                Upload image
               </button>
               {formData.imageUrl && (
                 <div className="relative w-16 h-16 rounded-lg overflow-hidden border">
@@ -197,18 +197,18 @@ const TransportForm = ({ isOpen, onClose, onSave, mode, data, vehicleTypes, prov
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Tiện nghi</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Amenities</label>
             <input
               type="text"
               value={formData.amenities}
               onChange={(e) => setFormData({ ...formData, amenities: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="WiFi, Điều hòa, Nước uống (cách nhau bằng dấu phẩy)"
+              placeholder="WiFi, Air conditioning, Water (separated by commas)"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Mô tả</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
             <textarea
               rows={3}
               value={formData.description}
@@ -223,13 +223,13 @@ const TransportForm = ({ isOpen, onClose, onSave, mode, data, vehicleTypes, prov
               onClick={onClose}
               className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             >
-              Hủy
+                Cancel
             </button>
             <button
               type="submit"
               className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
             >
-              {mode === 'create' ? 'Thêm mới' : 'Lưu thay đổi'}
+              {mode === 'create' ? 'Add new' : 'Save changes'}
             </button>
           </div>
         </form>

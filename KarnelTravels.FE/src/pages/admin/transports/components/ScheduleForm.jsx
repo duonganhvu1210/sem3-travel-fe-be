@@ -111,7 +111,7 @@ const ScheduleForm = ({ isOpen, onClose, onSave, mode, data, vehicles, routes })
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Giờ khởi hành *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Departure time *</label>
               <input
                 type="time"
                 required
@@ -121,7 +121,7 @@ const ScheduleForm = ({ isOpen, onClose, onSave, mode, data, vehicles, routes })
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Giờ đến</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Arrival time</label>
               <input
                 type="time"
                 value={formData.arrivalTime}
@@ -133,7 +133,7 @@ const ScheduleForm = ({ isOpen, onClose, onSave, mode, data, vehicles, routes })
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Giá vé (VND) *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Ticket price ($/VND) *</label>
               <input
                 type="number"
                 required
@@ -142,11 +142,11 @@ const ScheduleForm = ({ isOpen, onClose, onSave, mode, data, vehicles, routes })
                 value={formData.price}
                 onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                placeholder="200000"
+                placeholder="Example: 200000"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tổng số ghế *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Total seats *</label>
               <input
                 type="number"
                 required
@@ -159,7 +159,7 @@ const ScheduleForm = ({ isOpen, onClose, onSave, mode, data, vehicles, routes })
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Ngày hoạt động trong tuần</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Operating days</label>
             <div className="flex flex-wrap gap-2">
               {operatingDaysList.map((day) => (
                 <button
@@ -179,20 +179,20 @@ const ScheduleForm = ({ isOpen, onClose, onSave, mode, data, vehicles, routes })
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Trạng thái</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
             <select
               value={formData.status}
               onChange={(e) => setFormData({ ...formData, status: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
-              <option value="Active">Hoạt động</option>
-              <option value="Inactive">Không hoạt động</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
               <option value="Cancelled">Cancelled</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Ghi chú</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
             <textarea
               rows={3}
               value={formData.notes}
@@ -207,13 +207,13 @@ const ScheduleForm = ({ isOpen, onClose, onSave, mode, data, vehicles, routes })
               onClick={onClose}
               className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             >
-              Hủy
+              Cancel
             </button>
             <button
               type="submit"
               className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
             >
-              {mode === 'create' ? 'Thêm mới' : 'Lưu thay đổi'}
+              {mode === 'create' ? 'Add new' : 'Save changes'}
             </button>
           </div>
         </form>

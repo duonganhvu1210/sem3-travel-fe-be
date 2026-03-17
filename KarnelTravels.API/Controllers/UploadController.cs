@@ -10,10 +10,16 @@ namespace KarnelTravels.API.Controllers;
 public class UploadController : ControllerBase
 {
     private readonly IWebHostEnvironment _environment;
+    private readonly string _uploadsBasePath;
 
     public UploadController(IWebHostEnvironment environment)
     {
         _environment = environment;
+        // Use WebRootPath if available, otherwise fall back to ContentRootPath
+        var basePath = !string.IsNullOrEmpty(_environment.WebRootPath) 
+            ? _environment.WebRootPath 
+            : Path.Combine(_environment.ContentRootPath, "wwwroot");
+        _uploadsBasePath = Path.Combine(basePath, "uploads", "images");
     }
 
     /// <summary>
@@ -59,7 +65,7 @@ public class UploadController : ControllerBase
                 });
             }
 
-            var uploadsFolder = Path.Combine(_environment.ContentRootPath, "wwwroot", "uploads", "images");
+            var uploadsFolder = _uploadsBasePath;
             Directory.CreateDirectory(uploadsFolder);
 
             var fileName = $"{Guid.NewGuid()}{extension}";
@@ -115,7 +121,7 @@ public class UploadController : ControllerBase
             }
 
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg" };
-            var uploadsFolder = Path.Combine(_environment.ContentRootPath, "wwwroot", "uploads", "images");
+            var uploadsFolder = _uploadsBasePath;
             Directory.CreateDirectory(uploadsFolder);
 
             var results = new List<UploadResult>();

@@ -61,8 +61,9 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
-builder.Services.AddHostedService<PromotionExpirationService>();
-builder.Services.AddHostedService<BookingReminderService>();
+// Add Hosted Services (commented out to debug)
+// builder.Services.AddHostedService<PromotionExpirationService>();
+// builder.Services.AddHostedService<BookingReminderService>();
 
 // Add Authentication
 builder.Services.AddAuthentication(options =>
@@ -107,7 +108,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); // Commented out for development (frontend uses HTTP)
 
 app.UseStaticFiles();
 

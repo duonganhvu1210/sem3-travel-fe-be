@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Loader2, Save, X } from 'lucide-react';
 
 const schema = yup.object().shape({
-  fullName: yup.string().required('Họ tên là bắt buộc'),
+  fullName: yup.string().required('Full name is required'),
   phoneNumber: yup.string(),
   dateOfBirth: yup.string(),
   gender: yup.string(),
@@ -66,13 +66,13 @@ const InformationForm = ({ profile, onProfileUpdate }) => {
     const response = await profileService.updateProfile(formattedData);
 
     if (response.success) {
-      setMessage({ type: 'success', text: 'Cập nhật thông tin thành công!' });
+      setMessage({ type: 'success', text: 'Update information successfully!' });
       setIsEditing(false);
       if (onProfileUpdate) {
         onProfileUpdate(response.data);
       }
     } else {
-      setMessage({ type: 'error', text: response.message || 'Cập nhật thất bại' });
+      setMessage({ type: 'error', text: response.message || 'Update information failed' });
     }
 
     setIsSaving(false);
@@ -81,10 +81,10 @@ const InformationForm = ({ profile, onProfileUpdate }) => {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Thông tin cá nhân</h2>
+        <h2 className="text-lg font-semibold text-gray-900">Personal information</h2>
         {!isEditing && (
           <Button variant="outline" onClick={handleEdit} className="border-teal-600 text-teal-600 hover:bg-teal-50">
-            Chỉnh sửa
+            Edit
           </Button>
         )}
       </div>
@@ -98,7 +98,7 @@ const InformationForm = ({ profile, onProfileUpdate }) => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="fullName">Họ tên</Label>
+            <Label htmlFor="fullName">Full name</Label>
             <Input
               id="fullName"
               {...register('fullName')}
@@ -109,17 +109,17 @@ const InformationForm = ({ profile, onProfileUpdate }) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phoneNumber">Số điện thoại</Label>
+            <Label htmlFor="phoneNumber">Phone number</Label>
             <Input
               id="phoneNumber"
               {...register('phoneNumber')}
               disabled={!isEditing}
-              placeholder="Nhập số điện thoại"
+              placeholder="Enter phone number"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="dateOfBirth">Ngày sinh</Label>
+            <Label htmlFor="dateOfBirth">Date of birth</Label>
             <Input
               id="dateOfBirth"
               type="date"
@@ -129,29 +129,29 @@ const InformationForm = ({ profile, onProfileUpdate }) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="gender">Giới tính</Label>
+            <Label htmlFor="gender">Gender</Label>
             <select
               id="gender"
               {...register('gender')}
               disabled={!isEditing}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 disabled:bg-gray-100"
             >
-              <option value="">Chọn giới tính</option>
-              <option value="Male">Nam</option>
-              <option value="Female">Nữ</option>
-              <option value="Other">Khác</option>
+                  <option value="">Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
             </select>
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="travelPreferences">Sở thích du lịch</Label>
+          <Label htmlFor="travelPreferences">Travel preferences</Label>
           <textarea
             id="travelPreferences"
             {...register('travelPreferences')}
             disabled={!isEditing}
             rows={3}
-            placeholder="Mô tả sở thích du lịch của bạn..."
+            placeholder="Describe your travel preferences..."
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 disabled:bg-gray-100 resize-none"
           />
         </div>
@@ -160,11 +160,11 @@ const InformationForm = ({ profile, onProfileUpdate }) => {
           <div className="flex gap-3 pt-4">
             <Button type="submit" disabled={isSaving} className="bg-teal-600 hover:bg-teal-700">
               {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-              Lưu
+              Save
             </Button>
             <Button type="button" variant="outline" onClick={handleCancel}>
               <X className="mr-2 h-4 w-4" />
-              Hủy
+              Cancel
             </Button>
           </div>
         )}

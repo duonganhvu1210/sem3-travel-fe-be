@@ -67,8 +67,8 @@ const TouristSpotList = ({
         <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <MapPin className="w-8 h-8 text-gray-400" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">Chưa có điểm du lịch nào</h3>
-        <p className="text-gray-500">Hãy thêm mới điểm du lịch đầu tiên của bạn</p>
+        <h3 className="text-lg font-semibold text-gray-800 mb-2">No tourist spots found</h3>
+        <p className="text-gray-500">Please add the first tourist spot</p>
       </div>
     );
   }
@@ -84,25 +84,25 @@ const TouristSpotList = ({
                 STT
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Ảnh
+                Images
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Tên điểm du lịch
+                Tourist spot name
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Vị trí
+                Location
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Loại
+                Type
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Giá vé
+                Ticket price
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Đánh giá
+                Rating
               </th>
               <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider w-32">
-                Thao tác
+                Actions
               </th>
             </tr>
           </thead>
@@ -138,7 +138,7 @@ const TouristSpotList = ({
                     <h3 className="font-semibold text-gray-800">{spot.name}</h3>
                     {spot.isFeatured && (
                       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 mt-1">
-                        Nổi bật
+                        Featured
                       </span>
                     )}
                   </div>
@@ -173,14 +173,14 @@ const TouristSpotList = ({
                     <button
                       onClick={() => onView(spot)}
                       className="p-2 text-gray-500 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition-colors"
-                      title="Xem chi tiết"
+                      title="View details"
                     >
                       <Eye className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => onEdit(spot)}
                       className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                      title="Sửa"
+                      title="Edit"
                     >
                       <Pencil className="w-4 h-4" />
                     </button>
@@ -188,7 +188,7 @@ const TouristSpotList = ({
                       onClick={() => handleDelete(spot.spotId)}
                       disabled={deleteId === spot.spotId}
                       className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
-                      title="Xóa"
+                      title="Delete"
                     >
                       {deleteId === spot.spotId ? (
                         <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
@@ -208,9 +208,9 @@ const TouristSpotList = ({
       {pagination && totalPages > 1 && (
         <div className="px-4 py-3 border-t border-gray-200 flex items-center justify-between">
           <div className="text-sm text-gray-500">
-            Hiển thị {(pagination.pageIndex - 1) * pagination.pageSize + 1} đến{' '}
-            {Math.min(pagination.pageIndex * pagination.pageSize, pagination.totalCount)} của{' '}
-            {pagination.totalCount} kết quả
+              Display {(pagination.pageIndex - 1) * pagination.pageSize + 1} to{' '}
+            {Math.min(pagination.pageIndex * pagination.pageSize, pagination.totalCount)} of{' '}
+            {pagination.totalCount} results
           </div>
           <div className="flex items-center gap-2">
             <button

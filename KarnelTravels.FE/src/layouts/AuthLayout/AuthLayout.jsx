@@ -23,7 +23,7 @@ const AuthLayout = () => {
         className="absolute top-6 left-6 flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white/90 hover:text-white hover:bg-white/20 rounded-full transition-all"
       >
         <Plane className="w-4 h-4" />
-        <span className="font-medium">Về trang chủ</span>
+        <span className="font-medium">Back to home</span>
       </Link>
 
       {/* Auth Card */}

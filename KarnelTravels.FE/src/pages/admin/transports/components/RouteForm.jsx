@@ -40,7 +40,7 @@ const RouteForm = ({ isOpen, onClose, onSave, mode, data }) => {
       <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-900">
-            {mode === 'create' ? 'Thêm tuyến đường mới' : 'Cập nhật tuyến đường'}
+            {mode === 'create' ? 'Add new route' : 'Update route'}
           </h2>
           <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
             <X className="w-5 h-5" />
@@ -49,7 +49,7 @@ const RouteForm = ({ isOpen, onClose, onSave, mode, data }) => {
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Điểm đi *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Departure location *</label>
               <input
                 type="text"
                 required
@@ -60,7 +60,7 @@ const RouteForm = ({ isOpen, onClose, onSave, mode, data }) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Điểm đến *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Arrival location *</label>
               <input
                 type="text"
                 required
@@ -73,19 +73,19 @@ const RouteForm = ({ isOpen, onClose, onSave, mode, data }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Tên tuyến</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Route name</label>
             <input
               type="text"
               value={formData.routeName}
               onChange={(e) => setFormData({ ...formData, routeName: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-              placeholder="Hà Nội - TP. Hồ Chí Minh"
+              placeholder="Example: Hanoi - Ho Chi Minh City"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Khoảng cách (km)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Distance (km)</label>
               <input
                 type="number"
                 step="0.1"
@@ -95,19 +95,19 @@ const RouteForm = ({ isOpen, onClose, onSave, mode, data }) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Thời gian ước tính</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Estimated duration</label>
               <input
                 type="text"
                 value={formData.estimatedDuration}
                 onChange={(e) => setFormData({ ...formData, estimatedDuration: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                placeholder="Ví dụ: 2 giờ 30 phút"
+                placeholder="Example: 2 hours 30 minutes"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Mô tả</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
             <textarea
               rows={3}
               value={formData.description}
@@ -122,13 +122,13 @@ const RouteForm = ({ isOpen, onClose, onSave, mode, data }) => {
               onClick={onClose}
               className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
             >
-              Hủy
+              Cancel
             </button>
             <button
               type="submit"
               className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
             >
-              {mode === 'create' ? 'Thêm mới' : 'Lưu thay đổi'}
+              {mode === 'create' ? 'Add new' : 'Save changes'}
             </button>
           </div>
         </form>

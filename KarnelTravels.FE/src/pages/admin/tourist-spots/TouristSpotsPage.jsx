@@ -99,21 +99,21 @@ const TouristSpotsPage = () => {
       let response;
       if (selectedSpot) {
         response = await touristSpotService.update(selectedSpot.spotId, data);
-        toast.success('Cập nhật điểm du lịch thành công');
+        toast.success('Update tourist spot successfully');
       } else {
         response = await touristSpotService.create(data);
-        toast.success('Thêm mới điểm du lịch thành công');
+        toast.success('Add new tourist spot successfully');
       }
 
       if (response.success) {
         setIsFormOpen(false);
         fetchSpots();
       } else {
-        toast.error(response.message || 'Có lỗi xảy ra');
+        toast.error(response.message || 'An error occurred');
       }
     } catch (error) {
       console.error('Error saving spot:', error);
-      toast.error(error.response?.data?.message || 'Có lỗi xảy ra khi lưu');
+      toast.error(error.response?.data?.message || 'An error occurred when saving');
     }
   };
 
@@ -122,19 +122,19 @@ const TouristSpotsPage = () => {
     try {
       const response = await touristSpotService.delete(id);
       if (response.success) {
-        toast.success('Xóa điểm du lịch thành công');
+        toast.success('Delete tourist spot successfully');
         fetchSpots();
       } else {
-        toast.error(response.message || 'Có lỗi xảy ra');
+        toast.error(response.message || 'An error occurred');
       }
     } catch (error) {
       console.error('Error deleting spot:', error);
-      toast.error('Có lỗi xảy ra khi xóa');
+      toast.error('An error occurred when deleting');
     }
   };
 
   const formatPrice = (price) => {
-    if (!price) return 'Miễn phí';
+    if (!price) return 'Free';
     return new Intl.NumberFormat('vi-VN', { 
       style: 'currency', 
       currency: 'VND' 
@@ -143,9 +143,9 @@ const TouristSpotsPage = () => {
 
   const getRegionLabel = (region) => {
     const labels = {
-      'North': 'Miền Bắc',
-      'Central': 'Miền Trung',
-      'South': 'Miền Nam'
+      'North': 'North',
+      'Central': 'Central',
+      'South': 'South'
     };
     return labels[region] || region;
   };
@@ -163,7 +163,7 @@ const TouristSpotsPage = () => {
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium shadow-sm"
         >
           <Plus className="w-5 h-5" />
-          Thêm mới
+          Add new
         </button>
       </div>
 
@@ -182,25 +182,25 @@ const TouristSpotsPage = () => {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="bg-white rounded-xl p-4 border border-gray-200">
           <div className="text-2xl font-bold text-gray-800">{pagination.totalCount}</div>
-          <div className="text-sm text-gray-500">Tổng số điểm</div>
+          <div className="text-sm text-gray-500">Total number of spots</div>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200">
           <div className="text-2xl font-bold text-blue-600">
             {spots.filter(s => s.region === 'North').length}
           </div>
-          <div className="text-sm text-gray-500">Miền Bắc</div>
+          <div className="text-sm text-gray-500">North</div>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200">
           <div className="text-2xl font-bold text-teal-600">
             {spots.filter(s => s.region === 'Central').length}
           </div>
-          <div className="text-sm text-gray-500">Miền Trung</div>
+          <div className="text-sm text-gray-500">Central</div>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200">
           <div className="text-2xl font-bold text-green-600">
             {spots.filter(s => s.region === 'South').length}
           </div>
-          <div className="text-sm text-gray-500">Miền Nam</div>
+          <div className="text-sm text-gray-500">South</div>
         </div>
       </div>
 
@@ -234,7 +234,7 @@ const TouristSpotsPage = () => {
           <div className="relative w-full max-w-2xl max-h-[90vh] bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-800">Chi tiết điểm du lịch</h2>
+              <h2 className="text-xl font-semibold text-gray-800">Tourist spot details</h2>
               <button
                 onClick={() => setIsViewOpen(false)}
                 className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
@@ -274,7 +274,7 @@ const TouristSpotsPage = () => {
                       {selectedSpot.isFeatured && (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                           <Star className="w-3 h-3 mr-1" />
-                          Nổi bật
+                          Featured
                         </span>
                       )}
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
@@ -291,7 +291,7 @@ const TouristSpotsPage = () => {
 
                 {selectedSpot.description && (
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-600 mb-1">Mô tả</h4>
+                    <h4 className="text-sm font-semibold text-gray-600 mb-1">Description</h4>
                     <p className="text-gray-700">{selectedSpot.description}</p>
                   </div>
                 )}
@@ -299,7 +299,7 @@ const TouristSpotsPage = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex items-center gap-2 text-gray-600">
                     <MapPin className="w-4 h-4 text-gray-400" />
-                    <span>{selectedSpot.city}</span>
+                      <span>{selectedSpot.city}</span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Globe className="w-4 h-4 text-gray-400" />
@@ -319,14 +319,14 @@ const TouristSpotsPage = () => {
 
                 {selectedSpot.address && (
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-600 mb-1">Địa chỉ</h4>
+                    <h4 className="text-sm font-semibold text-gray-600 mb-1">Address</h4>
                     <p className="text-gray-700">{selectedSpot.address}</p>
                   </div>
                 )}
 
                 {selectedSpot.latitude && selectedSpot.longitude && (
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-600 mb-1">Tọa độ</h4>
+                    <h4 className="text-sm font-semibold text-gray-600 mb-1">Coordinates</h4>
                     <p className="text-gray-700 font-mono text-sm">
                       {selectedSpot.latitude}, {selectedSpot.longitude}
                     </p>
@@ -341,7 +341,7 @@ const TouristSpotsPage = () => {
                 onClick={() => setIsViewOpen(false)}
                 className="px-5 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
               >
-                Đóng
+                Close
               </button>
               <button
                 onClick={() => {
@@ -350,7 +350,7 @@ const TouristSpotsPage = () => {
                 }}
                 className="px-5 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium"
               >
-                Sửa thông tin
+                Edit information
               </button>
             </div>
           </div>

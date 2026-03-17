@@ -48,7 +48,7 @@ public class AdminUsersController : ControllerBase
     }
 
     /// <summary>
-    /// F220: Thêm mới tài khoản Admin/Staff
+    /// F220: Add new account Admin/Staff
     /// </summary>
     [HttpPost]
     public async Task<ActionResult<ApiResponse<UserListDto>>> CreateUser([FromBody] CreateUserRequest request)

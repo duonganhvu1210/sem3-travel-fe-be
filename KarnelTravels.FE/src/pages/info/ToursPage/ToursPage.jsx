@@ -354,7 +354,7 @@ const ToursPage = () => {
             onChange={(e) => handleFilterChange('destination', e.target.value)}
             className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary min-w-[180px]"
           >
-            <option value="">Tất cả điểm đến</option>
+            <option value="">All destinations</option>
             {destinations.map(dest => (
               <option key={dest} value={dest}>{dest}</option>
             ))}
@@ -365,10 +365,10 @@ const ToursPage = () => {
             onChange={(e) => handleFilterChange('sortBy', e.target.value)}
             className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary min-w-[150px]"
           >
-            <option value="rating">Đánh giá cao</option>
-            <option value="price-asc">Giá thấp → cao</option>
-            <option value="price-desc">Giá cao → thấp</option>
-            <option value="name">Tên A → Z</option>
+            <option value="rating">High rating</option>
+            <option value="price-asc">Low price → high price</option>
+            <option value="price-desc">High price → low price</option>
+            <option value="name">Name A → Z</option>
           </select>
 
           <button
@@ -380,7 +380,7 @@ const ToursPage = () => {
             }`}
           >
             <Filter className="w-5 h-5" />
-            Lọc
+            Filter
           </button>
         </div>
       </div>
@@ -390,13 +390,13 @@ const ToursPage = () => {
         <div className="container mx-auto px-4 mt-4">
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-bold text-lg">Bộ lọc nâng cao</h3>
+              <h3 className="font-bold text-lg">Advanced filters</h3>
               {hasActiveFilters && (
                 <button
                   onClick={clearFilters}
                   className="text-primary hover:underline text-sm"
                 >
-                  Xóa bộ lọc
+                  Clear filters
                 </button>
               )}
             </div>
@@ -405,14 +405,14 @@ const ToursPage = () => {
               {/* Destination Filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Điểm đến
+                  Destination
                 </label>
                 <select
                   value={filters.destination}
                   onChange={(e) => handleFilterChange('destination', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-primary"
                 >
-                  <option value="">Tất cả</option>
+                  <option value="">All destinations</option>
                   {destinations.map(dest => (
                     <option key={dest} value={dest}>{dest}</option>
                   ))}
@@ -422,7 +422,7 @@ const ToursPage = () => {
               {/* Duration Filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Số ngày
+                  Number of days
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {[2, 3, 4, 5, 7].map(day => (
@@ -435,7 +435,7 @@ const ToursPage = () => {
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
-                      {day} ngày
+                      {day} days
                     </button>
                   ))}
                 </div>
@@ -444,7 +444,7 @@ const ToursPage = () => {
               {/* Price Range */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Khoảng giá
+                      Price range
                 </label>
                 <PriceRangeSlider
                   min={0}
@@ -473,7 +473,7 @@ const ToursPage = () => {
               <section className="mb-12">
                 <div className="flex items-center gap-2 mb-6">
                   <Flame className="w-6 h-6 text-orange-500" />
-                  <h2 className="text-2xl font-bold">Tour nổi bật</h2>
+                  <h2 className="text-2xl font-bold">Featured tours</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {featuredTours.slice(0, 6).map(tour => (
@@ -494,7 +494,7 @@ const ToursPage = () => {
               <section className="mb-12">
                 <div className="flex items-center gap-2 mb-6">
                   <Tag className="w-6 h-6 text-green-500" />
-                  <h2 className="text-2xl font-bold">Tour mới nhất</h2>
+                  <h2 className="text-2xl font-bold">New tours</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {newTours.slice(0, 6).map(tour => (
@@ -515,7 +515,7 @@ const ToursPage = () => {
               <section className="mb-12">
                 <div className="flex items-center gap-2 mb-6">
                   <Calendar className="w-6 h-6 text-red-500" />
-                  <h2 className="text-2xl font-bold">Tour giảm giá</h2>
+                  <h2 className="text-2xl font-bold">Discount tours</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {dealTours.slice(0, 6).map(tour => (
@@ -536,16 +536,16 @@ const ToursPage = () => {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold">
                   {filters.search || filters.destination || hasActiveFilters 
-                    ? `Kết quả tìm kiếm (${tours.length} tour)` 
-                    : 'Tất cả tour'}
+                    ? `Search results (${tours.length} tour)` 
+                    : 'All tours'}
                 </h2>
               </div>
 
               {tours.length === 0 ? (
                 <div className="text-center py-12">
                   <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-xl font-medium text-gray-600 mb-2">Không tìm thấy tour nào</h3>
-                  <p className="text-gray-500">Thử điều chỉnh bộ lọc để tìm kiếm tour phù hợp</p>
+                  <h3 className="text-xl font-medium text-gray-600 mb-2">No tours found</h3>
+                  <p className="text-gray-500">Try adjusting the filters to find suitable tours</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

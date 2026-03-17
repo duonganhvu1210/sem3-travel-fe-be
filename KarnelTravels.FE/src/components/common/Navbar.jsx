@@ -31,6 +31,7 @@ const navItems = [
       { name: 'Resorts', path: '/info/resorts', icon: Palmtree },
     ]
   },
+  { name: 'About', path: '/about' },
   { name: 'Contact', path: '/contact' },
   { name: 'Promotions', path: '/promotions' },
 ];

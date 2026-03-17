@@ -160,7 +160,9 @@ const HomePage = () => {
                   <input
                     type="text"
                     placeholder="Where would you like to go?"
-                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-0 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-0 
+text-gray-900 placeholder:text-gray-400 
+focus:outline-none focus:ring-2 focus:ring-teal-500"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -171,7 +173,9 @@ const HomePage = () => {
                   <input
                     type="date"
                     placeholder="Departure date"
-                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-0 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border-0 
+text-gray-900 
+focus:outline-none focus:ring-2 focus:ring-teal-500"
                     value={searchDate}
                     onChange={(e) => setSearchDate(e.target.value)}
                   />

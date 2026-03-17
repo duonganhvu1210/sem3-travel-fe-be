@@ -272,7 +272,7 @@ const RoomManager = ({
             <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg">
               <div className="flex items-center justify-between px-6 py-4 border-b">
                 <h3 className="text-lg font-semibold">
-                  {editingRoom ? 'Chỉnh sửa loại phòng' : 'Thêm loại phòng mới'}
+                      {editingRoom ? 'Edit room type' : 'Add new room type'}
                 </h3>
                 <button onClick={() => setIsAddModalOpen(false)} className="p-2 hover:bg-gray-100 rounded">
                   <X size={20} />
@@ -280,12 +280,12 @@ const RoomManager = ({
               </div>
               <form onSubmit={handleSubmit(handleAddRoom)} className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">Loại phòng <span className="text-red-500">*</span></label>
+                  <label className="block text-sm font-medium mb-1">Room type <span className="text-red-500">*</span></label>
                   <select
                     {...register('roomType', { required: 'Loại phòng là bắt buộc' })}
                     className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="">Chọn loại phòng</option>
+                        <option value="">Select room type</option>
                     {ROOM_TYPES.map(type => (
                       <option key={type} value={type}>{type}</option>
                     ))}
@@ -294,20 +294,20 @@ const RoomManager = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Mô tả</label>
+                  <label className="block text-sm font-medium mb-1">Description</label>
                   <textarea
                     {...register('description')}
                     rows={2}
                     className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="Mô tả về loại phòng"
+                    placeholder="Description of the room type"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1">Giá/đêm (VND) <span className="text-red-500">*</span></label>
+                    <label className="block text-sm font-medium mb-1">Price/night ($/VND) <span className="text-red-500">*</span></label>
                     <input
-                      {...register('pricePerNight', { required: 'Giá là bắt buộc', min: 1 })}
+                      {...register('pricePerNight', { required: 'Price is required', min: 1 })}
                       type="number"
                       className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
                       placeholder="VD: 500000"
@@ -317,7 +317,7 @@ const RoomManager = ({
                   <div>
                     <label className="block text-sm font-medium mb-1">Số phòng <span className="text-red-500">*</span></label>
                     <input
-                      {...register('totalRooms', { required: 'Số phòng là bắt buộc', min: 1 })}
+                      {...register('totalRooms', { required: 'Number of rooms is required', min: 1 })}
                       type="number"
                       min="1"
                       className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -328,7 +328,7 @@ const RoomManager = ({
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1">Số người tối đa</label>
+                    <label className="block text-sm font-medium mb-1">Maximum occupancy</label>
                     <input
                       {...register('maxOccupancy')}
                       type="number"
@@ -337,12 +337,12 @@ const RoomManager = ({
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">Loại giường</label>
+                    <label className="block text-sm font-medium mb-1">Bed type</label>
                     <select
                       {...register('bedType')}
                       className="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="">Chọn loại giường</option>
+                      <option value="">Select bed type</option>
                       {BED_TYPES.map(bed => (
                         <option key={bed} value={bed}>{bed}</option>
                       ))}
@@ -351,7 +351,7 @@ const RoomManager = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Tiện nghi phòng</label>
+                    <label className="block text-sm font-medium mb-2">Room amenities</label>
                   <div className="grid grid-cols-2 gap-2">
                     {ROOM_AMENITIES.map(amenity => (
                       <label key={amenity} className="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-gray-50">
@@ -373,14 +373,14 @@ const RoomManager = ({
                     onClick={() => setIsAddModalOpen(false)}
                     className="px-4 py-2 border rounded-lg hover:bg-gray-50"
                   >
-                    Hủy
+                    Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isLoading}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
                   >
-                    {editingRoom ? 'Lưu thay đổi' : 'Thêm mới'}
+                    {editingRoom ? 'Save changes' : 'Add new'}
                   </button>
                 </div>
               </form>

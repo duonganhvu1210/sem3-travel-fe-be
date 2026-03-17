@@ -152,14 +152,12 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Đăng xuất - Logout
+    /// Logout
     /// </summary>
     [HttpPost("logout")]
     [Authorize]
     public IActionResult Logout()
     {
-        // Với JWT, logout được xử lý ở client (xóa token khỏi localStorage)
-        // Backend chỉ cần trả về success
         return Ok(new ApiResponse<string>
         {
             Success = true,

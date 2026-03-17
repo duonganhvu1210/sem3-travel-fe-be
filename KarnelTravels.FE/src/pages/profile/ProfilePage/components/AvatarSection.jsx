@@ -19,12 +19,12 @@ const AvatarSection = ({ profile, onAvatarUpdate }) => {
     const response = await profileService.uploadAvatar(file);
 
     if (response.success) {
-      setMessage({ type: 'success', text: 'Cập nhật ảnh đại diện thành công!' });
+      setMessage({ type: 'success', text: 'Update avatar successfully!' });
       if (onAvatarUpdate) {
         onAvatarUpdate({ ...profile, avatar: response.data });
       }
     } else {
-      setMessage({ type: 'error', text: response.message || 'Cập nhật ảnh thất bại' });
+      setMessage({ type: 'error', text: response.message || 'Update avatar failed' });
     }
 
     setIsUploading(false);
@@ -43,7 +43,7 @@ const AvatarSection = ({ profile, onAvatarUpdate }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">Ảnh đại diện</h2>
+      <h2 className="text-lg font-semibold text-gray-900 mb-4">Avatar</h2>
 
       <div className="flex items-center gap-6">
         {/* Avatar Preview */}
@@ -85,7 +85,7 @@ const AvatarSection = ({ profile, onAvatarUpdate }) => {
         {/* Info */}
         <div className="flex-1">
           <h3 className="font-medium text-gray-900">{profile?.fullName || 'Người dùng'}</h3>
-          <p className="text-sm text-gray-500 mt-1">JPG, PNG, GIF hoặc WebP. Tối đa 5MB.</p>
+          <p className="text-sm text-gray-500 mt-1">JPG, PNG, GIF or WebP. Maximum 5MB.</p>
 
           {/* Message */}
           {message.text && (

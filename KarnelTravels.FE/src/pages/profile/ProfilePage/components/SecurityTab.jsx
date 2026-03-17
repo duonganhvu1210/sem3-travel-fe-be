@@ -9,13 +9,13 @@ import { Label } from '@/components/ui/label';
 import { Loader2, Lock, Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react';
 
 const schema = yup.object().shape({
-  currentPassword: yup.string().required('Mật khẩu hiện tại là bắt buộc'),
+  currentPassword: yup.string().required('Current password is required'),
   newPassword: yup.string()
-    .required('Mật khẩu mới là bắt buộc')
-    .min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
+    .required('New password is required')
+    .min(6, 'Password must contain at least 6 characters'),
   confirmNewPassword: yup.string()
-    .required('Xác nhận mật khẩu là bắt buộc')
-    .oneOf([yup.ref('newPassword')], 'Mật khẩu xác nhận không khớp'),
+    .required('Confirm new password is required')
+    .oneOf([yup.ref('newPassword')], 'Confirm new password does not match'),
 });
 
 const SecurityTab = ({ onPasswordChange }) => {
@@ -38,11 +38,11 @@ const SecurityTab = ({ onPasswordChange }) => {
     });
 
     if (response.success) {
-      setMessage({ type: 'success', text: 'Đổi mật khẩu thành công!' });
+      setMessage({ type: 'success', text: 'Change password successfully!' });
       reset();
       if (onPasswordChange) onPasswordChange();
     } else {
-      setMessage({ type: 'error', text: response.message || 'Đổi mật khẩu thất bại' });
+      setMessage({ type: 'error', text: response.message || 'Change password failed' });
     }
 
     setIsSaving(false);
@@ -77,8 +77,8 @@ const SecurityTab = ({ onPasswordChange }) => {
           <Lock className="w-5 h-5 text-teal-600" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Bảo mật</h2>
-          <p className="text-sm text-gray-500">Quản lý mật khẩu của bạn</p>
+            <h2 className="text-lg font-semibold text-gray-900">Security</h2>
+          <p className="text-sm text-gray-500">Manage your password</p>
         </div>
       </div>
 
@@ -99,7 +99,7 @@ const SecurityTab = ({ onPasswordChange }) => {
         <div className="pt-4">
           <Button type="submit" disabled={isSaving} className="bg-teal-600 hover:bg-teal-700">
             {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-            Đổi mật khẩu
+            Change password
           </Button>
         </div>
       </form>

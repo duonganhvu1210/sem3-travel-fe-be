@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -27,7 +27,6 @@ import {
   BarChart3,
   Settings,
   Bell,
-  Search,
   LogOut,
   User,
   Tag,
@@ -40,6 +39,32 @@ const AdminLayout = () => {
   const { user, logout } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [unreadContacts, setUnreadContacts] = useState([]);
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:5000/api/Contact/unread', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data) {
+            setUnreadContacts(data.data);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching contacts:', error);
+      }
+    };
+
+    fetchContacts();
+    const interval = setInterval(fetchContacts, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const adminNavItems = [
     {
@@ -169,15 +194,7 @@ const AdminLayout = () => {
             </div>
           )}
         </div>
-        {!isCollapsed && (
-          <button
-            onClick={handleLogout}
-            className="w-full mt-2 flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
-          >
-            <LogOut className="w-5 h-5" />
-            <span className="font-medium">Đăng xuất</span>
-          </button>
-        )}
+        
       </div>
     </>
   );
@@ -232,22 +249,61 @@ const AdminLayout = () => {
 
           {/* Right Section */}
           <div className="flex items-center gap-2">
-            {/* Search */}
-            <div className="hidden md:flex items-center">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="pl-10 pr-4 py-2 w-64 bg-gray-100 border-0 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-            </div>
+            {/* Notifications Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative">
+                  <Bell className="w-5 h-5 text-gray-600" />
+                  {unreadContacts.length > 0 && (
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-80">
+                <DropdownMenuLabel className="flex items-center justify-between">
+                  <span>Notifications</span>
+                  {unreadContacts.length > 0 && (
+                    <span className="text-xs text-gray-500">{unreadContacts.length} unread</span>
+                  )}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {unreadContacts.length === 0 ? (
+                  <div className="px-2 py-4 text-center text-gray-500 text-sm">
+                    No new notifications
+                  </div>
+                ) : (
+                  unreadContacts.slice(0, 5).map((contact) => (
+                    <DropdownMenuItem
+                      key={contact.contactId}
+                      onClick={() => navigate('/admin/contacts')}
+                      className="flex flex-col items-start gap-1 cursor-pointer"
+                    >
+                      <div className="font-medium text-sm">{contact.name}</div>
+                      <div className="text-xs text-gray-500 truncate w-full">
+                        {contact.message?.substring(0, 50)}...
+                      </div>
+                    </DropdownMenuItem>
+                  ))
+                )}
+                {unreadContacts.length > 5 && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => navigate('/admin/contacts')} className="text-center justify-center text-teal-600">
+                      View all notifications
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-            {/* Notifications */}
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="w-5 h-5 text-gray-600" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            {/* Back to Website */}
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/')}
+              className="flex items-center gap-2 text-gray-700 hover:text-teal-600"
+            >
+              <Home className="w-5 h-5" />
+              <span className="hidden sm:block text-sm font-medium">Website</span>
             </Button>
 
             {/* User Menu */}
@@ -274,13 +330,13 @@ const AdminLayout = () => {
                 <DropdownMenuItem asChild>
                   <Link to="/admin/settings" className="flex items-center">
                     <Settings className="mr-2 h-4 w-4" />
-                    Cài đặt
+                    Settings
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="text-red-600 cursor-pointer">
                   <LogOut className="mr-2 h-4 w-4" />
-                  Đăng xuất
+                  Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

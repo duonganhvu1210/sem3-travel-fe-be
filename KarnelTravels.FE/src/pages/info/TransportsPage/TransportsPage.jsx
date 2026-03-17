@@ -193,7 +193,7 @@ const TransportsPage = () => {
               onChange={(e) => handleFilterChange('fromCity', e.target.value)}
               className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary min-w-[150px]"
             >
-              <option value="">Điểm đi</option>
+              <option value="">Arrival Destination</option>
               {cities.map(city => (
                 <option key={city} value={city}>{city}</option>
               ))}
@@ -204,7 +204,7 @@ const TransportsPage = () => {
               onChange={(e) => handleFilterChange('toCity', e.target.value)}
               className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary min-w-[150px]"
             >
-              <option value="">Điểm đến</option>
+              <option value="">Destination</option>
               {cities.map(city => (
                 <option key={city} value={city}>{city}</option>
               ))}
@@ -215,13 +215,13 @@ const TransportsPage = () => {
               onChange={(e) => handleFilterChange('sortBy', e.target.value)}
               className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary min-w-[150px]"
             >
-              <option value="price-asc">Giá thấp → cao</option>
-              <option value="price-desc">Giá cao → thấp</option>
+              <option value="price-asc">Low price → high price</option>
+              <option value="price-desc">High price → low price</option>
             </select>
 
             {hasActiveFilters && (
               <button onClick={clearFilters} className="px-4 py-3 text-red-500 hover:underline">
-                Xóa lọc
+                Clear filters
               </button>
             )}
           </div>
@@ -236,12 +236,12 @@ const TransportsPage = () => {
         ) : transports.length === 0 ? (
           <div className="text-center py-12">
             <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl text-gray-600">Không tìm thấy phương tiện</h3>
-            <p className="text-gray-500">Thử điều chỉnh bộ lọc</p>
+            <h3 className="text-xl text-gray-600">No transport found</h3>
+              <p className="text-gray-500">Try adjusting the filters</p>
           </div>
         ) : (
           <>
-            <h2 className="text-2xl font-bold mb-6">{transports.length} phương tiện</h2>
+            <h2 className="text-2xl font-bold mb-6">{transports.length} transports</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {transports.map(t => (
                 <TransportCard key={t.transportId} transport={t} />
