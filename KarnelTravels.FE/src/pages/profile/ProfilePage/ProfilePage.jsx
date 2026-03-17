@@ -9,10 +9,10 @@ import SecurityTab from './components/SecurityTab';
 import ActivityLog from './components/ActivityLog';
 
 const tabs = [
-  { id: 'info', label: 'Thông tin chung', icon: User },
-  { id: 'addresses', label: 'Địa chỉ', icon: MapPin },
-  { id: 'security', label: 'Bảo mật', icon: Shield },
-  { id: 'activities', label: 'Hoạt động', icon: Activity },
+  { id: 'info', label: 'General information', icon: User },
+  { id: 'addresses', label: 'Addresses', icon: MapPin },
+  { id: 'security', label: 'Security', icon: Shield },
+  { id: 'activities', label: 'Activities', icon: Activity },
 ];
 
 const ProfilePage = () => {
@@ -32,7 +32,7 @@ const ProfilePage = () => {
     if (response.success) {
       setProfile(response.data);
     } else {
-      setError(response.message || 'Không thể tải thông tin hồ sơ');
+      setError(response.message || 'Cannot load profile information');
     }
     setIsLoading(false);
   };
@@ -60,8 +60,8 @@ const ProfilePage = () => {
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Hồ sơ cá nhân</h1>
-          <p className="text-gray-600 mt-2">Quản lý thông tin cá nhân và cài đặt tài khoản</p>
+          <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
+          <p className="text-gray-600 mt-2">Manage personal information and account settings</p>
         </div>
 
         {/* Email Verification Alert */}
@@ -70,12 +70,12 @@ const ProfilePage = () => {
             <div className="flex items-center gap-3">
               <Mail className="w-5 h-5 text-amber-600" />
               <div>
-                <p className="font-medium text-amber-800">Email chưa được xác thực</p>
-                <p className="text-sm text-amber-600">Vui lòng xác thực email để sử dụng đầy đủ tính năng</p>
+                <p className="font-medium text-amber-800">Email is not verified</p>
+                <p className="text-sm text-amber-600">Please verify your email to use all features</p>
               </div>
             </div>
             <button className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors text-sm font-medium">
-              Xác thực ngay
+              Verify now
             </button>
           </div>
         )}
@@ -84,7 +84,7 @@ const ProfilePage = () => {
         {profile && profile.isEmailVerified && (
           <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
             <Check className="w-5 h-5 text-green-600" />
-            <p className="font-medium text-green-800">Email đã được xác thực</p>
+            <p className="font-medium text-green-800">Email is verified</p>
           </div>
         )}
 

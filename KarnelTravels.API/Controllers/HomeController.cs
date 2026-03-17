@@ -248,7 +248,7 @@ public class HomeController : ControllerBase
         return new ContactInfoDto
         {
             CompanyName = "Karnel Travels",
-            Hotline = "1900 xxxx",
+            Hotline = "1900 6677",
             Phone = "+84 28 1234 5678",
             Email = "info@karneltravels.com",
             Address = "123 Nguyen Trai Street, District 1, Ho Chi Minh City",

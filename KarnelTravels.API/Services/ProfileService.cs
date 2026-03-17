@@ -44,14 +44,14 @@ public class ProfileService : IProfileService
             return new ApiResponse<UserProfileDto>
             {
                 Success = false,
-                Message = "Không tìm thấy người dùng"
+                Message = "User not found"
             };
         }
 
         return new ApiResponse<UserProfileDto>
         {
             Success = true,
-            Message = "Lấy thông tin hồ sơ thành công",
+            Message = "Get profile successfully",
             Data = new UserProfileDto
             {
                 UserId = user.Id,
@@ -77,7 +77,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<UserProfileDto>
             {
                 Success = false,
-                Message = "Không tìm thấy người dùng"
+                Message = "User not found"
             };
         }
 
@@ -102,7 +102,7 @@ public class ProfileService : IProfileService
         // Log activity - wrap in try-catch to ensure profile update is saved even if logging fails
         try
         {
-            await LogActivityAsync(userId, AccountActivityActions.UpdateProfile, "Cập nhật thông tin hồ sơ");
+            await LogActivityAsync(userId, AccountActivityActions.UpdateProfile, "Update profile successfully");
         }
         catch (Exception ex)
         {
@@ -113,7 +113,7 @@ public class ProfileService : IProfileService
         return new ApiResponse<UserProfileDto>
         {
             Success = true,
-            Message = "Cập nhật hồ sơ thành công",
+            Message = "Update profile successfully",
             Data = new UserProfileDto
             {
                 UserId = user.Id,
@@ -139,7 +139,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Không tìm thấy người dùng"
+                Message = "User not found"
             };
         }
 
@@ -148,7 +148,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Vui lòng chọn file ảnh"
+                Message = "Please select an image file"
             };
         }
 
@@ -160,7 +160,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Chỉ chấp nhận file ảnh (jpg, jpeg, png, gif, webp)"
+                Message = "Only image files (jpg, jpeg, png, gif, webp) are accepted"
             };
         }
 
@@ -169,7 +169,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Kích thước ảnh không được vượt quá 5MB"
+                Message = "Image size cannot exceed 5MB"
             };
         }
 
@@ -205,12 +205,12 @@ public class ProfileService : IProfileService
         user.UpdatedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
 
-        await LogActivityAsync(userId, AccountActivityActions.UploadAvatar, $"Tải lên ảnh đại diện: {fileName}");
+        await LogActivityAsync(userId, AccountActivityActions.UploadAvatar, $"Upload avatar: {fileName}");
 
         return new ApiResponse<string>
         {
             Success = true,
-            Message = "Tải ảnh đại diện thành công",
+            Message = "Upload avatar successfully",
             Data = avatarUrl
         };
     }
@@ -224,7 +224,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Không tìm thấy người dùng"
+                Message = "User not found"
             };
         }
 
@@ -233,7 +233,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Vui lòng nhập mật khẩu hiện tại"
+                Message = "Please enter the current password"
             };
         }
 
@@ -242,7 +242,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Vui lòng nhập mật khẩu mới"
+                Message = "Please enter the new password"
             };
         }
 
@@ -251,7 +251,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Mật khẩu mới phải có ít nhất 6 ký tự"
+                Message = "New password must be at least 6 characters"
             };
         }
 
@@ -260,7 +260,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Mật khẩu mới và xác nhận mật khẩu không khớp"
+                Message = "New password and confirm password do not match"
             };
         }
 
@@ -269,7 +269,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Mật khẩu hiện tại không đúng"
+                Message = "Current password is incorrect"
             };
         }
 
@@ -277,12 +277,12 @@ public class ProfileService : IProfileService
         user.UpdatedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
 
-        await LogActivityAsync(userId, AccountActivityActions.ChangePassword, "Đổi mật khẩu");
+        await LogActivityAsync(userId, AccountActivityActions.ChangePassword, "Change password successfully");
 
         return new ApiResponse<string>
         {
             Success = true,
-            Message = "Đổi mật khẩu thành công"
+            Message = "Change password successfully"
         };
     }
 
@@ -306,7 +306,7 @@ public class ProfileService : IProfileService
         return new ApiResponse<List<AccountActivityDto>>
         {
             Success = true,
-            Message = "Lấy lịch sử hoạt động thành công",
+            Message = "Get activities successfully",
             Data = activities
         };
     }
@@ -332,7 +332,7 @@ public class ProfileService : IProfileService
         return new ApiResponse<List<AddressDto>>
         {
             Success = true,
-            Message = "Lấy danh sách địa chỉ thành công",
+            Message = "Get addresses successfully",
             Data = addresses
         };
     }
@@ -346,7 +346,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<AddressDto>
             {
                 Success = false,
-                Message = "Không tìm thấy người dùng"
+                Message = "User not found"
             };
         }
 
@@ -355,7 +355,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<AddressDto>
             {
                 Success = false,
-                Message = "Vui lòng nhập địa chỉ"
+                Message = "Please enter the address"
             };
         }
 
@@ -364,7 +364,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<AddressDto>
             {
                 Success = false,
-                Message = "Vui lòng nhập thành phố"
+                Message = "Please enter the city"
             };
         }
 
@@ -396,12 +396,12 @@ public class ProfileService : IProfileService
         _context.Addresses.Add(address);
         await _context.SaveChangesAsync();
 
-        await LogActivityAsync(userId, AccountActivityActions.AddAddress, $"Thêm địa chỉ: {address.AddressLine}, {address.City}");
+        await LogActivityAsync(userId, AccountActivityActions.AddAddress, $"Add address: {address.AddressLine}, {address.City}");
 
         return new ApiResponse<AddressDto>
         {
             Success = true,
-            Message = "Thêm địa chỉ thành công",
+            Message = "Add address successfully",
             Data = new AddressDto
             {
                 AddressId = address.Id,
@@ -425,7 +425,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<AddressDto>
             {
                 Success = false,
-                Message = "Không tìm thấy địa chỉ"
+                Message = "Address not found"
             };
         }
 
@@ -434,7 +434,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<AddressDto>
             {
                 Success = false,
-                Message = "Vui lòng nhập địa chỉ"
+                Message = "Please enter the address"
             };
         }
 
@@ -443,7 +443,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<AddressDto>
             {
                 Success = false,
-                Message = "Vui lòng nhập thành phố"
+                Message = "Please enter the city"
             };
         }
 
@@ -469,12 +469,12 @@ public class ProfileService : IProfileService
 
         await _context.SaveChangesAsync();
 
-        await LogActivityAsync(userId, AccountActivityActions.UpdateAddress, $"Cập nhật địa chỉ: {address.AddressLine}, {address.City}");
+        await LogActivityAsync(userId, AccountActivityActions.UpdateAddress, $"Update address: {address.AddressLine}, {address.City}");
 
         return new ApiResponse<AddressDto>
         {
             Success = true,
-            Message = "Cập nhật địa chỉ thành công",
+            Message = "Update address successfully",
             Data = new AddressDto
             {
                 AddressId = address.Id,
@@ -498,7 +498,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Không tìm thấy địa chỉ"
+                Message = "Address not found"
             };
         }
 
@@ -522,12 +522,12 @@ public class ProfileService : IProfileService
             }
         }
 
-        await LogActivityAsync(userId, AccountActivityActions.DeleteAddress, $"Xóa địa chỉ: {address.AddressLine}");
+        await LogActivityAsync(userId, AccountActivityActions.DeleteAddress, $"Delete address: {address.AddressLine}");
 
         return new ApiResponse<string>
         {
             Success = true,
-            Message = "Xóa địa chỉ thành công"
+            Message = "Delete address successfully"
         };
     }
 
@@ -541,7 +541,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Không tìm thấy địa chỉ"
+                Message = "Address not found"
             };
         }
 
@@ -561,7 +561,7 @@ public class ProfileService : IProfileService
         return new ApiResponse<string>
         {
             Success = true,
-            Message = "Đặt địa chỉ mặc định thành công"
+            Message = "Set default address successfully"
         };
     }
 
@@ -574,7 +574,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Không tìm thấy người dùng"
+                Message = "User not found"
             };
         }
 
@@ -583,7 +583,7 @@ public class ProfileService : IProfileService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Email đã được xác thực"
+                Message = "Email is already verified"
             };
         }
 
@@ -591,12 +591,12 @@ public class ProfileService : IProfileService
         user.UpdatedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
 
-        await LogActivityAsync(userId, AccountActivityActions.RequestVerificationEmail, "Yêu cầu gửi lại email xác thực");
+        await LogActivityAsync(userId, AccountActivityActions.RequestVerificationEmail, "Request verification email");
 
         return new ApiResponse<string>
         {
             Success = true,
-            Message = "Email xác thực đã được gửi"
+            Message = "Verification email has been sent"
         };
     }
 

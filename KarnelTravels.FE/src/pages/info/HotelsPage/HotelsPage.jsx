@@ -139,9 +139,9 @@ const HotelCard = ({ hotel }) => {
 
         <div className="flex items-baseline gap-2">
           <span className="text-primary font-bold text-xl">
-            {hotel.minPrice?.toLocaleString() || 'Liên hệ'}₫
+            {hotel.minPrice?.toLocaleString() || 'Contact'}₫
           </span>
-          <span className="text-gray-400 text-sm">/đêm</span>
+          <span className="text-gray-400 text-sm">/night</span>
         </div>
       </div>
     </div>
@@ -263,7 +263,7 @@ const HotelsPage = () => {
             onChange={(e) => handleFilterChange('city', e.target.value)}
             className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary min-w-[180px]"
           >
-            <option value="">Tất cả thành phố</option>
+            <option value="">All cities</option>
             {cities.map(city => (
               <option key={city} value={city}>{city}</option>
             ))}
@@ -274,10 +274,10 @@ const HotelsPage = () => {
             onChange={(e) => handleFilterChange('sortBy', e.target.value)}
             className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary min-w-[150px]"
           >
-            <option value="rating">Đánh giá cao</option>
-            <option value="price-asc">Giá thấp → cao</option>
-            <option value="price-desc">Giá cao → thấp</option>
-            <option value="name">Tên A → Z</option>
+            <option value="rating">High rating</option>
+            <option value="price-asc">Low price → high price</option>
+            <option value="price-desc">High price → low price</option>
+            <option value="name">Name A → Z</option>
           </select>
 
           <button
@@ -289,7 +289,7 @@ const HotelsPage = () => {
             }`}
           >
             <Filter className="w-5 h-5" />
-            Lọc
+            Filter
           </button>
         </div>
       </div>
@@ -299,13 +299,13 @@ const HotelsPage = () => {
         <div className="container mx-auto px-4 mt-4">
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-bold text-lg">Bộ lọc nâng cao</h3>
+              <h3 className="font-bold text-lg">Advanced filters</h3>
               {hasActiveFilters && (
                 <button
                   onClick={clearFilters}
                   className="text-primary hover:underline text-sm"
                 >
-                  Xóa bộ lọc
+                  Clear filters
                 </button>
               )}
             </div>
@@ -314,14 +314,14 @@ const HotelsPage = () => {
               {/* City Filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Thành phố
+                  City
                 </label>
                 <select
                   value={filters.city}
                   onChange={(e) => handleFilterChange('city', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-primary"
                 >
-                  <option value="">Tất cả</option>
+                  <option value="">All cities</option>
                   {cities.map(city => (
                     <option key={city} value={city}>{city}</option>
                   ))}
@@ -331,7 +331,7 @@ const HotelsPage = () => {
               {/* Star Rating Filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Hạng sao
+                  Star rating
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {[5, 4, 3].map(stars => (
@@ -353,7 +353,7 @@ const HotelsPage = () => {
               {/* Price Range */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Khoảng giá
+                  Price range
                 </label>
                 <PriceRangeSlider
                   min={0}
@@ -380,16 +380,16 @@ const HotelsPage = () => {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">
                 {filters.search || filters.city || hasActiveFilters 
-                  ? `Kết quả tìm kiếm (${hotels.length} khách sạn)` 
-                  : 'Tất cả khách sạn'}
+                  ? `Search results (${hotels.length} hotels)` 
+                  : 'All hotels'}
               </h2>
             </div>
 
             {hotels.length === 0 ? (
               <div className="text-center py-12">
                 <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl font-medium text-gray-600 mb-2">Không tìm thấy khách sạn nào</h3>
-                <p className="text-gray-500">Thử điều chỉnh bộ lọc để tìm kiếm phù hợp</p>
+                  <h3 className="text-xl font-medium text-gray-600 mb-2">No hotels found</h3>
+                <p className="text-gray-500">Try adjusting the filters to find suitable hotels</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

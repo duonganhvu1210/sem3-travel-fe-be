@@ -172,9 +172,9 @@ const ResortsPage = () => {
             onChange={(e) => handleFilterChange('resortType', e.target.value)}
             className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary"
           >
-            <option value="">Tất cả loại hình</option>
+            <option value="">All types</option>
             {resortTypes.map(type => (
-              <option key={type} value={type}>{type === 'Beach' ? 'Biển' : type === 'Mountain' ? 'Núi' : type === 'Forest' ? 'Rừng' : type === 'Lake' ? 'Hồ' : 'Thành phố'}</option>
+              <option key={type} value={type}>{type === 'Beach' ? 'Beach' : type === 'Mountain' ? 'Mountain' : type === 'Forest' ? 'Forest' : type === 'Lake' ? 'Lake' : 'City'}</option>
             ))}
           </select>
 
@@ -183,15 +183,15 @@ const ResortsPage = () => {
             onChange={(e) => handleFilterChange('sortBy', e.target.value)}
             className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary"
           >
-            <option value="rating">Đánh giá cao</option>
-            <option value="name">Tên A → Z</option>
+            <option value="rating">High rating</option>
+            <option value="name">Name A → Z</option>
           </select>
         </div>
       </div>
 
       {hasActiveFilters && (
         <div className="container mx-auto px-4 mt-4">
-          <button onClick={clearFilters} className="text-primary text-sm">Xóa bộ lọc</button>
+          <button onClick={clearFilters} className="text-primary text-sm">Clear filters</button>
         </div>
       )}
 
@@ -203,7 +203,7 @@ const ResortsPage = () => {
         ) : resorts.length === 0 ? (
           <div className="text-center py-12">
             <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl text-gray-600">Không tìm thấy resort</h3>
+            <h3 className="text-xl text-gray-600">No resort found</h3>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

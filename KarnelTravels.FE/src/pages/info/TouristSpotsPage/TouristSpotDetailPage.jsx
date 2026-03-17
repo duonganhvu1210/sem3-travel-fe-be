@@ -93,11 +93,11 @@ const TouristSpotDetailPage = () => {
       if (response.data.success) {
         setSpot(response.data.data);
       } else {
-        setError(response.data.message || 'Không tìm thấy điểm du lịch');
+        setError(response.data.message || 'Cannot find tourist spot.');
       }
     } catch (err) {
       console.error('Error fetching spot detail:', err);
-      setError('Không thể tải thông tin. Vui lòng thử lại.');
+      setError('Cannot load information. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -108,7 +108,7 @@ const TouristSpotDetailPage = () => {
     : ["https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1200&q=80"];
 
   const formatPrice = (price) => {
-    if (!price || price === 0) return 'Miễn phí';
+    if (!price || price === 0) return 'Free';
     return `${price.toLocaleString('vi-VN')}₫`;
   };
 
@@ -137,7 +137,7 @@ const TouristSpotDetailPage = () => {
         <div className="text-center">
           <Info className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-600 mb-2">Not Found</h2>
-          <p className="text-gray-500 mb-4">{error || 'Destination does not exist'}</p>
+          <p className="text-gray-500 mb-4">{error || 'Tourist spot does not exist.'}</p>
           <CommonButton>
             <Link to="/info/tourist-spots">Go Back</Link>
           </CommonButton>
@@ -243,7 +243,7 @@ const TouristSpotDetailPage = () => {
                     </span>
                     {spot.isFeatured && (
                       <span className="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
-                        Nổi bật
+                        Featured
                       </span>
                     )}
                   </div>
@@ -275,7 +275,7 @@ const TouristSpotDetailPage = () => {
                     <Ticket className="w-6 h-6 text-teal-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Giá vé</p>
+                    <p className="text-sm text-gray-500">Ticket price</p>
                     <p className="text-xl font-bold text-primary">{formatPrice(spot.ticketPrice)}</p>
                   </div>
                 </div>
@@ -284,7 +284,7 @@ const TouristSpotDetailPage = () => {
                     <Calendar className="w-6 h-6 text-amber-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Thời điểm tốt nhất</p>
+                    <p className="text-sm text-gray-500">Best time</p>
                     <p className="font-semibold text-gray-800">{spot.bestTime || 'Quanh năm'}</p>
                   </div>
                 </div>
@@ -293,42 +293,42 @@ const TouristSpotDetailPage = () => {
 
             {/* Description */}
             <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Giới thiệu</h2>
+              <h2 className="text-xl font-bold text-gray-800 mb-4">Introduction</h2>
               <div className="prose max-w-none text-gray-600 leading-relaxed">
-                {spot.description || 'Chưa có thông tin giới thiệu.'}
+                {spot.description || 'No introduction available.'}
               </div>
             </div>
 
             {/* Activities */}
             <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Hoạt động</h2>
+              <h2 className="text-xl font-bold text-gray-800 mb-4">Activities</h2>
               <div className="grid md:grid-cols-2 gap-3">
                 <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
                   <Activity className="w-5 h-5 text-teal-600" />
-                  <span className="text-gray-700">Khám phá thiên nhiên</span>
+                  <span className="text-gray-700">Explore nature</span>
                 </div>
                 <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
                   <Calendar className="w-5 h-5 text-teal-600" />
-                  <span className="text-gray-700">Chụp ảnh cảnh quan</span>
+                  <span className="text-gray-700">Take photos</span>
                 </div>
                 <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
                   <Palmtree className="w-5 h-5 text-teal-600" />
-                  <span className="text-gray-700">Nghỉ dưỡng</span>
+                    <span className="text-gray-700">Relax</span>
                 </div>
                 <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
                   <Star className="w-5 h-5 text-teal-600" />
-                  <span className="text-gray-700">Trải nghiệm văn hóa</span>
+                  <span className="text-gray-700">Experience culture</span>
                 </div>
               </div>
             </div>
 
             {/* Map Location */}
             <div className="bg-white rounded-2xl p-6 shadow-sm">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Vị trí</h2>
+              <h2 className="text-xl font-bold text-gray-800 mb-4">Location</h2>
               <div className="h-64 bg-gray-100 rounded-xl flex items-center justify-center">
                 <div className="text-center">
                   <MapPinned className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                  <p className="text-gray-500">Bản đồ sẽ được hiển thị tại đây</p>
+                  <p className="text-gray-500">Map will be displayed here</p>
                   <p className="text-sm text-gray-400">{spot.latitude}, {spot.longitude}</p>
                 </div>
               </div>
@@ -340,33 +340,33 @@ const TouristSpotDetailPage = () => {
             {/* Booking Card */}
             <Card className="border-0 shadow-lg sticky top-24">
               <CardContent className="p-6">
-                <h3 className="text-lg font-bold text-gray-800 mb-4">Đặt tour ngay</h3>
+                <h3 className="text-lg font-bold text-gray-800 mb-4">Book tour now</h3>
                 
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center gap-3 text-gray-600">
                     <Clock className="w-5 h-5 text-gray-400" />
-                    <span className="text-sm">Thời gian: 1 ngày</span>
+                    <span className="text-sm">Time: 1 day</span>
                   </div>
                   <div className="flex items-center gap-3 text-gray-600">
                     <Calendar className="w-5 h-5 text-gray-400" />
-                    <span className="text-sm">Ngày linh hoạt</span>
+                    <span className="text-sm">Flexible date</span>
                   </div>
                   <div className="flex items-center gap-3 text-gray-600">
                     <Bus className="w-5 h-5 text-gray-400" />
-                    <span className="text-sm">Di chuyển: Xe khách</span>
+                    <span className="text-sm">Transport: Bus</span>
                   </div>
                 </div>
 
               <CommonButton className="w-full mb-3" onClick={handleBooking}>
-                Đặt tour ngay
+                Book tour now
               </CommonButton>
 
               <CommonButton variant="outline" className="w-full" onClick={handleConsult}>
-                Yêu cầu tư vấn
+                Request consultation
               </CommonButton>
 
                 <p className="text-center text-xs text-gray-400 mt-4">
-                  Liên hệ: 1900 xxxx để được hỗ trợ
+                  Contact: 1900 6677 to get support
                 </p>
               </CardContent>
             </Card>
@@ -374,7 +374,7 @@ const TouristSpotDetailPage = () => {
             {/* Nearby Services */}
             <Card className="border-0 shadow-lg">
               <CardContent className="p-6">
-                <h3 className="text-lg font-bold text-gray-800 mb-4">Dịch vụ lân cận</h3>
+                <h3 className="text-lg font-bold text-gray-800 mb-4">Nearby services</h3>
                 
                 <div className="space-y-3">
                   <Link 
@@ -386,7 +386,7 @@ const TouristSpotDetailPage = () => {
                     </div>
                     <div className="flex-1">
                       <p className="font-medium text-gray-800">Hotels</p>
-                      <p className="text-xs text-gray-500">Gần điểm du lịch</p>
+                        <p className="text-xs text-gray-500">Near tourist spot</p>
                     </div>
                     <ChevronRight className="w-4 h-4 text-gray-400" />
                   </Link>
@@ -400,7 +400,7 @@ const TouristSpotDetailPage = () => {
                     </div>
                     <div className="flex-1">
                       <p className="font-medium text-gray-800">Restaurants</p>
-                      <p className="text-xs text-gray-500">Ẩm thực địa phương</p>
+                      <p className="text-xs text-gray-500">Local cuisine</p>
                     </div>
                     <ChevronRight className="w-4 h-4 text-gray-400" />
                   </Link>
@@ -414,7 +414,7 @@ const TouristSpotDetailPage = () => {
                     </div>
                     <div className="flex-1">
                       <p className="font-medium text-gray-800">Resorts</p>
-                      <p className="text-xs text-gray-500">Nghỉ dưỡng cao cấp</p>
+                      <p className="text-xs text-gray-500">Luxury resort</p>
                     </div>
                     <ChevronRight className="w-4 h-4 text-gray-400" />
                   </Link>
@@ -425,12 +425,12 @@ const TouristSpotDetailPage = () => {
             {/* Contact */}
             <Card className="border-0 shadow-lg">
               <CardContent className="p-6">
-                <h3 className="text-lg font-bold text-gray-800 mb-4">Liên hệ</h3>
+                <h3 className="text-lg font-bold text-gray-800 mb-4">Contact</h3>
                 
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 text-gray-600">
                     <Phone className="w-5 h-5 text-gray-400" />
-                    <span className="text-sm">1900 xxxx</span>
+                    <span className="text-sm">1900 6677</span>
                   </div>
                   <div className="flex items-center gap-3 text-gray-600">
                     <Mail className="w-5 h-5 text-gray-400" />

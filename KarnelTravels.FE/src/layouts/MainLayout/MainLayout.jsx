@@ -359,11 +359,11 @@ const MainLayout = () => {
               <ul className="space-y-4 text-gray-400">
                 <li className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 mt-0.5" />
-                  <span>Ho Chi Minh City, Vietnam</span>
+                  <span>123 Nguyen Trai Street, District 1, Ho Chi Minh City</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone className="w-5 h-5" />
-                  <span>+84 123 456 789</span>
+                  <span>+84 28 1234 5678</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Mail className="w-5 h-5" />

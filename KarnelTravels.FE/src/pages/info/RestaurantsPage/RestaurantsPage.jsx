@@ -172,7 +172,7 @@ const RestaurantsPage = () => {
             onChange={(e) => handleFilterChange('cuisineType', e.target.value)}
             className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary"
           >
-            <option value="">Tất cả ẩm thực</option>
+            <option value="">All cuisines</option>
             {cuisineTypes.map(type => (
               <option key={type} value={type}>{type}</option>
             ))}
@@ -183,15 +183,15 @@ const RestaurantsPage = () => {
             onChange={(e) => handleFilterChange('sortBy', e.target.value)}
             className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary"
           >
-            <option value="rating">Đánh giá cao</option>
-            <option value="name">Tên A → Z</option>
+            <option value="rating">High rating</option>
+            <option value="name">Name A → Z</option>
           </select>
         </div>
       </div>
 
       {hasActiveFilters && (
         <div className="container mx-auto px-4 mt-4">
-          <button onClick={clearFilters} className="text-primary text-sm">Xóa bộ lọc</button>
+          <button onClick={clearFilters} className="text-primary text-sm">Clear filters</button>
         </div>
       )}
 
@@ -203,7 +203,7 @@ const RestaurantsPage = () => {
         ) : restaurants.length === 0 ? (
           <div className="text-center py-12">
             <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl text-gray-600">Không tìm thấy nhà hàng</h3>
+            <h3 className="text-xl text-gray-600">No restaurants found</h3>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -198,8 +198,8 @@ public class InvoiceDto
     public string InvoiceNumber { get; set; } = string.Empty;
     public DateTime InvoiceDate { get; set; }
     public string CompanyName { get; set; } = "Karnel Travels";
-    public string CompanyAddress { get; set; } = "123 Đường ABC, Quận 1, TP.HCM";
-    public string CompanyPhone { get; set; } = "1900 xxxx";
+    public string CompanyAddress { get; set; } = "123 Nguyen Trai Street, District 1, Ho Chi Minh City";
+    public string CompanyPhone { get; set; } = "1900 6677";
     public string CompanyEmail { get; set; } = "info@karneltravels.com";
     
     // Customer Info
@@ -233,8 +233,8 @@ public class InvoiceDto
     public DateTime? PaidAt { get; set; }
     
     // Footer
-    public string TermsAndConditions { get; set; } = "Vui lòng liên hệ chúng tôi nếu có thắc mắc.";
-    public string ThankYouMessage { get; set; } = "Cảm ơn quý khách đã sử dụng dịch vụ của Karnel Travels!";
+    public string TermsAndConditions { get; set; } = "Please contact us if you have any questions.";
+    public string ThankYouMessage { get; set; } = "Thank you for using Karnel Travels services!";
 }
 
 // ==================== Order Statistics ====================

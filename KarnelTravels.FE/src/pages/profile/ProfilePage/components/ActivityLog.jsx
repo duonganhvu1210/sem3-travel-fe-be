@@ -32,19 +32,19 @@ const ActivityLog = () => {
 
   const getActionLabel = (action) => {
     const actionLabels = {
-      'Login': 'Đăng nhập',
-      'Logout': 'Đăng xuất',
-      'Register': 'Đăng ký',
-      'Change Password': 'Đổi mật khẩu',
-      'Update Profile': 'Cập nhật hồ sơ',
-      'Upload Avatar': 'Tải ảnh đại diện',
-      'Add Address': 'Thêm địa chỉ',
-      'Update Address': 'Cập nhật địa chỉ',
-      'Delete Address': 'Xóa địa chỉ',
-      'Verify Email': 'Xác thực email',
-      'Request Verification Email': 'Yêu cầu xác thực email',
-      'Create Booking': 'Tạo đặt tour',
-      'Cancel Booking': 'Hủy đặt tour',
+          'Login': 'Login',
+      'Logout': 'Logout',
+      'Register': 'Register',
+      'Change Password': 'Change password',
+      'Update Profile': 'Update profile',
+      'Upload Avatar': 'Upload avatar',
+      'Add Address': 'Add address',
+      'Update Address': 'Update address',
+      'Delete Address': 'Delete address',
+      'Verify Email': 'Verify email',
+      'Request Verification Email': 'Request verification email',
+      'Create Booking': 'Create booking',
+      'Cancel Booking': 'Cancel booking',
     };
     return actionLabels[action] || action;
   };
@@ -64,15 +64,15 @@ const ActivityLog = () => {
           <Activity className="w-5 h-5 text-cyan-600" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Lịch sử hoạt động</h2>
-          <p className="text-sm text-gray-500">Xem các hoạt động gần đây của bạn</p>
+          <h2 className="text-lg font-semibold text-gray-900">Activity history</h2>
+          <p className="text-sm text-gray-500">View your recent activities</p>
         </div>
       </div>
 
       {activities.length === 0 ? (
         <div className="text-center py-8 text-gray-500">
           <Activity className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-          <p>No activity yet</p>
+          <p>No activities yet</p>
         </div>
       ) : (
         <div className="space-y-4">

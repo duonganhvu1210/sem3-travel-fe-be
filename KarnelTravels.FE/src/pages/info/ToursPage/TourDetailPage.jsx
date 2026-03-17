@@ -106,7 +106,7 @@ const ImageGallery = ({ images }) => {
 // Timeline Itinerary Component
 const ItineraryTimeline = ({ itineraries }) => {
   if (!itineraries?.length) {
-    return <div className="text-center py-8 text-gray-500">Chưa có lịch trình chi tiết</div>;
+    return <div className="text-center py-8 text-gray-500">No detailed itinerary</div>;
   }
 
   return (
@@ -124,7 +124,7 @@ const ItineraryTimeline = ({ itineraries }) => {
             </div>
             <div className="flex-1 bg-white rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow">
               <h4 className="font-bold text-lg text-gray-800 mb-2">
-                {day.title || `Ngày ${day.dayNumber || index + 1}`}
+                {day.title || `Day ${day.dayNumber || index + 1}`}
               </h4>
               <p className="text-gray-600 mb-4">{day.content}</p>
               {day.activities?.length > 0 && (
@@ -151,7 +151,7 @@ const ServiceTable = ({ includes, excludes }) => {
     <div className="grid md:grid-cols-2 gap-6">
       <div className="bg-green-50 rounded-xl p-6">
         <h3 className="font-bold text-lg text-green-700 mb-4 flex items-center gap-2">
-          <Check className="w-5 h-5" /> Bao gồm
+          <Check className="w-5 h-5" /> Includes
         </h3>
         <ul className="space-y-3">
           {includes?.length > 0 ? (
@@ -162,14 +162,14 @@ const ServiceTable = ({ includes, excludes }) => {
               </li>
             ))
           ) : (
-            <li className="text-gray-500 italic">Không có thông tin</li>
+            <li className="text-gray-500 italic">No information</li>
           )}
         </ul>
       </div>
 
       <div className="bg-red-50 rounded-xl p-6">
         <h3 className="font-bold text-lg text-red-700 mb-4 flex items-center gap-2">
-          <X className="w-5 h-5" /> Không bao gồm
+          <X className="w-5 h-5" /> Does not include
         </h3>
         <ul className="space-y-3">
           {excludes?.length > 0 ? (
@@ -180,7 +180,7 @@ const ServiceTable = ({ includes, excludes }) => {
               </li>
             ))
           ) : (
-            <li className="text-gray-500 italic">Không có thông tin</li>
+            <li className="text-gray-500 italic">No information</li>
           )}
         </ul>
       </div>
@@ -207,7 +207,7 @@ const TourDetailPage = () => {
         if (response.data.success) {
           setTour(response.data.data);
         } else {
-          setError(response.data.message || 'Tour not found');
+          setError(response.data.message || 'Tour not found.');
         }
       } catch (err) {
         setError('Failed to load tour details');
@@ -252,7 +252,7 @@ const TourDetailPage = () => {
           onClick={() => navigate('/info/tours')}
           className="px-6 py-2 bg-primary text-white rounded-full hover:bg-teal-700"
         >
-          Quay lại danh sách tour
+          Back to tour list
         </button>
       </div>
     );
@@ -267,28 +267,28 @@ const TourDetailPage = () => {
             className="flex items-center gap-2 text-white/80 hover:text-white mb-4"
           >
             <ChevronLeft className="w-5 h-5" />
-            Quay lại
+            Back
           </button>
           
           <div className="flex flex-wrap gap-2 mb-3">
             {tour.isHotDeal && (
               <span className="px-3 py-1 bg-red-500 text-white text-sm font-bold rounded-full flex items-center gap-1">
-                <Flame className="w-4 h-4" /> HOT DEAL
+                <Flame className="w-4 h-4" /> HOT DEALS
               </span>
             )}
             {discountPercent > 0 && (
               <span className="px-3 py-1 bg-orange-500 text-white text-sm font-bold rounded-full">
-                Giảm {discountPercent}%
+                Discount {discountPercent}%
               </span>
             )}
             {tour.isNewArrival && (
               <span className="px-3 py-1 bg-green-500 text-white text-sm font-bold rounded-full">
-                TOUR MỚI
+                NEW TOUR
               </span>
             )}
             {tour.isFeatured && (
               <span className="px-3 py-1 bg-yellow-500 text-white text-sm font-bold rounded-full">
-                NỔI BẬT
+                FEATURED
               </span>
             )}
           </div>
@@ -302,7 +302,7 @@ const TourDetailPage = () => {
             </span>
             <span className="flex items-center gap-2">
               <Clock className="w-5 h-5" />
-              {tour.durationDays} ngày
+              {tour.durationDays} days
             </span>
             <span className="flex items-center gap-2">
               <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -310,7 +310,7 @@ const TourDetailPage = () => {
             </span>
             <span className="flex items-center gap-2">
               <Users className="w-5 h-5" />
-              {tour.availableSlots} chỗ còn trống
+              {tour.availableSlots} available slots
             </span>
           </div>
         </div>
@@ -331,7 +331,7 @@ const TourDetailPage = () => {
                       : 'text-gray-500 hover:text-gray-700'
                   }`}
                 >
-                  Lịch trình
+                  Itinerary
                 </button>
                 <button
                   onClick={() => setActiveTab('services')}
@@ -341,7 +341,7 @@ const TourDetailPage = () => {
                       : 'text-gray-500 hover:text-gray-700'
                   }`}
                 >
-                  Dịch vụ
+                  Services
                 </button>
                 <button
                   onClick={() => setActiveTab('reviews')}
@@ -351,7 +351,7 @@ const TourDetailPage = () => {
                       : 'text-gray-500 hover:text-gray-700'
                   }`}
                 >
-                  Đánh giá ({tour.reviewCount})
+                  Reviews ({tour.reviewCount})
                 </button>
               </div>
 
@@ -364,16 +364,16 @@ const TourDetailPage = () => {
                 )}
                 {activeTab === 'reviews' && (
                   <div className="text-center py-8 text-gray-500">
-                    Review feature under development
+                    Review feature is updating...
                   </div>
                 )}
               </div>
             </div>
 
             <div className="bg-white rounded-2xl shadow-md p-6">
-              <h2 className="text-xl font-bold mb-4">Giới thiệu tour</h2>
+              <h2 className="text-xl font-bold mb-4">Tour introduction</h2>
               <p className="text-gray-600 leading-relaxed whitespace-pre-line">
-                {tour.description || 'Chưa có mô tả chi tiết'}
+                  {tour.description || 'No detailed description available.'}
               </p>
             </div>
 
@@ -381,7 +381,7 @@ const TourDetailPage = () => {
               <div className="bg-white rounded-2xl shadow-md p-6">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-primary" />
-                  Ngày khởi hành
+                  Departure date
                 </h2>
                 <div className="flex flex-wrap gap-2">
                   {tour.departureDates.map((date, idx) => (
@@ -419,7 +419,7 @@ const TourDetailPage = () => {
 
                 {discountPercent > 0 && (
                   <div className="text-sm text-green-600 font-medium">
-                    Tiết kiệm {discountPercent}% - Chỉ còn {tour.discountPrice?.toLocaleString()}₫
+                    Save {discountPercent}% - Only {tour.discountPrice?.toLocaleString()}₫
                   </div>
                 )}
               </div>
@@ -429,7 +429,7 @@ const TourDetailPage = () => {
                   className="w-full py-4 bg-primary text-white font-bold rounded-xl hover:bg-teal-700 transition-colors text-lg"
                   onClick={() => navigate(`/booking?tourId=${tour.tourId}&name=${encodeURIComponent(tour.name)}&price=${tour.basePrice || tour.price}&discountPrice=${tour.discountPrice || 0}`)}
                 >
-                  Đặt ngay
+                  Book now
                 </button>
                 
                 <div className="flex gap-2">
@@ -442,44 +442,44 @@ const TourDetailPage = () => {
                     }`}
                   >
                     <ArrowLeftRight className="w-5 h-5" />
-                    {isInCompare ? 'Đã thêm so sánh' : 'So sánh'}
+                    {isInCompare ? 'Added to compare' : 'Compare'}
                   </button>
                   
                   <button className="flex-1 py-3 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors">
                     <Heart className="w-5 h-5" />
-                    Yêu thích
+                    Favorite
                   </button>
                 </div>
 
                 <button className="w-full py-3 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors">
                   <Share2 className="w-5 h-5" />
-                  Chia sẻ
+                  Share
                 </button>
               </div>
 
               <div className="mt-6 pt-6 border-t">
-                <h4 className="font-medium text-gray-700 mb-3">Liên hệ tư vấn</h4>
+                <h4 className="font-medium text-gray-700 mb-3">Contact for consultation</h4>
                 <div className="flex items-center gap-2 text-gray-600">
                   <Phone className="w-5 h-5 text-primary" />
-                  <span>1900 xxxx</span>
+                  <span>1900 6677</span>
                 </div>
               </div>
 
               <div className="mt-6 pt-6 border-t space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Mã tour</span>
+                  <span className="text-gray-500">Tour code</span>
                   <span className="font-medium">{tour.tourId?.slice(0, 8).toUpperCase()}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Thời gian</span>
-                  <span className="font-medium">{tour.durationDays} ngày</span>
+                  <span className="text-gray-500">Time</span>
+                  <span className="font-medium">{tour.durationDays} days</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Phương tiện</span>
-                  <span className="font-medium">Máy bay, xe du lịch</span>
+                  <span className="text-gray-500">Transport</span>
+                  <span className="font-medium">Airplane, bus, train</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Lượt xem</span>
+                  <span className="text-gray-500">Views</span>
                   <span className="font-medium">{tour.reviewCount || 0}</span>
                 </div>
               </div>

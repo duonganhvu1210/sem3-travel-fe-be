@@ -73,7 +73,7 @@ public class EmailService : IEmailService
         DateTime checkOut, 
         decimal totalAmount)
     {
-        var subject = $"Xác nhận đặt phòng - {bookingCode} - Karnel Travels";
+        var subject = $"Booking confirmation - {bookingCode} - Karnel Travels";
         
         var body = $@"
 <!DOCTYPE html>
@@ -95,48 +95,48 @@ public class EmailService : IEmailService
 <body>
     <div class='container'>
         <div class='header'>
-            <h1>🎉 Xác nhận đặt phòng</h1>
+            <h1>🎉 Booking confirmation</h1>
             <p>Karnel Travels</p>
         </div>
         <div class='content'>
             <p>Xin chào <strong>{customerName}</strong>,</p>
-            <p>Cảm ơn bạn đã đặt phòng tại Karnel Travels! Dưới đây là thông tin chi tiết:</p>
+            <p>Thank you for booking at Karnel Travels! Below are the details:</p>
             
             <table class='info-table'>
                 <tr>
-                    <td>Mã đặt phòng:</td>
+                    <td>Booking code:</td>
                     <td><strong>{bookingCode}</strong></td>
                 </tr>
                 <tr>
-                    <td>Dịch vụ:</td>
+                    <td>Service:</td>
                     <td>{serviceName}</td>
                 </tr>
                 <tr>
-                    <td>Ngày nhận phòng:</td>
+                    <td>Check-in date:</td>
                     <td>{checkIn:dd/MM/yyyy}</td>
                 </tr>
                 <tr>
-                    <td>Ngày trả phòng:</td>
+                    <td>Check-out date:</td>
                     <td>{checkOut:dd/MM/yyyy}</td>
                 </tr>
                 <tr>
-                    <td>Tổng tiền:</td>
+                    <td>Total amount:</td>
                     <td class='total'>{totalAmount.ToString("N0")} VND</td>
                 </tr>
             </table>
             
-            <p><strong>Lưu ý:</strong></p>
+                <p><strong>Note:</strong></p>
             <ul>
-                <li>Vui lòng đến trước giờ nhận phòng 30 phút.</li>
-                <li>Mang theo CMND/CCCD hoặc hộ chiếu để làm thủ tục.</li>
-                <li>Nếu cần hỗ trợ, liên hệ hotline: 1900 xxxx</li>
+                <li>Please arrive 30 minutes before the check-in time.</li>
+                <li>Please bring your ID card or passport for the check-in process.</li>
+                <li>If you need support, contact the hotline: 1900 6677</li>
             </ul>
             
-            <p>Chúc bạn có một kỳ nghỉ tuyệt vời!</p>
+            <p>Have a great vacation!</p>
         </div>
         <div class='footer'>
             <p>© 2026 Karnel Travels. All rights reserved.</p>
-            <p>Email: support@karneltravels.com | Hotline: 1900 xxxx</p>
+            <p>Email: support@karneltravels.com | Hotline: 1900 6677</p>
         </div>
     </div>
 </body>
@@ -172,30 +172,30 @@ public class EmailService : IEmailService
 <body>
     <div class='container'>
         <div class='header'>
-            <h2>📩 Phản hồi từ Karnel Travels</h2>
+            <h2>📩 Reply from Karnel Travels</h2>
         </div>
         <div class='content'>
             <p>Xin chào <strong>{customerName}</strong>,</p>
             
-            <p>Cảm ơn bạn đã liên hệ với chúng tôi. Dưới đây là phản hồi của chúng tôi:</p>
+            <p>Thank you for contacting us. Below is our reply:</p>
             
             <div class='original-message'>
-                <strong>Tin nhắn gốc:</strong><br/>
+                <strong>Original message:</strong><br/>
                 {originalMessage}
             </div>
             
             <div class='reply-message'>
-                <strong>Phản hồi:</strong><br/>
+                <strong>Reply:</strong><br/>
                 {replyMessage}
             </div>
             
-            <p style='margin-top: 20px;'>Nếu bạn cần thêm thông tin, vui lòng liên hệ lại hoặc gọi hotline: <strong>1900 xxxx</strong></p>
+                <p style='margin-top: 20px;'>If you need more information, please contact us again or call the hotline: <strong>1900 6677</strong></p>
             
-            <p>Trân trọng,<br/>Đội ngũ Karnel Travels</p>
+            <p>Sincerely,<br/>The Karnel Travels team</p>
         </div>
         <div class='footer'>
             <p>© 2026 Karnel Travels. All rights reserved.</p>
-            <p>Email: support@karneltravels.com | Hotline: 1900 xxxx</p>
+            <p>Email: support@karneltravels.com | Hotline: 1900 6677</p>
         </div>
     </div>
 </body>
