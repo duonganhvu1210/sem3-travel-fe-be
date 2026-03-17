@@ -21,18 +21,18 @@ const WishlistPage = () => {
       if (response.success) {
         setFavorites(response.data || []);
       } else {
-        setError('Không thể tải danh sách yêu thích');
+        setError('Unable to load wishlist');
       }
     } catch (err) {
       console.error('Error loading favorites:', err);
-      setError('Có lỗi xảy ra khi tải dữ liệu');
+      setError('An error occurred while loading data');
     } finally {
       setLoading(false);
     }
   };
 
   const handleRemoveFavorite = async (favoriteId) => {
-    if (!window.confirm('Bạn có chắc muốn xóa khỏi danh sách yêu thích?')) return;
+    if (!window.confirm('Are you sure you want to remove this item from your wishlist?')) return;
 
     try {
       const response = await favoriteService.removeFavorite(favoriteId);
@@ -40,7 +40,7 @@ const WishlistPage = () => {
         setFavorites(prev => prev.filter(f => f.favoriteId !== favoriteId));
       }
     } catch (err) {
-      alert('Không thể xóa khỏi danh sách yêu thích');
+      alert('Unable to remove item from wishlist');
     }
   };
 
@@ -69,7 +69,7 @@ const WishlistPage = () => {
   };
 
   const formatPrice = (price) => {
-    if (!price) return 'Liên hệ';
+    if (!price) return 'Contact for price';
     return `${price.toLocaleString('vi-VN')}₫`;
   };
 
@@ -113,8 +113,8 @@ const WishlistPage = () => {
         {!loading && favorites.length === 0 && (
           <div className="text-center py-16 bg-white rounded-xl shadow-sm">
             <Heart className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">Chưa có yêu thích</h3>
-            <p className="text-gray-500 mb-6">Hãy lưu các địa điểm bạn quan tâm!</p>
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">No favorites yet</h3>
+            <p className="text-gray-500 mb-6">Save the places you are interested in!</p>
             <Link
               to="/info/tourist-spots"
               className="inline-block px-6 py-3 bg-primary text-white rounded-lg hover:bg-teal-700"
@@ -161,7 +161,7 @@ const WishlistPage = () => {
                 {/* Content */}
                 <div className="p-4">
                   <h3 className="font-semibold text-lg text-gray-800 mb-2 line-clamp-1">
-                    {item.itemName || 'Đang tải...'}
+                    {item.itemName || 'Loading...'}
                   </h3>
 
                   <div className="flex items-center justify-between mb-3">

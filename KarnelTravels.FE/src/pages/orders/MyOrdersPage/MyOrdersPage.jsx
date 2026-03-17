@@ -76,7 +76,7 @@ const MyOrdersPage = () => {
         totalPages: response.totalPages || 0
       }));
     } catch (err) {
-      setError('Không thể tải danh sách đơn hàng');
+      setError('Unable to load order list');
       console.error(err);
     } finally {
       setLoading(false);
@@ -110,36 +110,36 @@ const MyOrdersPage = () => {
   };
 
   const handleCancelOrder = async (order) => {
-    if (!window.confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) return;
+    if (!window.confirm('Are you sure you want to cancel this order?')) return;
     
     try {
-      const result = await orderService.cancelOrder(order.orderId, 'Khách hàng hủy');
+      const result = await orderService.cancelOrder(order.orderId, 'Cancelled by customer');
       if (result.success) {
-        alert('Đơn hàng đã được hủy thành công');
+        alert('The order has been cancelled successfully');
         loadOrders();
         loadStatistics();
       } else {
-        alert(result.message || 'Không thể hủy đơn hàng');
+        alert(result.message || 'Unable to cancel the order');
       }
     } catch (err) {
-      alert('Lỗi khi hủy đơn hàng');
+      alert('Error while cancelling the order');
     }
   };
 
   const handleChangeDate = async (order) => {
-    const newDate = prompt('Nhập ngày mới (YYYY-MM-DD):');
+    const newDate = prompt('Enter the new date (YYYY-MM-DD):');
     if (!newDate) return;
     
     try {
-      const result = await orderService.changeDate(order.orderId, newDate, null, 'Khách yêu cầu đổi ngày');
+      const result = await orderService.changeDate(order.orderId, newDate, null, 'Customer requested a date change');
       if (result.success) {
-        alert('Yêu cầu đổi ngày đã được gửi');
+        alert('Date change request has been sent');
         loadOrders();
       } else {
-        alert(result.message || 'Không thể đổi ngày');
+        alert(result.message || 'Unable to change the date');
       }
     } catch (err) {
-      alert('Lỗi khi đổi ngày');
+      alert('Error while changing the date');
     }
   };
 
@@ -154,31 +154,31 @@ const MyOrdersPage = () => {
       <div className="container mx-auto px-4">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Đơn đã đặt</h1>
-          <p className="text-gray-600">Quản lý và theo dõi các đơn hàng của bạn</p>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">My Orders</h1>
+          <p className="text-gray-600">Manage and track your orders</p>
         </div>
 
         {/* Statistics Cards */}
         {stats && (
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
             <div className="bg-white rounded-lg shadow p-4">
-              <p className="text-sm text-gray-500">Tổng đơn</p>
+              <p className="text-sm text-gray-500">Total Orders</p>
               <p className="text-2xl font-bold text-gray-800">{stats.totalOrders}</p>
             </div>
             <div className="bg-yellow-50 rounded-lg shadow p-4">
-              <p className="text-sm text-yellow-600">Chờ xác nhận</p>
+              <p className="text-sm text-yellow-600">Pending</p>
               <p className="text-2xl font-bold text-yellow-600">{stats.pendingOrders}</p>
             </div>
             <div className="bg-blue-50 rounded-lg shadow p-4">
-              <p className="text-sm text-blue-600">Đã xác nhận</p>
+              <p className="text-sm text-blue-600">Confirmed</p>
               <p className="text-2xl font-bold text-blue-600">{stats.confirmedOrders}</p>
             </div>
             <div className="bg-green-50 rounded-lg shadow p-4">
-              <p className="text-sm text-green-600">Hoàn thành</p>
+              <p className="text-sm text-green-600">Completed</p>
               <p className="text-2xl font-bold text-green-600">{stats.completedOrders}</p>
             </div>
             <div className="bg-gray-50 rounded-lg shadow p-4">
-              <p className="text-sm text-gray-500">Tổng chi tiêu</p>
+              <p className="text-sm text-gray-500">Total Spending</p>
               <p className="text-2xl font-bold text-gray-800">
                 {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(stats.totalSpent || 0)}
               </p>
@@ -193,7 +193,7 @@ const MyOrdersPage = () => {
             <form onSubmit={handleSearch} className="flex-1 flex gap-2">
               <input
                 type="text"
-                placeholder="Tìm theo mã đơn..."
+                placeholder="Search by order code..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -261,8 +261,8 @@ const MyOrdersPage = () => {
             {orders.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-6xl mb-4">📦</div>
-                <h3 className="text-xl font-semibold text-gray-600 mb-2">Chưa có đơn hàng</h3>
-                <p className="text-gray-500">Bạn chưa có đơn hàng nào. Hãy bắt đầu đặt dịch vụ ngay!</p>
+                <h3 className="text-xl font-semibold text-gray-600 mb-2">No orders yet</h3>
+                <p className="text-gray-500">You have not placed any orders yet. Start booking a service now!</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -286,11 +286,11 @@ const MyOrdersPage = () => {
                   disabled={pagination.pageNumber === 1}
                   className="px-4 py-2 rounded-lg bg-white border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
                 >
-                  ← Trước
+                  ← Previous
                 </button>
                 
                 <span className="px-4 py-2 text-gray-600">
-                  Trang {pagination.pageNumber} / {pagination.totalPages}
+                  Page {pagination.pageNumber} / {pagination.totalPages}
                 </span>
                 
                 <button
@@ -298,7 +298,7 @@ const MyOrdersPage = () => {
                   disabled={pagination.pageNumber === pagination.totalPages}
                   className="px-4 py-2 rounded-lg bg-white border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
                 >
-                  Sau →
+                  Next →
                 </button>
               </div>
             )}

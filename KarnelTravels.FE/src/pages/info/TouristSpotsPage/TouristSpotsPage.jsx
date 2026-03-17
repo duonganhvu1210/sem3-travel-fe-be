@@ -91,7 +91,7 @@ const TouristSpotsPage = () => {
       }
     } catch (err) {
       console.error('Error fetching spots:', err);
-      setError('Không thể tải dữ liệu. Vui lòng thử lại.');
+      setError('Cannot load data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -119,9 +119,9 @@ const TouristSpotsPage = () => {
       {/* Hero Banner */}
       <div className="bg-gradient-to-r from-teal-600 to-cyan-700 text-white py-16">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Điểm Du Lịch</h1>
+          <h1 className="text-4xl font-bold mb-4">Tourist Destinations</h1>
           <p className="text-xl text-white/80 max-w-2xl">
-            Khám phá những địa điểm du lịch tuyệt vời nhất Việt Nam
+            Discover the most amazing destinations in Vietnam
           </p>
         </div>
       </div>
@@ -132,19 +132,19 @@ const TouristSpotsPage = () => {
           <aside className="lg:w-1/4 hidden lg:block">
             <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold text-gray-800">Bộ lọc</h2>
+                <h2 className="text-lg font-semibold text-gray-800">Filters</h2>
                 <button 
                   onClick={handleClearFilters}
                   className="text-sm text-primary hover:underline"
                 >
-                  Xóa tất cả
+                  Clear All
                 </button>
               </div>
 
               {/* Search */}
               <form onSubmit={handleSearch} className="mb-6">
                 <CommonInput
-                  placeholder="Tìm kiếm điểm du lịch..."
+                  placeholder="Search destinations..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   icon={<Search className="w-5 h-5 text-gray-400" />}
@@ -153,7 +153,7 @@ const TouristSpotsPage = () => {
 
               {/* Region Filter */}
               <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-700 mb-3">Vùng miền</h3>
+                <h3 className="text-sm font-medium text-gray-700 mb-3">Region</h3>
                 <div className="space-y-2">
                   {regions.map((region) => (
                     <label
@@ -183,7 +183,7 @@ const TouristSpotsPage = () => {
 
               {/* Type Filter */}
               <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-700 mb-3">Loại hình</h3>
+                <h3 className="text-sm font-medium text-gray-700 mb-3">Type</h3>
                 <div className="space-y-2">
                   {spotTypes.map((type) => (
                     <label
@@ -221,7 +221,7 @@ const TouristSpotsPage = () => {
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 {/* Results Count */}
                 <div className="text-gray-600">
-                  <span className="font-semibold text-primary">{totalCount}</span> điểm du lịch
+                  <span className="font-semibold text-primary">{totalCount}</span> tourist spots
                   {selectedRegion && <span> - Lọc: {regions.find(r => r.value === selectedRegion)?.label}</span>}
                   {selectedType && <span> - {spotTypes.find(t => t.value === selectedType)?.label}</span>}
                 </div>
@@ -286,7 +286,7 @@ const TouristSpotsPage = () => {
             {showMobileFilters && (
               <div className="lg:hidden bg-white rounded-xl shadow-lg p-6 mb-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-lg font-semibold text-gray-800">Bộ lọc</h2>
+                  <h2 className="text-lg font-semibold text-gray-800">Filters</h2>
                   <button onClick={() => setShowMobileFilters(false)}>
                     <X className="w-5 h-5 text-gray-500" />
                   </button>
@@ -295,7 +295,7 @@ const TouristSpotsPage = () => {
                 {/* Search */}
                 <form onSubmit={handleSearch} className="mb-6">
                   <CommonInput
-                    placeholder="Tìm kiếm..."
+                    placeholder="Search..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     icon={<Search className="w-5 h-5 text-gray-400" />}
@@ -304,7 +304,7 @@ const TouristSpotsPage = () => {
 
                 {/* Region */}
                 <div className="mb-4">
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Vùng miền</h3>
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">Region</h3>
                   <div className="flex flex-wrap gap-2">
                     {regions.map((region) => (
                       <button
@@ -327,7 +327,7 @@ const TouristSpotsPage = () => {
 
                 {/* Type */}
                 <div className="mb-6">
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Loại hình</h3>
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">Type</h3>
                   <div className="flex flex-wrap gap-2">
                     {spotTypes.map((type) => (
                       <button
@@ -377,10 +377,10 @@ const TouristSpotsPage = () => {
               <div className="text-center py-12 bg-white rounded-xl">
                 <MapPin className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                  Không tìm thấy điểm du lịch
+                  Not found tourist spot
                 </h3>
                 <p className="text-gray-500 mb-4">
-                  Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
+                  Try changing the filter or search keyword
                 </p>
                 <CommonButton variant="outline" onClick={handleClearFilters}>
                   Xóa bộ lọc

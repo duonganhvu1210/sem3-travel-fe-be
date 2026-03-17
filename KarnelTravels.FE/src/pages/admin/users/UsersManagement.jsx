@@ -348,20 +348,20 @@ export default function UsersManagement() {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Xác nhận xóa</AlertDialogTitle>
+            <AlertDialogTitle>Confirm delete</AlertDialogTitle>
             <AlertDialogDescription>
-              Bạn có chắc chắn muốn xóa tài khoản của{' '}
-              <strong>{selectedUser?.fullName}</strong> không? Hành động này không thể
+              Are you sure you want to delete the account of{' '}
+              <strong>{selectedUser?.fullName}</strong>? This action cannot be
               hoàn tác.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Hủy</AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDelete}
               className="bg-red-600 hover:bg-red-700"
             >
-              Xóa
+              Delete
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -372,23 +372,23 @@ export default function UsersManagement() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {selectedUser?.isLocked ? 'Kích hoạt tài khoản' : 'Vô hiệu hóa tài khoản'}
+              {selectedUser?.isLocked ? 'Activate account' : 'Deactivate account'}
             </AlertDialogTitle>
             <AlertDialogDescription>
               Bạn có chắc chắn muốn{' '}
               <strong>
-                {selectedUser?.isLocked ? 'kích hoạt' : 'vô hiệu hóa'}
+                {selectedUser?.isLocked ? 'activate' : 'deactivate'}
               </strong>{' '}
-              tài khoản của <strong>{selectedUser?.fullName}</strong> không?
+              account of <strong>{selectedUser?.fullName}</strong>?
               {selectedUser?.isLocked
-                ? ' Người dùng sẽ có thể đăng nhập lại.'
-                : ' Người dùng sẽ không thể đăng nhập.'}
+                ? ' User will be able to login again.'
+                : ' User will not be able to login.'}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Hủy</AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={confirmToggleStatus}>
-              Xác nhận
+              Confirm
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

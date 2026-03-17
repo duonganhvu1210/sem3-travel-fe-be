@@ -20,6 +20,7 @@ import TourDetailPage from '@/pages/info/ToursPage/TourDetailPage';
 import HotelsPage from '@/pages/info/HotelsPage/HotelsPage';
 import RestaurantsPage from '@/pages/info/RestaurantsPage/RestaurantsPage';
 import ResortsPage from '@/pages/info/ResortsPage/ResortsPage';
+import ResortDetailPage from '@/pages/info/ResortsPage/ResortDetailPage';
 import TransportsPage from '@/pages/info/TransportsPage/TransportsPage';
 import TransportDetailPage from '@/pages/info/TransportsPage/TransportDetailPage';
 import HotelDetailPage from '@/pages/info/HotelsPage/HotelDetailPage';
@@ -118,6 +119,7 @@ const AppRoutes = () => {
         <Route path="info/hotels/:id" element={<HotelDetailPage />} />
         <Route path="info/restaurants" element={<RestaurantsPage />} />
         <Route path="info/resorts" element={<ResortsPage />} />
+        <Route path="info/resorts/:id" element={<ResortDetailPage />} />
         <Route path="info/transports" element={<TransportsPage />} />
         <Route path="info/transports/:id" element={<TransportDetailPage />} />
       </Route>

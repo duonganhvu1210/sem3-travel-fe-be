@@ -149,8 +149,8 @@ const RestaurantsPage = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="bg-gradient-to-r from-teal-600 to-cyan-700 text-white py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Nhà hàng</h1>
-          <p className="text-lg text-white/80">Khám phá ẩm thực địa phương</p>
+          <h1 className="text-4xl font-bold mb-4">Restaurants</h1>
+          <p className="text-lg text-white/80">Discover local cuisine</p>
         </div>
       </div>
 
@@ -160,7 +160,7 @@ const RestaurantsPage = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Tìm kiếm nhà hàng..."
+              placeholder="Search restaurants..."
               value={filters.search}
               onChange={(e) => handleFilterChange('search', e.target.value)}
               className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary"

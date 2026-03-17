@@ -28,7 +28,8 @@ import {
   Info,
   Phone,
   Calendar,
-  MessageCircle
+  MessageCircle,
+  Mail
 } from 'lucide-react';
 
 const MainLayout = () => {
@@ -219,13 +220,13 @@ const MainLayout = () => {
                     to="/login"
                     className="px-5 py-2.5 rounded-full font-medium transition-all text-gray-700 hover:bg-gray-100"
                   >
-                    Đăng nhập
+                    Login
                   </Link>
                   <Link
                     to="/register"
                     className="px-5 py-2.5 bg-teal-500 hover:bg-teal-600 text-white font-medium rounded-full transition-all hover:shadow-lg hover:shadow-teal-500/30"
                   >
-                    Đăng ký
+                    Register
                   </Link>
                 </div>
               )}
@@ -316,7 +317,7 @@ const MainLayout = () => {
                 <span className="font-bold text-xl">KarnelTravels</span>
               </div>
               <p className="text-gray-400 mb-6">
-                Đồng hành cùng bạn trên mọi hành trình khám phá Việt Nam và thế giới.
+                Your trusted partner for exploring Vietnam and the world.
               </p>
             </div>
 
@@ -324,10 +325,14 @@ const MainLayout = () => {
             <div>
               <h4 className="font-semibold text-lg mb-6">Quick Links</h4>
               <ul className="space-y-3">
-                {['Home', 'Search', 'Contact'].map((item) => (
-                  <li key={item}>
-                    <Link to="/" className="text-gray-400 hover:text-white transition-colors">
-                      {item}
+                {[
+                  { name: 'Home', path: '/' },
+                  { name: 'Search', path: '/search' },
+                  { name: 'Contact', path: '/contact' }
+                ].map((item) => (
+                  <li key={item.name}>
+                    <Link to={item.path} className="text-gray-400 hover:text-white transition-colors">
+                      {item.name}
                     </Link>
                   </li>
                 ))}
@@ -336,11 +341,11 @@ const MainLayout = () => {
 
             {/* Services */}
             <div>
-              <h4 className="font-semibold text-lg mb-6">Dịch vụ</h4>
+              <h4 className="font-semibold text-lg mb-6">Services</h4>
               <ul className="space-y-3">
-                {['Tour du lịch', 'Khách sạn', 'Nhà hàng', 'Resort', 'Thuê xe'].map((item) => (
+                {['Tours', 'Hotels', 'Restaurants', 'Resorts', 'Transports'].map((item) => (
                   <li key={item}>
-                    <Link to="/info" className="text-gray-400 hover:text-white transition-colors">
+                    <Link to={`/info/${item.toLowerCase()}`} className="text-gray-400 hover:text-white transition-colors">
                       {item}
                     </Link>
                   </li>
@@ -354,11 +359,15 @@ const MainLayout = () => {
               <ul className="space-y-4 text-gray-400">
                 <li className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 mt-0.5" />
-                  <span>123 Đường ABC, Quận 1, TP.HCM</span>
+                  <span>Ho Chi Minh City, Vietnam</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone className="w-5 h-5" />
-                  <span>0123 456 789</span>
+                  <span>+84 123 456 789</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Mail className="w-5 h-5" />
+                  <span>info@karneltravels.com</span>
                 </li>
               </ul>
             </div>

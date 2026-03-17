@@ -239,8 +239,8 @@ const HotelsPage = () => {
       {/* Header */}
       <div className="bg-gradient-to-r from-teal-600 to-cyan-700 text-white py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Khách sạn & Resort</h1>
-          <p className="text-lg text-white/80">Tìm kiếm chỗ nghỉ hoàn hảo cho chuyến đi của bạn</p>
+          <h1 className="text-4xl font-bold mb-4">Hotels & Resorts</h1>
+          <p className="text-lg text-white/80">Find the perfect accommodation for your trip</p>
         </div>
       </div>
 
@@ -251,7 +251,7 @@ const HotelsPage = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Tìm kiếm khách sạn..."
+              placeholder="Search hotels..."
               value={filters.search}
               onChange={(e) => handleFilterChange('search', e.target.value)}
               className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary"

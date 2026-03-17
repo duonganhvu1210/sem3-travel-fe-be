@@ -427,7 +427,7 @@ const TourDetailPage = () => {
               <div className="space-y-3">
                 <button
                   className="w-full py-4 bg-primary text-white font-bold rounded-xl hover:bg-teal-700 transition-colors text-lg"
-                  onClick={() => navigate(`/booking?tourId=${tour.tourId}&name=${encodeURIComponent(tour.tourName)}&price=${tour.basePrice || tour.price}&discountPrice=${tour.discountPrice || 0}`)}
+                  onClick={() => navigate(`/booking?tourId=${tour.tourId}&name=${encodeURIComponent(tour.name)}&price=${tour.basePrice || tour.price}&discountPrice=${tour.discountPrice || 0}`)}
                 >
                   Đặt ngay
                 </button>

@@ -136,10 +136,10 @@ const TouristSpotDetailPage = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <Info className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-600 mb-2">Không tìm thấy</h2>
-          <p className="text-gray-500 mb-4">{error || 'Điểm du lịch không tồn tại'}</p>
+          <h2 className="text-2xl font-bold text-gray-600 mb-2">Not Found</h2>
+          <p className="text-gray-500 mb-4">{error || 'Destination does not exist'}</p>
           <CommonButton>
-            <Link to="/info/tourist-spots">Quay lại</Link>
+            <Link to="/info/tourist-spots">Go Back</Link>
           </CommonButton>
         </div>
       </div>
@@ -152,9 +152,9 @@ const TouristSpotDetailPage = () => {
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-3">
           <nav className="flex items-center gap-2 text-sm text-gray-500">
-            <Link to="/" className="hover:text-primary">Trang chủ</Link>
+            <Link to="/" className="hover:text-primary">Home</Link>
             <ChevronRight className="w-4 h-4" />
-            <Link to="/info/tourist-spots" className="hover:text-primary">Điểm du lịch</Link>
+            <Link to="/info/destinations" className="hover:text-primary">Destinations</Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-gray-800 font-medium">{spot.name}</span>
           </nav>
@@ -385,7 +385,7 @@ const TouristSpotDetailPage = () => {
                       <Building2 className="w-5 h-5 text-indigo-600" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-gray-800">Khách sạn</p>
+                      <p className="font-medium text-gray-800">Hotels</p>
                       <p className="text-xs text-gray-500">Gần điểm du lịch</p>
                     </div>
                     <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -399,7 +399,7 @@ const TouristSpotDetailPage = () => {
                       <Utensils className="w-5 h-5 text-amber-600" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-gray-800">Nhà hàng</p>
+                      <p className="font-medium text-gray-800">Restaurants</p>
                       <p className="text-xs text-gray-500">Ẩm thực địa phương</p>
                     </div>
                     <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -413,7 +413,7 @@ const TouristSpotDetailPage = () => {
                       <Palmtree className="w-5 h-5 text-pink-600" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-gray-800">Resort</p>
+                      <p className="font-medium text-gray-800">Resorts</p>
                       <p className="text-xs text-gray-500">Nghỉ dưỡng cao cấp</p>
                     </div>
                     <ChevronRight className="w-4 h-4 text-gray-400" />

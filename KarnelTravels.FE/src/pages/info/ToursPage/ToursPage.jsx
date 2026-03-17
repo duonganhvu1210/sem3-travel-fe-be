@@ -330,8 +330,8 @@ const ToursPage = () => {
       {/* Header */}
       <div className="bg-gradient-to-r from-teal-600 to-cyan-700 text-white py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Khám phá các Tour du lịch</h1>
-          <p className="text-lg text-white/80">Trải nghiệm những hành trình đặc biệt cùng chúng tôi</p>
+          <h1 className="text-4xl font-bold mb-4">Explore Our Tours</h1>
+          <p className="text-lg text-white/80">Experience unforgettable journeys with us</p>
         </div>
       </div>
 
@@ -342,7 +342,7 @@ const ToursPage = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Tìm kiếm tour..."
+              placeholder="Search tours..."
               value={filters.search}
               onChange={(e) => handleFilterChange('search', e.target.value)}
               className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary"

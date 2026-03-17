@@ -169,8 +169,8 @@ const TransportsPage = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="bg-gradient-to-r from-teal-600 to-cyan-700 text-white py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Phương tiện di chuyển</h1>
-          <p className="text-lg text-white/80">Tìm kiếm phương tiện di chuyển phù hợp</p>
+          <h1 className="text-4xl font-bold mb-4">Transportation</h1>
+          <p className="text-lg text-white/80">Find the perfect transportation for your trip</p>
         </div>
       </div>
 
@@ -182,9 +182,9 @@ const TransportsPage = () => {
               onChange={(e) => handleFilterChange('type', e.target.value)}
               className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-primary min-w-[150px]"
             >
-              <option value="">Tất cả loại</option>
+              <option value="">All Types</option>
               {transportTypes.map(type => (
-                <option key={type} value={type}>{type === 'Flight' ? 'Máy bay' : type === 'Bus' ? 'Xe khách' : type === 'Train' ? 'Tàu hỏa' : type === 'Car' ? 'Ô tô' : 'Limousine'}</option>
+                <option key={type} value={type}>{type === 'Flight' ? 'Flight' : type === 'Bus' ? 'Bus' : type === 'Train' ? 'Train' : type === 'Car' ? 'Car' : 'Limousine'}</option>
               ))}
             </select>
 

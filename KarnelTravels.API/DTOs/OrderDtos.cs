@@ -251,3 +251,17 @@ public class OrderStatisticsDto
     public int CancelledOrders { get; set; }
     public decimal TotalSpent { get; set; }
 }
+
+/// <summary>
+/// DTO for coupon validation response
+/// </summary>
+public class CouponValidationDto
+{
+    public string Code { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public decimal? DiscountPercent { get; set; }
+    public decimal DiscountAmount { get; set; }
+    public decimal? MinOrderAmount { get; set; }
+    public decimal? MaxDiscountAmount { get; set; }
+    public DateTime? ValidUntil { get; set; }
+}

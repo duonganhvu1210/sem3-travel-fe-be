@@ -101,7 +101,7 @@ const TouristSpotForm = ({
       const uploadPromises = files.map(file => uploadService.uploadImage(file));
       const results = await Promise.all(uploadPromises);
 
-      // Lọc và chỉ lấy các upload thành công (HTTP 2xx và success=true)
+      // Filter and only keep successful uploads (HTTP 2xx and success=true)
       const uploadedUrls = results
         .filter(r => r && r.success === true && r.data?.url)
         .map(r => r.data.url);
@@ -110,18 +110,18 @@ const TouristSpotForm = ({
         const newImages = [...images, ...uploadedUrls];
         setImages(newImages);
         setValue('images', newImages);
-        toast.success(`Đã tải lên ${uploadedUrls.length} ảnh`);
+        toast.success(`Uploaded ${uploadedUrls.length} image(s) successfully`);
       } else {
-        // Tất cả đều thất bại
-        toast.error('Không thể tải ảnh lên. Vui lòng đăng nhập với tài khoản Admin.');
+        // All uploads failed
+        toast.error('Unable to upload images. Please sign in with an Admin account.');
       }
     } catch (error) {
       console.error('Upload error:', error);
-      // Kiểm tra lỗi cụ thể
+      // Check specific errors
       if (error.response?.status === 401 || error.response?.status === 403) {
-        toast.error('Bạn không có quyền tải ảnh lên. Vui lòng đăng nhập với tài khoản Admin.');
+        toast.error('You do not have permission to upload images. Please sign in with an Admin account.');
       } else {
-        toast.error('Lỗi khi tải ảnh lên');
+        toast.error('Error uploading images');
       }
     } finally {
       setIsUploading(false);
@@ -149,9 +149,9 @@ const TouristSpotForm = ({
   };
 
   const regions = [
-    { value: 'North', label: 'Miền Bắc' },
-    { value: 'Central', label: 'Miền Trung' },
-    { value: 'South', label: 'Miền Nam' }
+    { value: 'North', label: 'North' },
+    { value: 'Central', label: 'Central' },
+    { value: 'South', label: 'South' }
   ];
 
   const spotTypes = [
@@ -186,7 +186,7 @@ const TouristSpotForm = ({
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50">
           <h2 className="text-xl font-semibold text-gray-800">
-            {spot ? 'Cập nhật điểm du lịch' : 'Thêm mới điểm du lịch'}
+            {spot ? 'Update Tourist Spot' : 'Add New Tourist Spot'}
           </h2>
           <button
             onClick={onClose}
@@ -202,15 +202,15 @@ const TouristSpotForm = ({
             {/* Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Tên điểm du lịch <span className="text-red-500">*</span>
+                Tourist Spot Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
-                {...register('name', { required: 'Vui lòng nhập tên điểm du lịch' })}
+                {...register('name', { required: 'Please enter the tourist spot name' })}
                 className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all ${
                   errors.name ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="Nhập tên điểm du lịch"
+                placeholder="Enter tourist spot name"
               />
               {errors.name && (
                 <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
@@ -220,13 +220,13 @@ const TouristSpotForm = ({
             {/* Description */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Mô tả
+                Description
               </label>
               <textarea
                 {...register('description')}
                 rows={3}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all resize-none"
-                placeholder="Mô tả về điểm du lịch"
+                placeholder="Describe the tourist spot"
               />
             </div>
 
@@ -234,15 +234,15 @@ const TouristSpotForm = ({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  Vùng miền <span className="text-red-500">*</span>
+                  Region <span className="text-red-500">*</span>
                 </label>
                 <select
-                  {...register('region', { required: 'Vui lòng chọn vùng miền' })}
+                  {...register('region', { required: 'Please select a region' })}
                   className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all ${
                     errors.region ? 'border-red-500' : 'border-gray-300'
                   }`}
                 >
-                  <option value="">Chọn vùng miền</option>
+                  <option value="">Select region</option>
                   {regions.map((r) => (
                     <option key={r.value} value={r.value}>{r.label}</option>
                   ))}
@@ -253,15 +253,15 @@ const TouristSpotForm = ({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  Loại hình <span className="text-red-500">*</span>
+                  Type <span className="text-red-500">*</span>
                 </label>
                 <select
-                  {...register('type', { required: 'Vui lòng chọn loại hình' })}
+                  {...register('type', { required: 'Please select a type' })}
                   className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all ${
                     errors.type ? 'border-red-500' : 'border-gray-300'
                   }`}
                 >
-                  <option value="">Chọn loại hình</option>
+                  <option value="">Select type</option>
                   {spotTypes.map((t) => (
                     <option key={t} value={t}>{t}</option>
                   ))}
@@ -276,7 +276,7 @@ const TouristSpotForm = ({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  Địa chỉ
+                  Address
                 </label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -284,18 +284,18 @@ const TouristSpotForm = ({
                     type="text"
                     {...register('address')}
                     className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
-                    placeholder="Số nhà, đường, phường/xã"
+                    placeholder="House number, street, ward/commune"
                   />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  Thành phố/Tỉnh <span className="text-red-500">*</span>
+                  City/Province <span className="text-red-500">*</span>
                 </label>
                 <CitySelect
                   value={watch('city') || ''}
                   onChange={(city) => setValue('city', city, { shouldValidate: true })}
-                  placeholder="Chọn thành phố"
+                  placeholder="Select city"
                   error={errors.city?.message}
                 />
               </div>
@@ -305,26 +305,26 @@ const TouristSpotForm = ({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  Vĩ độ (Latitude)
+                  Latitude
                 </label>
                 <input
                   type="number"
                   step="any"
                   {...register('latitude')}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
-                  placeholder="Ví dụ: 16.0544"
+                  placeholder="Example: 16.0544"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  Kinh độ (Longitude)
+                  Longitude
                 </label>
                 <input
                   type="number"
                   step="any"
                   {...register('longitude')}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
-                  placeholder="Ví dụ: 108.2022"
+                  placeholder="Example: 108.2022"
                 />
               </div>
             </div>
@@ -333,7 +333,7 @@ const TouristSpotForm = ({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  Giá vé (VND)
+                  Ticket Price (VND)
                 </label>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -348,7 +348,7 @@ const TouristSpotForm = ({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  Thời điểm tốt nhất
+                  Best Time to Visit
                 </label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -356,7 +356,7 @@ const TouristSpotForm = ({
                     {...register('bestTime')}
                     className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all appearance-none bg-white"
                   >
-                    <option value="">Chọn thời điểm</option>
+                    <option value="">Select time</option>
                     {bestTimes.map((t) => (
                       <option key={t} value={t}>{t}</option>
                     ))}
@@ -368,7 +368,7 @@ const TouristSpotForm = ({
             {/* Images */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Hình ảnh
+                Images
               </label>
               
               {/* Upload Button */}
@@ -390,12 +390,12 @@ const TouristSpotForm = ({
                   {isUploading ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      <span>Đang tải ảnh lên...</span>
+                      <span>Uploading images...</span>
                     </>
                   ) : (
                     <>
                       <CloudUpload className="w-5 h-5" />
-                      <span>Tải ảnh từ máy tính</span>
+                      <span>Upload images from your computer</span>
                     </>
                   )}
                 </button>
@@ -436,7 +436,7 @@ const TouristSpotForm = ({
               />
               <label htmlFor="isFeatured" className="text-sm font-medium text-gray-700 flex items-center gap-1">
                 <Star className="w-4 h-4 text-yellow-500" />
-                Đánh dấu là điểm du lịch nổi bật
+                Mark as featured tourist spot
               </label>
             </div>
           </div>
@@ -448,7 +448,7 @@ const TouristSpotForm = ({
               onClick={onClose}
               className="px-5 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium"
             >
-              Hủy
+              Cancel
             </button>
             <button
               type="submit"
@@ -458,11 +458,11 @@ const TouristSpotForm = ({
               {isSubmitting || isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Đang lưu...
+                  Saving...
                 </>
               ) : (
                 <>
-                  {spot ? 'Cập nhật' : 'Thêm mới'}
+                  {spot ? 'Update' : 'Add New'}
                 </>
               )}
             </button>

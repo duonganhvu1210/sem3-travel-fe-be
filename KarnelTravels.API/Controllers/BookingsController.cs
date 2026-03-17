@@ -296,6 +296,110 @@ public class BookingsController : ControllerBase
     }
 
     /// <summary>
+    /// Xác thực mã giảm giá
+    /// </summary>
+    [HttpGet("validate-coupon")]
+    public async Task<ActionResult<ApiResponse<CouponValidationDto>>> ValidateCoupon([FromQuery] string code, [FromQuery] decimal orderAmount)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                return BadRequest(new ApiResponse<CouponValidationDto>
+                {
+                    Success = false,
+                    Message = "Vui lòng nhập mã giảm giá"
+                });
+            }
+
+            var promotion = await _context.Promotions
+                .FirstOrDefaultAsync(p => p.Code == code && p.IsActive);
+
+            if (promotion == null)
+            {
+                return Ok(new ApiResponse<CouponValidationDto>
+                {
+                    Success = false,
+                    Message = "Mã giảm giá không tồn tại"
+                });
+            }
+
+            // Check if promotion is active
+            if (promotion.StartDate > DateTime.UtcNow)
+            {
+                return Ok(new ApiResponse<CouponValidationDto>
+                {
+                    Success = false,
+                    Message = "Mã giảm giá chưa có hiệu lực"
+                });
+            }
+
+            if (promotion.EndDate < DateTime.UtcNow)
+            {
+                return Ok(new ApiResponse<CouponValidationDto>
+                {
+                    Success = false,
+                    Message = "Mã giảm giá đã hết hạn"
+                });
+            }
+
+            // Check minimum order amount
+            if (promotion.MinOrderAmount.HasValue && orderAmount < promotion.MinOrderAmount.Value)
+            {
+                return Ok(new ApiResponse<CouponValidationDto>
+                {
+                    Success = false,
+                    Message = $"Đơn hàng tối thiểu {promotion.MinOrderAmount.Value:N0}đ để sử dụng mã này"
+                });
+            }
+
+            // Calculate discount amount
+            decimal discountAmount = 0;
+            decimal? discountPercent = null;
+
+            if (promotion.DiscountType == DiscountType.Percentage)
+            {
+                discountPercent = promotion.DiscountValue;
+                discountAmount = orderAmount * promotion.DiscountValue / 100;
+                if (promotion.MaxDiscountAmount.HasValue && discountAmount > promotion.MaxDiscountAmount.Value)
+                {
+                    discountAmount = promotion.MaxDiscountAmount.Value;
+                }
+            }
+            else // FixedAmount
+            {
+                discountAmount = promotion.DiscountValue;
+            }
+
+            var result = new CouponValidationDto
+            {
+                Code = promotion.Code,
+                Description = promotion.Description,
+                DiscountPercent = discountPercent,
+                DiscountAmount = discountAmount,
+                MinOrderAmount = promotion.MinOrderAmount,
+                MaxDiscountAmount = promotion.MaxDiscountAmount,
+                ValidUntil = promotion.EndDate
+            };
+
+            return Ok(new ApiResponse<CouponValidationDto>
+            {
+                Success = true,
+                Data = result,
+                Message = "Mã giảm giá hợp lệ"
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<CouponValidationDto>
+            {
+                Success = false,
+                Message = $"Lỗi xác thực mã: {ex.Message}"
+            });
+        }
+    }
+
+    /// <summary>
     /// Lấy thông tin đơn đặt theo ID
     /// </summary>
     [HttpGet("{id}")]

@@ -40,7 +40,7 @@ public class AuthService : IAuthService
             return new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Email hoặc mật khẩu không đúng"
+                Message = "Email or password is incorrect"
             };
         }
 
@@ -50,7 +50,7 @@ public class AuthService : IAuthService
             return new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Email hoặc mật khẩu không đúng"
+                Message = "Email or password is incorrect"
             };
         }
 
@@ -60,7 +60,7 @@ public class AuthService : IAuthService
             return new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên"
+                Message = "Your account has been locked. Please contact the administrator"
             };
         }
 
@@ -77,7 +77,7 @@ public class AuthService : IAuthService
         return new ApiResponse<AuthResponse>
         {
             Success = true,
-            Message = "Đăng nhập thành công",
+            Message = "Login successful",
             Data = new AuthResponse
             {
                 UserId = user.Id,
@@ -103,7 +103,7 @@ public class AuthService : IAuthService
             return new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Email đã được sử dụng"
+                Message = "Email already exists"
             };
         }
 
@@ -133,7 +133,7 @@ public class AuthService : IAuthService
         return new ApiResponse<AuthResponse>
         {
             Success = true,
-            Message = "Đăng ký thành công",
+            Message = "Register successful",
             Data = new AuthResponse
             {
                 UserId = user.Id,
@@ -158,7 +158,7 @@ public class AuthService : IAuthService
             return new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Refresh token không hợp lệ"
+                Message = "Invalid refresh token"
             };
         }
 
@@ -167,7 +167,7 @@ public class AuthService : IAuthService
             return new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Refresh token đã hết hạn"
+                Message = "Refresh token expired"
             };
         }
 
@@ -183,7 +183,7 @@ public class AuthService : IAuthService
         return new ApiResponse<AuthResponse>
         {
             Success = true,
-            Message = "Token đã được làm mới",
+            Message = "Token refreshed",
             Data = new AuthResponse
             {
                 UserId = user.Id,
@@ -207,7 +207,7 @@ public class AuthService : IAuthService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Không tìm thấy người dùng"
+                Message = "User not found"
             };
         }
 
@@ -217,7 +217,7 @@ public class AuthService : IAuthService
             return new ApiResponse<string>
             {
                 Success = false,
-                Message = "Mật khẩu hiện tại không đúng"
+                Message = "Current password is incorrect"
             };
         }
 
@@ -229,7 +229,7 @@ public class AuthService : IAuthService
         return new ApiResponse<string>
         {
             Success = true,
-            Message = "Đổi mật khẩu thành công"
+            Message = "Password changed successfully"
         };
     }
 
@@ -242,7 +242,7 @@ public class AuthService : IAuthService
             return new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Không tìm thấy người dùng"
+                Message = "User not found"
             };
         }
 

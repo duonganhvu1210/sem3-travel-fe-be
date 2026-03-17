@@ -27,7 +27,8 @@ import {
   Home,
   Info,
   Phone,
-  Calendar
+  Calendar,
+  Mail
 } from 'lucide-react';
 
 const UserLayout = () => {
@@ -315,18 +316,22 @@ const UserLayout = () => {
                 <span className="font-bold text-xl">KarnelTravels</span>
               </div>
               <p className="text-gray-400 mb-6">
-                Đồng hành cùng bạn trên mọi hành trình khám phá Việt Nam và thế giới.
+                Your trusted partner for exploring Vietnam and the world.
               </p>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-semibold text-lg mb-6">Liên kết nhanh</h4>
+              <h4 className="font-semibold text-lg mb-6">Quick Links</h4>
               <ul className="space-y-3">
-                {['Trang chủ',  'Tìm kiếm', 'Liên hệ'].map((item) => (
-                  <li key={item}>
-                    <Link to="/" className="text-gray-400 hover:text-white transition-colors">
-                      {item}
+                {[
+                  { name: 'Home', path: '/' },
+                  { name: 'Search', path: '/search' },
+                  { name: 'Contact', path: '/contact' }
+                ].map((item) => (
+                  <li key={item.name}>
+                    <Link to={item.path} className="text-gray-400 hover:text-white transition-colors">
+                      {item.name}
                     </Link>
                   </li>
                 ))}
@@ -335,11 +340,11 @@ const UserLayout = () => {
 
             {/* Services */}
             <div>
-              <h4 className="font-semibold text-lg mb-6">Dịch vụ</h4>
+              <h4 className="font-semibold text-lg mb-6">Services</h4>
               <ul className="space-y-3">
-                {['Tour du lịch', 'Khách sạn', 'Nhà hàng', 'Resort', 'Thuê xe'].map((item) => (
+                {['Tours', 'Hotels', 'Restaurants', 'Resorts', 'Transports'].map((item) => (
                   <li key={item}>
-                    <Link to="/info" className="text-gray-400 hover:text-white transition-colors">
+                    <Link to={`/info/${item.toLowerCase()}`} className="text-gray-400 hover:text-white transition-colors">
                       {item}
                     </Link>
                   </li>
@@ -349,15 +354,19 @@ const UserLayout = () => {
 
             {/* Contact */}
             <div>
-              <h4 className="font-semibold text-lg mb-6">Liên hệ</h4>
+              <h4 className="font-semibold text-lg mb-6">Contact</h4>
               <ul className="space-y-4 text-gray-400">
                 <li className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 mt-0.5" />
-                  <span>123 Đường ABC, Quận 1, TP.HCM</span>
+                  <span>Ho Chi Minh City, Vietnam</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone className="w-5 h-5" />
-                  <span>0123 456 789</span>
+                  <span>+84 123 456 789</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Mail className="w-5 h-5" />
+                  <span>info@karneltravels.com</span>
                 </li>
               </ul>
             </div>

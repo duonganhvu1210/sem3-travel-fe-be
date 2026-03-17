@@ -15,23 +15,24 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { name: 'Trang chủ', path: '/' },
+  { name: 'Home', path: '/' },
   
-  { name: 'Tìm kiếm', path: '/search' },
+  { name: 'Search', path: '/search' },
   { 
-    name: 'Thông tin', 
+    name: 'Information', 
     path: '/info',
     hasDropdown: true,
     dropdownItems: [
-      { name: 'Điểm du lịch', path: '/info/destinations', icon: Compass },
-      { name: 'Tour Du lịch', path: '/info/tours', icon: Palmtree },
-      { name: 'Phương tiện', path: '/info/transport', icon: Bus },
-      { name: 'Thông tin Khách sạn', path: '/info/hotels', icon: Building2 },
-      { name: 'Thông tin Nhà hàng', path: '/info/restaurants', icon: Utensils },
-      { name: 'Thông tin Resort', path: '/info/resorts', icon: Palmtree },
+      { name: 'Destinations', path: '/info/destinations', icon: Compass },
+      { name: 'Tours', path: '/info/tours', icon: Palmtree },
+      { name: 'Transports', path: '/info/transports', icon: Bus },
+      { name: 'Hotels', path: '/info/hotels', icon: Building2 },
+      { name: 'Restaurants', path: '/info/restaurants', icon: Utensils },
+      { name: 'Resorts', path: '/info/resorts', icon: Palmtree },
     ]
   },
-  { name: 'Liên hệ', path: '/contact' },
+  { name: 'Contact', path: '/contact' },
+  { name: 'Promotions', path: '/promotions' },
 ];
 
 const Navbar = () => {
@@ -145,7 +146,7 @@ const Navbar = () => {
               to="/login"
               className="px-5 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md hover:shadow-lg"
             >
-              Đăng nhập
+              Login
             </Link>
           </div>
 
@@ -219,7 +220,7 @@ const Navbar = () => {
               className="block w-full px-4 py-3 bg-indigo-600 text-white font-medium text-center rounded-lg hover:bg-indigo-700 transition-colors"
               onClick={() => setIsOpen(false)}
             >
-              Đăng nhập
+              Login
             </Link>
           </div>
         </div>

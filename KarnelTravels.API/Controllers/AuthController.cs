@@ -29,7 +29,7 @@ public class AuthController : ControllerBase
             return BadRequest(new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Dữ liệu không hợp lệ"
+                Message = "Invalid data"
             });
         }
 
@@ -55,7 +55,7 @@ public class AuthController : ControllerBase
             return BadRequest(new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Dữ liệu không hợp lệ"
+                Message = "Invalid data"
             });
         }
 
@@ -81,7 +81,7 @@ public class AuthController : ControllerBase
             return BadRequest(new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Refresh token là bắt buộc"
+                Message = "Refresh token is required"
             });
         }
 
@@ -109,7 +109,7 @@ public class AuthController : ControllerBase
             return Unauthorized(new ApiResponse<AuthResponse>
             {
                 Success = false,
-                Message = "Token không hợp lệ"
+                Message = "Invalid token"
             });
         }
 
@@ -137,7 +137,7 @@ public class AuthController : ControllerBase
             return Unauthorized(new ApiResponse<string>
             {
                 Success = false,
-                Message = "Token không hợp lệ"
+                Message = "Invalid token"
             });
         }
 
@@ -163,7 +163,7 @@ public class AuthController : ControllerBase
         return Ok(new ApiResponse<string>
         {
             Success = true,
-            Message = "Đăng xuất thành công"
+            Message = "Logout successful"
         });
     }
 }

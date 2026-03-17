@@ -57,12 +57,12 @@ const InformationPage = () => {
 
   // Menu items for Information page
   const infoMenuItems = [
-    { id: 'promotions', name: 'Khuyến mãi', icon: Gift, path: '/info', count: promotions.length },
-    { id: 'handbook', name: 'Cẩm nang du lịch', icon: BookOpen, path: '/info/handbook', count: 0 },
-    { id: 'policy', name: 'Chính sách', icon: FileText, path: '/info/policy', count: 0 },
-    { id: 'guide', name: 'Hướng dẫn', icon: FileText, path: '/info/guide', count: 0 },
-    { id: 'news', name: 'Tin tức', icon: Newspaper, path: '/info/news', count: 0 },
-    { id: 'contact', name: 'Liên hệ', icon: Phone, path: '/contact', count: 0 },
+    { id: 'promotions', name: 'Promotions', icon: Gift, path: '/info', count: promotions.length },
+    { id: 'handbook', name: 'Travel Guide', icon: BookOpen, path: '/info/handbook', count: 0 },
+    { id: 'policy', name: 'Policies', icon: FileText, path: '/info/policy', count: 0 },
+    { id: 'guide', name: 'Guide', icon: FileText, path: '/info/guide', count: 0 },
+    { id: 'news', name: 'News', icon: Newspaper, path: '/info/news', count: 0 },
+    { id: 'contact', name: 'Contact', icon: Phone, path: '/contact', count: 0 },
   ];
 
   // Calculate time remaining for promotion
@@ -95,7 +95,7 @@ const InformationPage = () => {
 
     if (timeLeft.expired) {
       return (
-        <span className="text-red-500 text-sm font-medium">Đã hết hạn</span>
+        <span className="text-red-500 text-sm font-medium">Expired</span>
       );
     }
 
@@ -104,7 +104,7 @@ const InformationPage = () => {
         <div className="flex items-center gap-1 bg-red-500 text-white px-2 py-1 rounded-lg">
           <Clock className="w-4 h-4" />
           <span className="font-bold">{timeLeft.days}</span>
-          <span className="text-xs">ngày</span>
+          <span className="text-xs">days</span>
         </div>
         <div className="flex items-center gap-1 bg-red-500/80 text-white px-2 py-1 rounded-lg">
           <span className="font-bold">{timeLeft.hours.toString().padStart(2, '0')}</span>
@@ -122,9 +122,9 @@ const InformationPage = () => {
       {/* Hero Banner */}
       <div className="bg-gradient-to-r from-teal-600 to-cyan-700 text-white py-16">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Thông tin & Khuyến mãi</h1>
+          <h1 className="text-4xl font-bold mb-4">Information & Promotions</h1>
           <p className="text-xl text-white/80 max-w-2xl">
-            Cập nhật những khuyến mãi hấp dẫn và thông tin hữu ích cho chuyến du lịch của bạn
+            Get the latest attractive promotions and useful information for your trip
           </p>
         </div>
       </div>
@@ -180,8 +180,8 @@ const InformationPage = () => {
                   <Gift className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-800">Khuyến mãi hot</h2>
-                  <p className="text-gray-500">Những ưu đãi hấp dẫn đang chờ bạn</p>
+                  <h2 className="text-2xl font-bold text-gray-800">Hot Promotions</h2>
+                  <p className="text-gray-500">Attractive deals waiting for you</p>
                 </div>
               </div>
 
@@ -219,11 +219,11 @@ const InformationPage = () => {
                         <p className="text-gray-500 text-sm mb-4 line-clamp-2">{promo.description}</p>
                         <div className="flex items-center justify-between">
                           <span className="text-xs text-gray-400">
-                            Hết hạn: {new Date(promo.endDate).toLocaleDateString('vi-VN')}
+                            Expires: {new Date(promo.endDate).toLocaleDateString('en-US')}
                           </span>
                           <Button size="sm" asChild>
                             <Link to="/search">
-                              Sử dụng ngay
+                              Use Now
                               <ArrowRight className="w-4 h-4 ml-1" />
                             </Link>
                           </Button>
@@ -236,8 +236,8 @@ const InformationPage = () => {
                 <Card className="border-0 shadow-lg">
                   <CardContent className="p-12 text-center">
                     <Gift className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-600 mb-2">Không có khuyến mãi nào</h3>
-                    <p className="text-gray-400">Hiện tại không có khuyến mãi nào đang hoạt động</p>
+                    <h3 className="text-xl font-semibold text-gray-600 mb-2">No promotions available</h3>
+                    <p className="text-gray-400">Currently there are no active promotions</p>
                   </CardContent>
                 </Card>
               )}
@@ -250,8 +250,8 @@ const InformationPage = () => {
                   <TrendingUp className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-800">Liên kết nhanh</h2>
-                  <p className="text-gray-500">Truy cập nhanh các trang thông tin</p>
+                  <h2 className="text-2xl font-bold text-gray-800">Quick Links</h2>
+                  <p className="text-gray-500">Quick access to information pages</p>
                 </div>
               </div>
 
@@ -262,7 +262,7 @@ const InformationPage = () => {
                       <div className="w-14 h-14 bg-teal-100 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                         <MapPin className="w-7 h-7 text-teal-600" />
                       </div>
-                      <h3 className="font-semibold text-gray-800">Điểm du lịch</h3>
+                      <h3 className="font-semibold text-gray-800">Destinations</h3>
                       <p className="text-sm text-gray-500 mt-1">Explore Now</p>
                     </CardContent>
                   </Card>
@@ -274,7 +274,7 @@ const InformationPage = () => {
                       <div className="w-14 h-14 bg-cyan-100 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                         <Palmtree className="w-7 h-7 text-cyan-600" />
                       </div>
-                      <h3 className="font-semibold text-gray-800">Tour du lịch</h3>
+                      <h3 className="font-semibold text-gray-800">Tours</h3>
                       <p className="text-sm text-gray-500 mt-1">View Details</p>
                     </CardContent>
                   </Card>
@@ -286,8 +286,8 @@ const InformationPage = () => {
                       <div className="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                         <Building2 className="w-7 h-7 text-indigo-600" />
                       </div>
-                      <h3 className="font-semibold text-gray-800">Khách sạn</h3>
-                      <p className="text-sm text-gray-500 mt-1">Đặt ngay</p>
+                      <h3 className="font-semibold text-gray-800">Hotels</h3>
+                      <p className="text-sm text-gray-500 mt-1">Book Now</p>
                     </CardContent>
                   </Card>
                 </Link>
@@ -298,8 +298,8 @@ const InformationPage = () => {
                       <div className="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                         <Utensils className="w-7 h-7 text-amber-600" />
                       </div>
-                      <h3 className="font-semibold text-gray-800">Nhà hàng</h3>
-                      <p className="text-sm text-gray-500 mt-1">Thưởng thức</p>
+                      <h3 className="font-semibold text-gray-800">Restaurants</h3>
+                      <p className="text-sm text-gray-500 mt-1">Dine In</p>
                     </CardContent>
                   </Card>
                 </Link>
@@ -310,8 +310,8 @@ const InformationPage = () => {
                       <div className="w-14 h-14 bg-pink-100 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                         <Plane className="w-7 h-7 text-pink-600" />
                       </div>
-                      <h3 className="font-semibold text-gray-800">Resort</h3>
-                      <p className="text-sm text-gray-500 mt-1">Nghỉ dưỡng</p>
+                      <h3 className="font-semibold text-gray-800">Resorts</h3>
+                      <p className="text-sm text-gray-500 mt-1">Relax</p>
                     </CardContent>
                   </Card>
                 </Link>
@@ -322,8 +322,8 @@ const InformationPage = () => {
                       <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                         <Bus className="w-7 h-7 text-purple-600" />
                       </div>
-                      <h3 className="font-semibold text-gray-800">Vận chuyển</h3>
-                      <p className="text-sm text-gray-500 mt-1">Di chuyển</p>
+                      <h3 className="font-semibold text-gray-800">Transports</h3>
+                      <p className="text-sm text-gray-500 mt-1">Travel</p>
                     </CardContent>
                   </Card>
                 </Link>

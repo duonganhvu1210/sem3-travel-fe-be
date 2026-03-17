@@ -108,7 +108,7 @@ public class TouristSpotsController : ControllerBase
             return NotFound(new ApiResponse<TouristSpotDto>
             {
                 Success = false,
-                Message = "Không tìm thấy địa điểm du lịch"
+                Message = "Not found tourist spot"
             });
         }
 
@@ -221,7 +221,7 @@ public class TouristSpotsController : ControllerBase
             return Ok(new ApiResponse<TouristSpotDto>
             {
                 Success = true,
-                Message = "Tạo điểm du lịch thành công",
+                Message = "Successfully created tourist spot",
                 Data = result
             });
         }
@@ -247,7 +247,7 @@ public class TouristSpotsController : ControllerBase
                 return NotFound(new ApiResponse<TouristSpotDto>
                 {
                     Success = false,
-                    Message = "Không tìm thấy điểm du lịch"
+                    Message = "Not found tourist spot"
                 });
             }
 
@@ -289,7 +289,7 @@ public class TouristSpotsController : ControllerBase
             return Ok(new ApiResponse<TouristSpotDto>
             {
                 Success = true,
-                Message = "Cập nhật điểm du lịch thành công",
+                Message = "Successfully updated tourist spot",
                 Data = result
             });
         }
@@ -315,7 +315,7 @@ public class TouristSpotsController : ControllerBase
                 return NotFound(new ApiResponse<bool>
                 {
                     Success = false,
-                    Message = "Không tìm thấy điểm du lịch"
+                    Message = "Not found tourist spot"
                 });
             }
 
@@ -327,7 +327,7 @@ public class TouristSpotsController : ControllerBase
             return Ok(new ApiResponse<bool>
             {
                 Success = true,
-                Message = "Xóa điểm du lịch thành công",
+                Message = "Successfully deleted tourist spot",
                 Data = true
             });
         }
@@ -336,7 +336,7 @@ public class TouristSpotsController : ControllerBase
             return StatusCode(500, new ApiResponse<bool>
             {
                 Success = false,
-                Message = $"Lỗi: {ex.Message}"
+                Message = $"Error: {ex.Message}"
             });
         }
     }

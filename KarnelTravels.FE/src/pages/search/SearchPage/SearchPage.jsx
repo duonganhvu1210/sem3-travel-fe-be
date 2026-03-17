@@ -31,56 +31,56 @@ import SpotCard from '@/components/common/SpotCard';
 
 // Tab categories
 const TABS = [
-  { id: 'all', label: 'Tất cả', icon: Search },
-  { id: 'spots', label: 'Điểm đến', icon: MapPin },
-  { id: 'hotels', label: 'Khách sạn', icon: Building2 },
-  { id: 'restaurants', label: 'Nhà hàng', icon: Utensils },
-  { id: 'resorts', label: 'Resort', icon: Palmtree },
-  { id: 'tours', label: 'Tour', icon: Palmtree },
-  { id: 'transports', label: 'Vận chuyển', icon: Bus },
+  { id: 'all', label: 'All', icon: Search },
+  { id: 'spots', label: 'Destinations', icon: MapPin },
+  { id: 'hotels', label: 'Hotels', icon: Building2 },
+  { id: 'restaurants', label: 'Restaurants', icon: Utensils },
+  { id: 'resorts', label: 'Resorts', icon: Palmtree },
+  { id: 'tours', label: 'Tours', icon: Palmtree },
+  { id: 'transports', label: 'Transport', icon: Bus },
 ];
 
 // Sort options
 const SORT_OPTIONS = [
-  { value: 'relevance', label: 'Liên quan' },
-  { value: 'price-asc', label: 'Giá thấp đến cao' },
-  { value: 'price-desc', label: 'Giá cao đến thấp' },
-  { value: 'rating', label: 'Đánh giá cao nhất' },
-  { value: 'name-asc', label: 'Tên A-Z' },
+  { value: 'relevance', label: 'Relevance' },
+  { value: 'price-asc', label: 'Price: Low to High' },
+  { value: 'price-desc', label: 'Price: High to Low' },
+  { value: 'rating', label: 'Highest Rating' },
+  { value: 'name-asc', label: 'Name A-Z' },
 ];
 
 // Price ranges
 const PRICE_RANGES = [
-  { value: '', label: 'Tất cả' },
-  { value: '0-500000', label: 'Dưới 500K' },
-  { value: '500000-1000000', label: '500K - 1 triệu' },
-  { value: '1000000-3000000', label: '1 - 3 triệu' },
-  { value: '3000000-5000000', label: '3 - 5 triệu' },
-  { value: '5000000-10000000', label: '5 - 10 triệu' },
-  { value: '10000000-', label: 'Trên 10 triệu' },
+  { value: '', label: 'All' },
+  { value: '0-500000', label: 'Under 500K' },
+  { value: '500000-1000000', label: '500K - 1 Million' },
+  { value: '1000000-3000000', label: '1 - 3 Million' },
+  { value: '3000000-5000000', label: '3 - 5 Million' },
+  { value: '5000000-10000000', label: '5 - 10 Million' },
+  { value: '10000000-', label: 'Above 10 Million' },
 ];
 
 // Star ratings
 const STAR_RATINGS = [
-  { value: '', label: 'Tất cả' },
-  { value: '5', label: '5 sao' },
-  { value: '4', label: '4 sao' },
-  { value: '3', label: '3 sao' },
-  { value: '2', label: '2 sao' },
-  { value: '1', label: '1 sao' },
+  { value: '', label: 'All' },
+  { value: '5', label: '5 Stars' },
+  { value: '4', label: '4 Stars' },
+  { value: '3', label: '3 Stars' },
+  { value: '2', label: '2 Stars' },
+  { value: '1', label: '1 Star' },
 ];
 
 // Amenities options
 const AMENITIES = [
-  { value: 'wifi', label: 'Wifi' },
-  { value: 'pool', label: 'Hồ bơi' },
-  { value: 'parking', label: 'Đỗ xe' },
-  { value: 'restaurant', label: 'Nhà hàng' },
+  { value: 'wifi', label: 'WiFi' },
+  { value: 'pool', label: 'Swimming Pool' },
+  { value: 'parking', label: 'Parking' },
+  { value: 'restaurant', label: 'Restaurant' },
   { value: 'spa', label: 'Spa' },
   { value: 'gym', label: 'Gym' },
-  { value: 'ac', label: 'Điều hòa' },
-  { value: 'beach', label: 'Gần biển' },
-  { value: 'airport', label: 'Đưa đón sân bay' },
+  { value: 'ac', label: 'Air Conditioning' },
+  { value: 'beach', label: 'Near the Beach' },
+  { value: 'airport', label: 'Airport Transfer' },
 ];
 
 const SearchPage = () => {
@@ -313,7 +313,7 @@ const SearchPage = () => {
                 <Search className="w-5 h-5 text-gray-400 mr-2" />
                 <input
                   type="text"
-                  placeholder="Tìm kiếm điểm đến, khách sạn, tour..."
+                  placeholder="Search destinations, hotels, tours..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setShowSuggestions(true)}
@@ -323,7 +323,7 @@ const SearchPage = () => {
               
               <CommonButton type="submit" className="ml-2 bg-teal-600 hover:bg-teal-700">
                 <Search className="w-4 h-4 mr-2" />
-                Tìm kiếm
+                Search
               </CommonButton>
             </div>
 
@@ -355,24 +355,24 @@ const SearchPage = () => {
               <span className="text-white/80 text-sm">Filter:</span>
               {priceRange && (
                 <span className="px-3 py-1 bg-white/20 rounded-full text-sm flex items-center gap-1">
-                  Giá: {PRICE_RANGES.find(p => p.value === priceRange)?.label}
+                  Price: {PRICE_RANGES.find(p => p.value === priceRange)?.label}
                   <button onClick={() => setPriceRange('')}><X className="w-3 h-3" /></button>
                 </span>
               )}
               {starRating && (
                 <span className="px-3 py-1 bg-white/20 rounded-full text-sm flex items-center gap-1">
-                  {starRating} sao
+                  {starRating} stars
                   <button onClick={() => setStarRating('')}><X className="w-3 h-3" /></button>
                 </span>
               )}
               {showOnlyDiscount && (
                 <span className="px-3 py-1 bg-red-500 rounded-full text-sm flex items-center gap-1">
-                  Giảm giá
+                  Discount
                   <button onClick={() => setShowOnlyDiscount(false)}><X className="w-3 h-3" /></button>
                 </span>
               )}
               <button onClick={handleClearFilters} className="text-white/80 text-sm underline">
-                Xóa tất cả
+                Clear all
               </button>
             </div>
           )}
@@ -389,21 +389,21 @@ const SearchPage = () => {
               className="lg:hidden w-full flex items-center justify-center gap-2 px-4 py-3 bg-white rounded-xl shadow-sm mb-4"
             >
               <SlidersHorizontal className="w-4 h-4" />
-              Bộ lọc
+              Filters
             </button>
 
             <div className={`lg:block ${showMobileFilters ? 'block' : 'hidden'}`}>
               <div className="bg-white rounded-xl shadow-sm p-6 space-y-6">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-gray-800">Bộ lọc</h3>
+                  <h3 className="font-semibold text-gray-800">Filters</h3>
                   <button onClick={handleClearFilters} className="text-sm text-primary hover:underline">
-                    Xóa tất cả
+                    Clear all
                   </button>
                 </div>
 
                 {/* Price Range */}
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">Khoảng giá</h4>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Price Range</h4>
                   <div className="space-y-2">
                     {PRICE_RANGES.map((range) => (
                       <label key={range.value} className="flex items-center gap-2 cursor-pointer">
@@ -426,7 +426,7 @@ const SearchPage = () => {
 
                 {/* Star Rating */}
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">Hạng sao</h4>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Star Rating</h4>
                   <div className="flex flex-wrap gap-2">
                     {STAR_RATINGS.map((star) => (
                       <button
@@ -449,7 +449,7 @@ const SearchPage = () => {
 
                 {/* Amenities */}
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">Tiện nghi</h4>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Amenities</h4>
                   <div className="space-y-2">
                     {AMENITIES.map((amenity) => (
                       <label key={amenity.value} className="flex items-center gap-2 cursor-pointer">
@@ -477,7 +477,7 @@ const SearchPage = () => {
                       }}
                       className="w-4 h-4 rounded text-primary"
                     />
-                    <span className="text-sm font-medium text-gray-700">Chỉ hiển thị giảm giá</span>
+                    <span className="text-sm font-medium text-gray-700">Show discounted items only</span>
                   </label>
                 </div>
               </div>
@@ -490,8 +490,8 @@ const SearchPage = () => {
             <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="text-gray-600">
-                  <span className="font-semibold text-primary">{totalCount}</span> kết quả
-                  {searchQuery && <span> cho "{searchQuery}"</span>}
+                  <span className="font-semibold text-primary">{totalCount}</span> results
+                  {searchQuery && <span> for "{searchQuery}"</span>}
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -524,7 +524,7 @@ const SearchPage = () => {
                     }`}
                   >
                     <ArrowLeftRight className="w-4 h-4" />
-                    So sánh
+                    Compare
                     {compareItems.length > 0 && (
                       <span className="bg-white text-primary text-xs px-1.5 py-0.5 rounded-full">
                         {compareItems.length}
@@ -563,9 +563,9 @@ const SearchPage = () => {
             {showCompare && compareItems.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-gray-800">So sánh ({compareItems.length}/3)</h3>
+                  <h3 className="font-semibold text-gray-800">Compare ({compareItems.length}/3)</h3>
                   <button onClick={() => setCompareItems([])} className="text-sm text-red-500">
-                    Xóa tất cả
+                    Clear all
                   </button>
                 </div>
                 <div className="grid grid-cols-3 gap-4">
@@ -594,7 +594,7 @@ const SearchPage = () => {
                   ))}
                   {compareItems.length < 3 && (
                     <div className="border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center p-4">
-                      <p className="text-gray-400 text-sm text-center">Thêm item để so sánh</p>
+                      <p className="text-gray-400 text-sm text-center">Add items to compare</p>
                     </div>
                   )}
                 </div>
@@ -619,13 +619,13 @@ const SearchPage = () => {
               <div className="text-center py-12 bg-white rounded-xl">
                 <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                  Không tìm thấy kết quả
+                  No results found
                 </h3>
                 <p className="text-gray-500 mb-4">
-                  Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
+                  Try changing the filters or search keywords
                 </p>
                 <CommonButton variant="outline" onClick={handleClearFilters}>
-                  Xóa bộ lọc
+                  Clear filters
                 </CommonButton>
               </div>
             ) : (
@@ -661,14 +661,14 @@ const SearchPage = () => {
                             )}
                             {item.discount && (
                               <span className="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded-lg">
-                                Giảm {item.discount}%
+                                {item.discount}% Off
                               </span>
                             )}
                           </div>
 
                           {/* Actions */}
                           <div className="absolute top-3 right-3 flex gap-2">
-                              <button
+                            <button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 toggleCompareItem(item);
@@ -717,7 +717,7 @@ const SearchPage = () => {
                             </div>
                             <div className="text-right">
                               <span className="text-primary font-bold">
-                                {item.price?.toLocaleString() || item.ticketPrice?.toLocaleString() || 'Liên hệ'}₫
+                                {item.price?.toLocaleString() || item.ticketPrice?.toLocaleString() || 'Contact us'}₫
                               </span>
                             </div>
                           </div>
@@ -743,13 +743,13 @@ const SearchPage = () => {
                               }
                               className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 text-center rounded-lg font-medium hover:bg-gray-200 transition-colors"
                             >
-                              Xem chi tiết
+                              View Details
                             </Link>
                             <Link
                               to={`/booking?item=${itemId}&type=${item.type || activeTab}`}
                               className="flex-1 px-4 py-2 bg-primary text-white text-center rounded-lg font-medium hover:bg-primary/90 transition-colors"
                             >
-                              Đặt ngay
+                              Book Now
                             </Link>
                           </div>
                         </div>
@@ -767,7 +767,7 @@ const SearchPage = () => {
                       disabled={pageIndex === 1}
                       onClick={() => setPageIndex(pageIndex - 1)}
                     >
-                      Trước
+                      Previous
                     </CommonButton>
                     
                     {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -803,7 +803,7 @@ const SearchPage = () => {
                       disabled={pageIndex === totalPages}
                       onClick={() => setPageIndex(pageIndex + 1)}
                     >
-                      Sau
+                      Next
                     </CommonButton>
                   </div>
                 )}
