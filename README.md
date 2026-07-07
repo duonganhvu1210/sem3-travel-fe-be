@@ -30,15 +30,13 @@ A full-stack travel booking web application developed as an academic project. Th
 ## Project Structure
 
 ```
-frontend/
-backend/
-database/
+KarnelTravels.API/
+KarnelTravels.FE/
 ```
 
 ## Screenshots
 
-> Add screenshots of:
->
+
 > - Home page
 > - Tour listing
 > - Booking page
